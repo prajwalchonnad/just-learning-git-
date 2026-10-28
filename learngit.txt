@@ -1,1 +1,30 @@
 hello this is something I wanna learn
+
+---
+## 📝 Git Learning Notes & Best Practices
+
+### 1. Professional Commit Anatomy
+Every professional commit should follow the 3-part structure:
+- **Title / Subject:** Short, imperative summary (< 50-72 chars)
+- **Blank Line:** Separates title from body
+- **Body:** Explains the "why" and "what", not just "how"
+
+### 2. VTU 3rd Sem CSE (BCS358C) Lab Experiments
+- Exp 01: Setup & basic commands (`init`, `add`, `commit`)
+- Exp 02: Branching & merging (`checkout -b`, `merge`)
+- Exp 03: Stashing work in progress (`stash save`, `stash apply`)
+- Exp 04: Cloning remote repositories (`clone`)
+- Exp 05: Remote fetch & rebase (`fetch`, `rebase`)
+- Exp 06: Custom merge commit messages (`merge -m`)
+- Exp 07: Lightweight & annotated tags (`tag v1.0`)
+- Exp 08: Cherry-picking commit ranges (`cherry-pick start^..end`)
+- Exp 09: Inspecting specific commits (`show`, `log -n 1`)
+- Exp 10: Filtering commits by author & dates (`log --author --since --until`)
+- Exp 11: Displaying recent commits (`log -n 5 --oneline`)
+- Exp 12: Reverting commits safely (`revert <hash>`)
+
+### 3. Productivity Aliases Configured
+- `git files` -> View last commits with changed file names and stats
+- `git last`  -> View latest commit with full file details
+- `git lg`    -> Quick, compact one-line log
+- `git st`    -> Fast workspace status
