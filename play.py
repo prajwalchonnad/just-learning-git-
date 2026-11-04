@@ -18,7 +18,10 @@ import subprocess
 # Ensure UTF-8 output on Windows consoles
 if sys.platform == "win32":
     try:
+        os.system("chcp 65001 >nul 2>&1")
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stdin.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
     except Exception:
         pass
 
@@ -582,6 +585,7 @@ def main():
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
         elif choice in ["7", "q", "exit"]:
             print(f"\n{Color.GREEN}Keep committing like a ninja! Bye Prajwal! 🚀{Color.RESET}\n")
+            time.sleep(0.8)
             break
 
 if __name__ == "__main__":
@@ -589,4 +593,9 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print(f"\n\n{Color.YELLOW}Game exited. See you in the commits! 👋{Color.RESET}\n")
+    except Exception as e:
+        print(f"\n{Color.RED}Something went wrong: {e}{Color.RESET}\n")
+        import traceback
+        traceback.print_exc()
+        input("\nPress Enter to exit...")
 
