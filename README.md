@@ -19,16 +19,16 @@ Whether it's a `git rebase` gone wrong or a beautiful merge conflict, this is wh
 
 ## 🎮 Play the Interactive Terminal Game!
 
-Bored of reading static markdown? Run the **built-in terminal game & VTU lab simulator**:
+Bored of reading static markdown? Run the **built-in terminal game & developer survival simulator**:
 
 ```bash
 python play.py
 ```
 
 ### Features inside:
-- 🎓 **Survive the VTU Viva-Voce:** A boss-battle quiz simulating your college external examiner.
-- 🚨 **"Oh No, Git!" Scenarios:** Fix real-world production fires and disastrous commits.
-- 📚 **12-in-1 Lab Cheatbook:** Interactive code solutions for all 12 VTU `BCS358C` experiments.
+- 🎓 **Survive the Tech Interview & Viva:** Rapid-fire questions simulating tough tech interviewers and examiners.
+- 🚨 **"Oh No, Git!" Scenarios:** Real-world production fires, secret leaks, and disaster recoveries.
+- 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
 - ⚡ **Aliases Helper:** Inspect configured productivity shortcuts (`git files`, `git lg`, etc.).
 
 ---
@@ -84,7 +84,7 @@ python play.py
 
 | File | Purpose |
 |---|---|
-| [`play.py`](play.py) | 🎮 Interactive terminal game, quiz & VTU lab exam survival simulator |
+| [`play.py`](play.py) | 🎮 Interactive terminal game, quiz & developer survival simulator |
 | [`GIT_COMMANDS.md`](GIT_COMMANDS.md) | 📚 Complete Git commands reference, cheatsheet & guide |
 | `hello.txt` | My very first Git-tracked file 👶 |
 | `features.txt` | Experimenting with feature branches |

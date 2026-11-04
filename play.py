@@ -4,7 +4,8 @@
 Author: Prajwal D. Chonnad
 Repository: prajwalchonnad/just-learning-git-
 
-An interactive, laugh-out-loud Git learning adventure and VTU BCS358C lab exam survival trainer.
+An interactive, laugh-out-loud Git learning adventure and real-world developer survival trainer.
+For everyone learning Git — from self-taught beginners to students and engineers worldwide.
 """
 
 import sys
@@ -45,14 +46,14 @@ BANNER = f"""
 {Color.BLUE}    |_____|                                            |_____|     |_____|      |:  1   /        
 {Color.MAGENTA}                                                                                |::.. . /  THE GAME
 {Color.WHITE}                                                                                `------'   
-{Color.BOLD}                     🚀 The Official VTU Lab & Comedy Survival Simulator 🍝
+{Color.BOLD}            🚀 The Universal Git Learning Arcade & Developer Survival Simulator 🍝
 {Color.RESET}"""
 
 # ----------------- GAME DATA -----------------
 
 VIVA_QUESTIONS = [
     {
-        "q": "External Examiner walks in: 'Student, what is the exact difference between git fetch and git pull?'",
+        "q": "Senior Engineer / Examiner asks: 'What is the exact difference between git fetch and git pull?'",
         "options": [
             "A) They are identical; Linus Torvalds just liked having two names for fun.",
             "B) git fetch downloads remote changes without merging; git pull fetches AND merges them.",
@@ -60,9 +61,9 @@ VIVA_QUESTIONS = [
             "D) git pull only works if you yell at your keyboard in Italian."
         ],
         "ans": "B",
-        "tip": "VTU Exp 5: git fetch is safe and doesn't touch your working tree. git pull = fetch + merge!",
-        "praise": "Examiner nods slowly and sips canteen chai: 'Good. Full marks.'",
-        "roast": "Examiner stares with intense disappointment. 'Next time, attend the 8 AM lecture.'"
+        "tip": "Core Concept: git fetch is safe and doesn't touch your working tree. git pull = fetch + merge!",
+        "praise": "Interviewer nods with respect: 'Clean, accurate answer. You know your Git.'",
+        "roast": "Interviewer writes a red mark in their notepad. 'Time to brush up on remote syncing!'"
     },
     {
         "q": "You made a disastrous commit with bugs directly on 'main' and ALREADY PUSHED IT to GitHub. What command safely undoes it?",
@@ -73,7 +74,7 @@ VIVA_QUESTIONS = [
             "D) Turn off your laptop and pretend the power went out"
         ],
         "ans": "B",
-        "tip": "VTU Exp 12: git revert creates a NEW commit that inverses past changes without breaking shared remote history!",
+        "tip": "Safety First: git revert creates a NEW commit that inverses past changes without breaking shared remote history!",
         "praise": "You saved the team's shared history! Nonna smiles upon you.",
         "roast": "If you ran git reset --hard on a pushed branch, your teammates' git trees are now on fire."
     },
@@ -86,7 +87,7 @@ VIVA_QUESTIONS = [
             "D) git checkout -f main and throw away all progress"
         ],
         "ans": "A",
-        "tip": "VTU Exp 3: git stash temporarily shelves uncommitted modifications so you can switch branches cleanly!",
+        "tip": "Pro-tip: git stash temporarily shelves uncommitted modifications so you can switch branches cleanly!",
         "praise": "Clean move! Your digital junk drawer saved your afternoon.",
         "roast": "Never use Desktop folders as a version control system! That's what git stash was born for."
     },
@@ -99,12 +100,12 @@ VIVA_QUESTIONS = [
             "D) git grab A through B please"
         ],
         "ans": "B",
-        "tip": "VTU Exp 8: In git, A..B excludes A. The caret ^ (A^..B) makes it include commit A as well!",
-        "praise": "Spot on! That caret '^' is the trickiest question on the VTU syllabus.",
+        "tip": "Range Syntax: In Git, A..B excludes A. The caret ^ (A^..B) makes it include commit A as well!",
+        "praise": "Spot on! That caret '^' is the secret handshake of senior Git pros.",
         "roast": "Remember the caret! 'A^..B' includes commit A, while 'A..B' skips commit A."
     },
     {
-        "q": "Examiner points to your screen: 'What does this command do: git log --author=\"JohnDoe\" --since=\"2024-01-01\"'?",
+        "q": "Your lead points to your terminal: 'What does this command do: git log --author=\"JohnDoe\" --since=\"2024-01-01\"'?",
         "options": [
             "A) Deletes all commits by JohnDoe after 2024",
             "B) Changes the author of all commits to JohnDoe",
@@ -112,8 +113,8 @@ VIVA_QUESTIONS = [
             "D) Sends an angry email to JohnDoe"
         ],
         "ans": "C",
-        "tip": "VTU Exp 10: git log supports powerful filters like --author, --since, and --until.",
-        "praise": "Textbook definition! You're dominating this viva.",
+        "tip": "Log Power: git log supports powerful filters like --author, --since, and --until.",
+        "praise": "Textbook definition! You're dominating this interview.",
         "roast": "Nope! It filters history. JohnDoe didn't receive any angry emails."
     },
     {
@@ -125,7 +126,7 @@ VIVA_QUESTIONS = [
             "D) There is no difference, it's a marketing gimmick."
         ],
         "ans": "B",
-        "tip": "VTU Exp 7: git tag v1.0 is lightweight. git tag -a v1.0 -m 'Release' is annotated.",
+        "tip": "Versioning: git tag v1.0 is lightweight. git tag -a v1.0 -m 'Release' is annotated.",
         "praise": "Exactly right. Always use annotated tags for formal public software releases!",
         "roast": "Not quite! Lightweight tags are simple bookmarks (SHA pointers). Annotated tags have full metadata."
     },
@@ -138,7 +139,7 @@ VIVA_QUESTIONS = [
             "D) It opens Microsoft Word."
         ],
         "ans": "B",
-        "tip": "VTU Exp 6: Merging brings histories together and allows an explicit custom commit message.",
+        "tip": "Branch Integration: Merging brings histories together and allows an explicit custom commit message.",
         "praise": "Clean merge! Alternate timelines united peacefully.",
         "roast": "No Word documents involved here! It merges branches and attaches your custom message."
     }
@@ -160,7 +161,7 @@ DISASTER_SCENARIOS = [
     },
     {
         "title": "💣 The Accidental Secret Leak",
-        "story": "Your teammate accidentally staged an '.env' file containing API keys into the Git staging area. It hasn't been committed yet!",
+        "story": "Your teammate accidentally staged an '.env' file containing secret API keys into the Git staging area. It hasn't been committed yet!",
         "prompt": "How do you unstage '.env' without losing the file on disk?",
         "choices": [
             "rm -f .env",
@@ -186,19 +187,19 @@ DISASTER_SCENARIOS = [
     }
 ]
 
-VTU_EXPERIMENTS = [
-    ("Exp 01", "Setting Up and Basic Commands", "git init\necho 'Hello' > file.txt\ngit add file.txt\ngit commit -m 'Initial commit'"),
-    ("Exp 02", "Creating and Managing Branches", "git checkout -b feature-branch\n# make changes\ngit checkout master\ngit merge feature-branch"),
-    ("Exp 03", "Stashing Changes", "git stash save 'WIP'\ngit checkout master\n# do urgent work\ngit checkout feature-branch\ngit stash apply"),
-    ("Exp 04", "Cloning a Remote Repository", "git clone https://github.com/user/repo.git"),
-    ("Exp 05", "Fetch and Rebase", "git checkout main\ngit fetch origin\ngit rebase origin/main"),
-    ("Exp 06", "Merge with Custom Commit Message", "git checkout master\ngit merge feature-branch -m 'Custom merge message'"),
-    ("Exp 07", "Git Tags and Releases", "git tag v1.0\n# or annotated:\ngit tag -a v1.0 -m 'Release v1.0'"),
-    ("Exp 08", "Cherry-Picking a Range of Commits", "git cherry-pick start_commit^..end_commit"),
-    ("Exp 09", "Inspecting a Specific Commit", "git show <commit-id>\n# or summary only:\ngit log -n 1 <commit-id>"),
-    ("Exp 10", "Filtering by Author and Date Range", "git log --author='JohnDoe' --since='2023-01-01' --until='2023-12-31'"),
-    ("Exp 11", "Display Last 5 Commits", "git log -n 5 --oneline"),
-    ("Exp 12", "Undoing Changes via Revert", "git revert <commit-id> --no-edit")
+LAB_EXPERIMENTS = [
+    ("Step 01", "Setting Up and Basic Commands", "git init\necho 'Hello' > file.txt\ngit add file.txt\ngit commit -m 'Initial commit'"),
+    ("Step 02", "Creating and Managing Branches", "git checkout -b feature-branch\n# make changes\ngit checkout master\ngit merge feature-branch"),
+    ("Step 03", "Stashing Changes", "git stash save 'WIP'\ngit checkout master\n# do urgent work\ngit checkout feature-branch\ngit stash apply"),
+    ("Step 04", "Cloning a Remote Repository", "git clone https://github.com/user/repo.git"),
+    ("Step 05", "Fetch and Rebase", "git checkout main\ngit fetch origin\ngit rebase origin/main"),
+    ("Step 06", "Merge with Custom Commit Message", "git checkout master\ngit merge feature-branch -m 'Custom merge message'"),
+    ("Step 07", "Git Tags and Releases", "git tag v1.0\n# or annotated:\ngit tag -a v1.0 -m 'Release v1.0'"),
+    ("Step 08", "Cherry-Picking a Range of Commits", "git cherry-pick start_commit^..end_commit"),
+    ("Step 09", "Inspecting a Specific Commit", "git show <commit-id>\n# or summary only:\ngit log -n 1 <commit-id>"),
+    ("Step 10", "Filtering by Author and Date Range", "git log --author='JohnDoe' --since='2023-01-01' --until='2023-12-31'"),
+    ("Step 11", "Display Last 5 Commits", "git log -n 5 --oneline"),
+    ("Step 12", "Undoing Changes via Revert", "git revert <commit-id> --no-edit")
 ]
 
 # ----------------- GAME MODES -----------------
@@ -206,10 +207,10 @@ VTU_EXPERIMENTS = [
 def mode_viva_gauntlet():
     clear_screen()
     print(f"{Color.CYAN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║          🎓 MODE 1: SURVIVE THE VTU VIVA-VOCE EXAMINER             ║")
+    print("║        🎓 MODE 1: SURVIVE THE TECH INTERVIEW & VIVA GAUNTLET       ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
-    print_slow("An external examiner walks into the lab with a pen, a clipboard, and zero patience.", 0.02, Color.YELLOW)
-    print_slow("Answer the questions correctly to earn your engineering marks. You have 3 lives (☕ Coffee Cups).\n", 0.02)
+    print_slow("A lead interviewer walks into the room with a notepad, a hot cup of coffee, and zero patience.", 0.02, Color.YELLOW)
+    print_slow("Answer the questions correctly to earn your developer cred. You have 3 lives (☕ Coffee Cups).\n", 0.02)
     
     score = 0
     lives = 3
@@ -217,7 +218,7 @@ def mode_viva_gauntlet():
     random.shuffle(questions)
 
     for i, item in enumerate(questions[:5], 1):
-        print(f"\n{Color.BOLD}{Color.WHITE}─── ROUND {i}/5 | Lives: {'☕ ' * lives} | Score: {score} ───{Color.RESET}")
+        print(f"\n{Color.BOLD}{Color.WHITE}─── QUESTION {i}/5 | Lives: {'☕ ' * lives} | Score: {score} ───{Color.RESET}")
         print_slow(f"\n{Color.CYAN}{item['q']}{Color.RESET}", 0.015)
         print()
         for opt in item["options"]:
@@ -238,20 +239,20 @@ def mode_viva_gauntlet():
             print(f"\n{Color.RED}{Color.BOLD}❌ WRONG! Correct Answer was ({item['ans']}){Color.RESET}")
             print(f"{Color.RED}{item['roast']}{Color.RESET}")
             if lives == 0:
-                print_slow(f"\n{Color.RED}{Color.BOLD}💀 OUT OF LIVES! The examiner sent you to the supplementary exam!{Color.RESET}", 0.03)
+                print_slow(f"\n{Color.RED}{Color.BOLD}💀 OUT OF LIVES! The interview is cut short. Time to read GIT_COMMANDS.md!{Color.RESET}", 0.03)
                 break
         
         print(f"{Color.DIM}💡 Tip: {item['tip']}{Color.RESET}")
         time.sleep(1.5)
 
     print(f"\n{Color.BOLD}{Color.MAGENTA}═══════════════════════════════════════════════════")
-    print(f"   VIVA FINISHED! Final Score: {score}/500")
+    print(f"   CHALLENGE FINISHED! Final Score: {score}/500")
     if score >= 400:
-        print(f"   🏆 Grade: S-Rank! You are the Lab Topper!")
+        print(f"   🏆 Rank: Git Master! Ready for senior engineering!")
     elif score >= 200:
-        print(f"   ⭐ Grade: B-Rank! You passed with dignity!")
+        print(f"   ⭐ Rank: Solid Developer! You survived with confidence!")
     else:
-        print(f"   🧄 Grade: Burnt Garlic Rookie. Time to re-read the lab manual!")
+        print(f"   🧄 Rank: Burnt Garlic Rookie. Time to play again!")
     print(f"═══════════════════════════════════════════════════{Color.RESET}\n")
     input(f"{Color.DIM}Press Enter to return to main menu...{Color.RESET}")
 
@@ -293,24 +294,24 @@ def mode_disaster_recovery():
 def mode_vtu_cheatbook():
     clear_screen()
     print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║       📚 MODE 3: VTU BCS358C 12-IN-1 INTERACTIVE CHEATBOOK         ║")
+    print("║          📚 MODE 3: 12-STEP PRACTICAL LAB & WORKFLOW CHEATBOOK      ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
-    print("Select an experiment number to view the exact exam code & solution:\n")
+    print("Select any step to view the exact problem, commands & output:\n")
 
-    for idx, (exp_code, name, _) in enumerate(VTU_EXPERIMENTS, 1):
-        print(f"  {Color.YELLOW}[{idx:2d}] {exp_code}: {name}{Color.RESET}")
+    for idx, (step_code, name, _) in enumerate(LAB_EXPERIMENTS, 1):
+        print(f"  {Color.YELLOW}[{idx:2d}] {step_code}: {name}{Color.RESET}")
 
     print(f"\n  {Color.CYAN}[ 0] Return to Main Menu{Color.RESET}")
 
     while True:
         try:
-            choice = int(input(f"\n{Color.BOLD}Enter Experiment [1 - 12] or 0 to exit: {Color.RESET}").strip())
+            choice = int(input(f"\n{Color.BOLD}Enter Step [1 - 12] or 0 to exit: {Color.RESET}").strip())
             if choice == 0:
                 return
             if 1 <= choice <= 12:
-                exp_code, name, code = VTU_EXPERIMENTS[choice - 1]
+                step_code, name, code = LAB_EXPERIMENTS[choice - 1]
                 print(f"\n{Color.GREEN}{Color.BOLD}═════════════════════════════════════════════════════")
-                print(f"📖 {exp_code}: {name}")
+                print(f"📖 {step_code}: {name}")
                 print(f"═════════════════════════════════════════════════════{Color.RESET}")
                 print(f"{Color.WHITE}{code}{Color.RESET}")
                 print(f"{Color.GREEN}═════════════════════════════════════════════════════{Color.RESET}")
@@ -322,9 +323,9 @@ def main():
         clear_screen()
         print(BANNER)
         print(f"{Color.BOLD}Welcome to the interactive Git arcade! Choose your adventure:{Color.RESET}\n")
-        print(f"  {Color.CYAN}[1]{Color.RESET} 🎓 Survive the VTU Viva-Voce (Boss Battle)")
+        print(f"  {Color.CYAN}[1]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
         print(f"  {Color.RED}[2]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
-        print(f"  {Color.GREEN}[3]{Color.RESET} 📚 12-in-1 VTU BCS358C Lab Cheatbook")
+        print(f"  {Color.GREEN}[3]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
         print(f"  {Color.YELLOW}[4]{Color.RESET} ⚡ Show My Configured Git Aliases")
         print(f"  {Color.MAGENTA}[5]{Color.RESET} 🏃 Exit to Terminal")
         
@@ -353,3 +354,4 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print(f"\n\n{Color.YELLOW}Game exited. See you in the commits! 👋{Color.RESET}\n")
+
