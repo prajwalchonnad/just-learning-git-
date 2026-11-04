@@ -17,6 +17,22 @@ Whether it's a `git rebase` gone wrong or a beautiful merge conflict, this is wh
 
 ---
 
+## 🎮 Play the Interactive Terminal Game!
+
+Bored of reading static markdown? Run the **built-in terminal game & VTU lab simulator**:
+
+```bash
+python play.py
+```
+
+### Features inside:
+- 🎓 **Survive the VTU Viva-Voce:** A boss-battle quiz simulating your college external examiner.
+- 🚨 **"Oh No, Git!" Scenarios:** Fix real-world production fires and disastrous commits.
+- 📚 **12-in-1 Lab Cheatbook:** Interactive code solutions for all 12 VTU `BCS358C` experiments.
+- ⚡ **Aliases Helper:** Inspect configured productivity shortcuts (`git files`, `git lg`, etc.).
+
+---
+
 ## 📖 My Git Learning Roadmap
 
 ```
@@ -68,6 +84,7 @@ Whether it's a `git rebase` gone wrong or a beautiful merge conflict, this is wh
 
 | File | Purpose |
 |---|---|
+| [`play.py`](play.py) | 🎮 Interactive terminal game, quiz & VTU lab exam survival simulator |
 | [`GIT_COMMANDS.md`](GIT_COMMANDS.md) | 📚 Complete Git commands reference, cheatsheet & guide |
 | `hello.txt` | My very first Git-tracked file 👶 |
 | `features.txt` | Experimenting with feature branches |
