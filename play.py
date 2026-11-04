@@ -81,7 +81,7 @@ BANNER_ART = r"""
 """
 
 BANNER = f"""{Color.CYAN}{Color.BOLD}{BANNER_ART}{Color.RESET}
-{Color.YELLOW}{Color.BOLD}            🚀 The Universal Git Learning Arcade & Developer Survival Simulator 🍝
+{Color.YELLOW}{Color.BOLD}       🚀 Interactive Git Learning Arcade & Real-World Developer Simulator ⚡
 {Color.RESET}"""
 
 # ----------------- GAME DATA -----------------
@@ -90,114 +90,114 @@ VIVA_QUESTIONS = [
     {
         "q": "Senior Engineer / Examiner asks: 'What is the exact difference between git fetch and git pull?'",
         "options": [
-            "A) They are identical; Linus Torvalds just liked having two names for fun.",
+            "A) git fetch is only for local branches; git pull is only for remote repositories.",
             "B) git fetch downloads remote changes without merging; git pull fetches AND merges them.",
-            "C) git fetch is for GitHub, git pull is for GitLab.",
-            "D) git pull only works if you yell at your keyboard in Italian."
+            "C) git fetch overwrites local uncommitted changes; git pull preserves them.",
+            "D) There is no difference; git fetch is deprecated syntax."
         ],
         "ans": "B",
-        "tip": "Core Concept: git fetch is safe and doesn't touch your working tree. git pull = fetch + merge!",
-        "praise": "Interviewer nods with respect: 'Clean, accurate answer. You know your Git.'",
-        "roast": "Interviewer writes a red mark in their notepad. 'Time to brush up on remote syncing!'"
+        "tip": "Core Concept: git fetch is safe and doesn't touch your working tree. git pull = git fetch + git merge!",
+        "praise": "Interviewer nods with approval: 'Clean, accurate answer. You understand remote tracking.'",
+        "roast": "Interviewer takes notes: 'Remember: git fetch only inspects & downloads; git pull automatically merges!'"
     },
     {
-        "q": "You made a disastrous commit with bugs directly on 'main' and ALREADY PUSHED IT to GitHub. What command safely undoes it?",
+        "q": "You made a commit with a critical bug directly on 'main' and ALREADY PUSHED IT to the team's remote GitHub repository. What is the safest way to undo it without breaking teammates' local clones?",
         "options": [
-            "A) git reset --hard HEAD~1 (The nuclear option)",
+            "A) git reset --hard HEAD~1 followed by git push --force",
             "B) git revert <commit-id>",
-            "C) Delete your GitHub account and move to the Himalayas",
-            "D) Turn off your laptop and pretend the power went out"
+            "C) git rm -r *",
+            "D) git checkout -b rollback"
         ],
         "ans": "B",
-        "tip": "Safety First: git revert creates a NEW commit that inverses past changes without breaking shared remote history!",
-        "praise": "You saved the team's shared history! Nonna smiles upon you.",
-        "roast": "If you ran git reset --hard on a pushed branch, your teammates' git trees are now on fire."
+        "tip": "Safety Rule: On public/shared branches, ALWAYS use 'git revert'. It creates a new inverse commit instead of rewriting history!",
+        "praise": "Exactly right! You preserved shared history and prevented massive merge conflicts for your team.",
+        "roast": "Careful! Force-pushing a hard reset rewrites shared history and corrupts your teammates' local branches. Use git revert!"
     },
     {
-        "q": "You are half-way through writing code on a feature, but an emergency bug arrives on 'main'. You don't want to commit messy half-done code. What do you run?",
+        "q": "You are half-way through coding a new feature when an urgent hotfix request comes in for 'main'. You don't want to commit incomplete, broken code. What command shelves your changes temporarily?",
         "options": [
-            "A) git stash save 'work in progress'",
-            "B) git delete --quick",
-            "C) Copy-paste your files to Desktop/backup_final_v2_really_final/",
-            "D) git checkout -f main and throw away all progress"
+            "A) git stash (or git stash save 'wip')",
+            "B) git branch --temp",
+            "C) git clean -fd",
+            "D) git checkout -f main"
         ],
         "ans": "A",
-        "tip": "Pro-tip: git stash temporarily shelves uncommitted modifications so you can switch branches cleanly!",
-        "praise": "Clean move! Your digital junk drawer saved your afternoon.",
-        "roast": "Never use Desktop folders as a version control system! That's what git stash was born for."
+        "tip": "Workspace Hygiene: 'git stash' safely tucks away dirty uncommitted changes onto a temporary stack so you can switch branches cleanly.",
+        "praise": "Clean move! Your working tree is clean and your work is safely preserved in the stash stack.",
+        "roast": "Watch out! 'git checkout -f' or 'git clean' can discard uncommitted work permanently. Always use 'git stash'!"
     },
     {
-        "q": "How do you cherry-pick a range of commits from commit A up to commit B (inclusive)?",
+        "q": "How do you cherry-pick a range of commits from commit A up to commit B (inclusive of both A and B)?",
         "options": [
             "A) git cherry-pick A..B",
             "B) git cherry-pick A^..B",
-            "C) git cherry-pick --all A B",
-            "D) git grab A through B please"
+            "C) git cherry-pick --range A B",
+            "D) git cherry-pick A+B"
         ],
         "ans": "B",
-        "tip": "Range Syntax: In Git, A..B excludes A. The caret ^ (A^..B) makes it include commit A as well!",
-        "praise": "Spot on! That caret '^' is the secret handshake of senior Git pros.",
-        "roast": "Remember the caret! 'A^..B' includes commit A, while 'A..B' skips commit A."
+        "tip": "Range Syntax: In Git revision ranges, A..B is exclusive of A (it means 'reachable from B but not A'). Adding the caret A^..B includes A as well!",
+        "praise": "Spot on! That caret '^' is the secret handshake of Git professionals who understand revision ranges.",
+        "roast": "Almost! In Git, 'A..B' skips commit A. You must write 'A^..B' to include commit A itself!"
     },
     {
-        "q": "Your lead points to your terminal: 'What does this command do: git log --author=\"JohnDoe\" --since=\"2024-01-01\"'?",
+        "q": "Your lead asks: 'What does this command do: git log --author=\"JohnDoe\" --since=\"2024-01-01\"'?",
         "options": [
-            "A) Deletes all commits by JohnDoe after 2024",
-            "B) Changes the author of all commits to JohnDoe",
-            "C) Filters the commit history to display only commits by JohnDoe since Jan 1, 2024",
-            "D) Sends an angry email to JohnDoe"
+            "A) Re-attributes all commits after Jan 1, 2024 to JohnDoe.",
+            "B) Deletes commits by JohnDoe after Jan 1, 2024.",
+            "C) Filters the commit history to display only commits authored by JohnDoe on or after Jan 1, 2024.",
+            "D) Searches file contents in the codebase for the string 'JohnDoe'."
         ],
         "ans": "C",
-        "tip": "Log Power: git log supports powerful filters like --author, --since, and --until.",
-        "praise": "Textbook definition! You're dominating this interview.",
-        "roast": "Nope! It filters history. JohnDoe didn't receive any angry emails."
+        "tip": "Log Auditing: git log provides powerful investigation flags like --author, --since, --until, and --grep.",
+        "praise": "Clean answer! You know how to audit Git history effectively.",
+        "roast": "Incorrect! 'git log' is strictly a read-only inspection tool. It filters commits by author and date range."
     },
     {
-        "q": "What is the difference between a lightweight tag and an annotated tag in Git?",
+        "q": "What is the key technical difference between a lightweight tag and an annotated tag in Git?",
         "options": [
-            "A) Lightweight tags have fewer calories.",
-            "B) Lightweight tags are just pointers/bookmarks to a commit; annotated tags store full author, date, and message metadata.",
-            "C) Annotated tags can only be created on Sundays.",
-            "D) There is no difference, it's a marketing gimmick."
+            "A) Lightweight tags can only be created on branches named 'release'.",
+            "B) Lightweight tags are simple pointers/bookmarks to a commit hash; annotated tags are full Git objects with author name, email, date, and message.",
+            "C) Lightweight tags expire automatically after 30 days.",
+            "D) Annotated tags can only be created by repository owners."
         ],
         "ans": "B",
-        "tip": "Versioning: git tag v1.0 is lightweight. git tag -a v1.0 -m 'Release' is annotated.",
-        "praise": "Exactly right. Always use annotated tags for formal public software releases!",
-        "roast": "Not quite! Lightweight tags are simple bookmarks (SHA pointers). Annotated tags have full metadata."
+        "tip": "Versioning Standards: Use annotated tags (git tag -a v1.0 -m '...') for public releases so release metadata is cryptographically preserved.",
+        "praise": "Precise and accurate! Lightweight tags are quick bookmarks; annotated tags are official release records.",
+        "roast": "Not quite! Lightweight tags are simple pointers (like a branch that doesn't move). Annotated tags store complete metadata."
     },
     {
-        "q": "What happens when you run 'git merge feature-branch -m \"Custom message\"'?",
+        "q": "When running 'git merge feature-branch -m \"Integrate user authentication\"', what happens?",
         "options": [
-            "A) It deletes the feature branch immediately.",
-            "B) It integrates feature-branch into the current branch with a custom merge commit message.",
-            "C) It converts all code to Python.",
-            "D) It opens Microsoft Word."
+            "A) It immediately deletes the feature branch after merging.",
+            "B) It merges feature-branch into the currently checked-out branch, recording a merge commit with the specified message.",
+            "C) It renames feature-branch to 'Integrate user authentication'.",
+            "D) It only merges files that have no conflicts, ignoring the rest."
         ],
         "ans": "B",
-        "tip": "Branch Integration: Merging brings histories together and allows an explicit custom commit message.",
-        "praise": "Clean merge! Alternate timelines united peacefully.",
-        "roast": "No Word documents involved here! It merges branches and attaches your custom message."
+        "tip": "Branch Integration: Merging combines branch histories. Providing '-m' sets a custom, human-readable merge commit message.",
+        "praise": "Clean merge understanding! You understand branch integration.",
+        "roast": "Incorrect! Merging combines branch histories into your current branch and attaches your custom commit message."
     }
 ]
 
 DISASTER_SCENARIOS = [
     {
-        "title": "🍝 Disaster at the Italian Trattoria",
-        "story": "Matteo caught someone snapping dry spaghetti in half before putting it into the boiling pot! The perpetrator panicked and committed 'spaghetti_halved.py' to main.",
-        "prompt": "You need to undo this tragic commit (ID: 'pastas1n') safely without rewriting history for the rest of the kitchen. What do you run?",
+        "title": "🚨 Production Crash Hotfix",
+        "story": "Commit 'prod981' introduced a fatal database query timeout directly on 'main'. The application is returning 500 errors to real users right now. The team needs to roll back the changes immediately without rewriting git history on the remote repository.",
+        "prompt": "Which command safely creates a new commit that reverses the exact changes of 'prod981'?",
         "choices": [
-            "git revert pastas1n --no-edit",
+            "git revert prod981 --no-edit",
             "git reset --hard HEAD~1",
             "git rm -rf .",
-            "git blame matteo"
+            "git checkout -b fix-branch"
         ],
         "ans_idx": 1,
-        "reaction": "✅ Matteo smiles. The universe is restored to order. Al dente achieved."
+        "reaction": "✅ Production restored! 'git revert' safely deployed the inverse commit without breaking teammates' branches."
     },
     {
-        "title": "💣 The Accidental Secret Leak",
-        "story": "Your teammate accidentally staged an '.env' file containing secret API keys into the Git staging area. It hasn't been committed yet!",
-        "prompt": "How do you unstage '.env' without losing the file on disk?",
+        "title": "🔐 Accidental API Secret in Staging Area",
+        "story": "You added a live production database password and OpenAI API key into a '.env' file. You ran 'git add .' and realized '.env' is sitting staged for the upcoming commit. It has NOT been committed yet.",
+        "prompt": "How do you remove '.env' from the staging area WITHOUT deleting the file from your computer disk?",
         "choices": [
             "rm -f .env",
             "git restore --staged .env",
@@ -205,20 +205,20 @@ DISASTER_SCENARIOS = [
             "git checkout -b secrets"
         ],
         "ans_idx": 2,
-        "reaction": "✅ Secret saved from staging! Add it to .gitignore immediately."
+        "reaction": "✅ Secret safely unstaged! The file remains on your disk, and you can now add '.env' to your '.gitignore'."
     },
     {
-        "title": "⚡ The Accidental Hard Reset Catastrophe",
-        "story": "You ran 'git reset --hard' by accident and now your latest 3 commits seem completely gone. Your heart rate is 180 BPM.",
-        "prompt": "Which miraculous Git safety net tool lets you find and recover the lost commit SHA?",
+        "title": "⚡ Accidental 'git reset --hard' Recovery",
+        "story": "A developer accidentally typed 'git reset --hard HEAD~3' instead of soft reset. Three days of work have disappeared from 'git log' and the terminal shows a clean working tree. Heart rate: 180 BPM.",
+        "prompt": "Which Git recovery tool logs every update to HEAD and lets you find the lost commit SHA?",
         "choices": [
-            "git panic",
+            "git status",
             "git reflog",
-            "git undo-everything",
-            "git restart-computer"
+            "git log -p",
+            "git fsck --lost-found"
         ],
         "ans_idx": 2,
-        "reaction": "✅ git reflog records every single movement of HEAD! You recovered the lost SHA like a magician."
+        "reaction": "✅ Commits rescued! 'git reflog' showed the exact commit SHA before the reset. You checked it out and saved the work!"
     }
 ]
 
