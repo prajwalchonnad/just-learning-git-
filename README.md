@@ -13,8 +13,8 @@
 
 This repo is my personal **Git learning playground** — a place where I break things, fix them, and break them again. No judgment, just commits.
 
-> 🐣 **New to Git & find tutorials boring?**  
-> Read **[GIT_FOR_HUMANS.md (The Anti-Boring Guide)](GIT_FOR_HUMANS.md)** — explaining Git with video game save checkpoints, cooking disasters, and parallel universes with **zero academic jargon**!
+> 🐣 **New to Git & want clear, practical explanations?**  
+> Read **[GIT_FOR_HUMANS.md (The Plain-English Guide)](GIT_FOR_HUMANS.md)** — explaining Git from first principles with real developer workflows, clear mental models, and zero academic jargon!
 
 ---
 
@@ -29,7 +29,7 @@ python play.py
 
 ### Features inside:
 - 🐣 **'Git for Humans' Complete Interactive Guide:** 10-part comprehensive curriculum from first principles to collaboration and emergency recovery, plus a 7-question checkpoint quiz.
-- 🎯 **'Type The Command' Practice Arena:** 30 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers with smart hints and why-it-works explanations. Type `0` or `menu` anytime to return home!
+- 🎯 **'Type The Command' Practice Arena:** 30 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers with smart hints, live simulated terminal output previews, and why-it-works explanations. Type `0` or `menu` anytime to return home!
 - 🎓 **Survive the Tech Interview & Viva:** 15 challenging developer interview questions with lives, scoring, and examiner feedback.
 - 🚨 **Real-World Git Problem Solver:** 5 critical disaster scenarios (secret leaks, wrong branch commits, merge conflicts, giant files, lost commits).
 - 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
