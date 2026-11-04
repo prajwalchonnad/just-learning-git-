@@ -25,6 +25,7 @@ Bored of reading static markdown? Run the **built-in terminal game & developer s
 ```bash
 python play.py
 ```
+*(On Windows, you can also just double-click `play.bat`! It pops open a dedicated retro arcade window automatically).*
 
 ### Features inside:
 - 🎓 **Survive the Tech Interview & Viva:** Rapid-fire questions simulating tough tech interviewers and examiners.

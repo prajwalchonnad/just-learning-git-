@@ -13,6 +13,21 @@ import time
 import random
 import os
 
+# Ensure UTF-8 output on Windows consoles
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
+# Auto-launch into a dedicated spacious window on Windows
+if sys.platform == "win32" and "--new-window" not in sys.argv and "--no-window" not in sys.argv:
+    script_path = os.path.abspath(__file__)
+    cmd = f'start "JUST LEARNING GIT - Arcade" cmd /c "mode con: cols=108 lines=40 && python \\"{script_path}\\" --new-window"'
+    os.system(cmd)
+    print("\n\033[92m[*] Launching 'JUST LEARNING GIT' in a new dedicated arcade window! Ready!\033[0m\n")
+    sys.exit(0)
+
 # Terminal Colors & Formatting
 class Color:
     RESET = "\033[0m"
@@ -27,7 +42,7 @@ class Color:
     CYAN = "\033[96m"
     WHITE = "\033[97m"
 
-def print_slow(text, delay=0.015, color=""):
+def print_slow(text, delay=0.012, color=""):
     """Prints text with a subtle typing effect."""
     for char in text:
         sys.stdout.write(f"{color}{char}{Color.RESET}")
@@ -38,15 +53,16 @@ def print_slow(text, delay=0.015, color=""):
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-BANNER = f"""
-{Color.RED}       __           __     __                               __             _______ __  
-{Color.YELLOW}      |__.--.--.---.|  |_  |  .-----.---.-.----.-----.--.--.--|  .-----       |   _   |__.  |_
-{Color.GREEN}      |  |  |  |__ --|   _| |  |  -__|  _  |   _|     |  |  |  _  |  _  |      |.  |   |  |   _|
-{Color.CYAN}     ___ |_____|_____|____| |__|_____|___._|__| |__|__|___  |___._|___  |      |.  |   |__|____|
-{Color.BLUE}    |_____|                                            |_____|     |_____|      |:  1   /        
-{Color.MAGENTA}                                                                                |::.. . /  THE GAME
-{Color.WHITE}                                                                                `------'   
-{Color.BOLD}            🚀 The Universal Git Learning Arcade & Developer Survival Simulator 🍝
+BANNER_ART = r"""
+     _ _   _ ____ _____   _     _____    _    ____  _   _ ___ _   _  ____    ____ ___ _____ 
+    | | | | / ___|_   _| | |   | ____|  / \  |  _ \| \ | |_ _| \ | |/ ___|  / ___|_ _|_   _|
+ _  | | | | \___ \ | |   | |   |  _|   / _ \ | |_) |  \| || ||  \| | |  _  | |  _ | |  | |  
+| |_| | |_| |___) || |   | |___| |___ / ___ \|  _ <| |\  || || |\  | |_| | | |_| || |  | |  
+ \___/ \___/|____/ |_|   |_____|_____/_/   \_\_| \_\_| \_|___|_| \_|\____|  \____|___| |_|  
+"""
+
+BANNER = f"""{Color.CYAN}{Color.BOLD}{BANNER_ART}{Color.RESET}
+{Color.YELLOW}{Color.BOLD}            🚀 The Universal Git Learning Arcade & Developer Survival Simulator 🍝
 {Color.RESET}"""
 
 # ----------------- GAME DATA -----------------
