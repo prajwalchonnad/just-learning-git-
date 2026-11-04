@@ -318,26 +318,88 @@ def mode_vtu_cheatbook():
         except ValueError:
             pass
 
+def mode_git_for_humans():
+    clear_screen()
+    print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║         🐣 'GIT FOR HUMANS': THE ANTI-BORING INTERACTIVE STORY      ║")
+    print("╚════════════════════════════════════════════════════════════════════╝\n")
+    print_slow("Welcome! If words like 'cryptographic hash tree' make you want to take a nap,", 0.02, Color.CYAN)
+    print_slow("you are in the right place. Let's understand Git through real life and video games.\n", 0.02, Color.WHITE)
+
+    # Act 1
+    print(f"{Color.BOLD}─── ACT 1: THE TRAGEDY OF DESKTOP ICONS ───{Color.RESET}")
+    print_slow("Imagine it is 2:00 AM. You are writing an important document (or recipe, or code).", 0.015)
+    print_slow("You hit 'Save As' and your desktop looks like this:\n", 0.015)
+    print(f"  📄 my_project.txt")
+    print(f"  📄 my_project_v2.txt")
+    print(f"  📄 my_project_final.txt")
+    print(f"  📄 my_project_really_final_mom_swears.txt")
+    print(f"  📄 my_project_USE_THIS_OR_DIE.txt\n")
+    
+    input(f"{Color.YELLOW}Hit [Enter] to see how Git fixes this madness...{Color.RESET}")
+
+    # Act 2
+    clear_screen()
+    print(f"{Color.BOLD}─── ACT 2: THE VIDEO GAME SAVE SYSTEM ───{Color.RESET}\n")
+    print_slow("Git is NOT rocket science. Git is literally just a SAVE SYSTEM from a video game! 🎮", 0.02, Color.GREEN)
+    print_slow("""
+  1. git init       -> You clicked 'New Game' in GTA / Elden Ring.
+  2. git add        -> Putting loot into your Amazon shopping cart.
+  3. git commit     -> Saving your game at a bonfire / checkpoint.
+  4. git push       -> Cloud Save to PlayStation Plus / Steam (GitHub).
+""", 0.015)
+
+    input(f"{Color.YELLOW}Hit [Enter] to play the 'Save & Catastrophe' simulation...{Color.RESET}")
+
+    # Act 3: Interactive Decision
+    clear_screen()
+    print(f"{Color.BOLD}─── ACT 3: THE PARALLEL UNIVERSE (BRANCHING) ───{Color.RESET}\n")
+    print_slow("You are cooking your famous biryani. It is perfect.", 0.015)
+    print_slow("Suddenly, your roommate says: 'Bro, add dark chocolate and pineapples to it!' 🍍🍫", 0.015, Color.MAGENTA)
+    print_slow("Do you ruin your main pot? NO! You create a PARALLEL UNIVERSE (git branch)!\n", 0.015)
+    
+    print(f"  Timeline A (main)       : Delicious Normal Biryani")
+    print(f"  Timeline B (experiment) : Chocolate Pineapple Chaos\n")
+
+    print_slow("You taste Timeline B... It tastes like pure regret.", 0.015, Color.RED)
+    print_slow("What do you do with Git?\n", 0.015)
+    print(f"  [1] Keep Timeline A and peacefully delete Timeline B. (Main pot was never touched!)")
+    print(f"  [2] Throw away the entire kitchen and order Swiggy.")
+    
+    ans = input(f"\n{Color.BOLD}Your choice [1 or 2]: {Color.RESET}").strip()
+    if ans == "1":
+        print(f"\n{Color.GREEN}{Color.BOLD}🎉 EXACTLY! That is 'git branch' and 'git merge'. You only merge if it tastes good!{Color.RESET}\n")
+    else:
+        print(f"\n{Color.YELLOW}Ordering food is tempting, but with Git, Timeline A was 100% safe all along!{Color.RESET}\n")
+
+    print_slow(f"{Color.CYAN}Summary: You don't need to be a computer genius to use Git.", 0.02)
+    print_slow("You just need to know: Checkpoints (commit), Parallel Timelines (branch), and Cloud Saves (push).", 0.02)
+    print_slow(f"Congratulations! You now understand 90% of Git concepts! 🚀{Color.RESET}\n", 0.02)
+    input(f"{Color.DIM}Press Enter to return to the main menu...{Color.RESET}")
+
 def main():
     while True:
         clear_screen()
         print(BANNER)
         print(f"{Color.BOLD}Welcome to the interactive Git arcade! Choose your adventure:{Color.RESET}\n")
-        print(f"  {Color.CYAN}[1]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
-        print(f"  {Color.RED}[2]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
-        print(f"  {Color.GREEN}[3]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
-        print(f"  {Color.YELLOW}[4]{Color.RESET} ⚡ Show My Configured Git Aliases")
-        print(f"  {Color.MAGENTA}[5]{Color.RESET} 🏃 Exit to Terminal")
+        print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Story Mode: Explain Like I'm 5 & Find Git Boring)")
+        print(f"  {Color.CYAN}[2]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
+        print(f"  {Color.RED}[3]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
+        print(f"  {Color.GREEN}[4]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
+        print(f"  {Color.BLUE}[5]{Color.RESET} ⚡ Show My Configured Git Aliases")
+        print(f"  {Color.MAGENTA}[6]{Color.RESET} 🏃 Exit to Terminal")
         
-        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 5]: {Color.RESET}").strip()
+        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 6]: {Color.RESET}").strip()
 
         if choice == "1":
-            mode_viva_gauntlet()
+            mode_git_for_humans()
         elif choice == "2":
-            mode_disaster_recovery()
+            mode_viva_gauntlet()
         elif choice == "3":
-            mode_vtu_cheatbook()
+            mode_disaster_recovery()
         elif choice == "4":
+            mode_vtu_cheatbook()
+        elif choice == "5":
             clear_screen()
             print(f"\n{Color.YELLOW}{Color.BOLD}⚡ YOUR SUPERCHARGED GIT ALIASES:{Color.RESET}\n")
             print(f"  {Color.CYAN}git st{Color.RESET}    -> Instant status check")
@@ -345,7 +407,7 @@ def main():
             print(f"  {Color.CYAN}git files{Color.RESET} -> View commits with file names and stats")
             print(f"  {Color.CYAN}git last{Color.RESET}  -> Deep inspection of the latest commit\n")
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
-        elif choice in ["5", "q", "exit"]:
+        elif choice in ["6", "q", "exit"]:
             print(f"\n{Color.GREEN}Keep committing like a ninja! Bye Prajwal! 🚀{Color.RESET}\n")
             break
 

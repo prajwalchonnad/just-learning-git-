@@ -13,7 +13,8 @@
 
 This repo is my personal **Git learning playground** — a place where I break things, fix them, and break them again. No judgment, just commits.
 
-Whether it's a `git rebase` gone wrong or a beautiful merge conflict, this is where the magic (and chaos) happens.
+> 🐣 **New to Git & find tutorials boring?**  
+> Read **[GIT_FOR_HUMANS.md (The Anti-Boring Guide)](GIT_FOR_HUMANS.md)** — explaining Git with video game save checkpoints, cooking disasters, and parallel universes with **zero academic jargon**!
 
 ---
 
@@ -85,6 +86,7 @@ python play.py
 | File | Purpose |
 |---|---|
 | [`play.py`](play.py) | 🎮 Interactive terminal game, quiz & developer survival simulator |
+| [`GIT_FOR_HUMANS.md`](GIT_FOR_HUMANS.md) | 🐣 The anti-boring, zero-jargon guide for complete beginners |
 | [`GIT_COMMANDS.md`](GIT_COMMANDS.md) | 📚 Complete Git commands reference, cheatsheet & guide |
 | `hello.txt` | My very first Git-tracked file 👶 |
 | `features.txt` | Experimenting with feature branches |
