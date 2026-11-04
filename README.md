@@ -28,10 +28,10 @@ python play.py
 *(On Windows, you can also just double-click `play.bat`! It pops open a dedicated retro arcade window automatically).*
 
 ### Features inside:
-- 🐣 **'Git for Humans' Story Mode:** Understand Git in 3 minutes with video games & cooking + instant pop quiz.
-- 🎯 **'Type The Command' Practice Arena:** Choose from **Low (Absolute Beginner)**, **Medium (Apprentice)**, and **High (Git Ninja)** difficulty levels with instant hints, friendly analogies, and zero academic jargon. Type `0` or `menu` anytime to return home!
-- 🎓 **Survive the Tech Interview & Viva:** Rapid-fire questions simulating tough tech interviewers and examiners.
-- 🚨 **"Oh No, Git!" Scenarios:** Real-world production fires, secret leaks, and disaster recoveries.
+- 🐣 **'Git for Humans' Complete Interactive Guide:** 10-part comprehensive curriculum from first principles to collaboration and emergency recovery, plus a 7-question checkpoint quiz.
+- 🎯 **'Type The Command' Practice Arena:** 30 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers with smart hints and why-it-works explanations. Type `0` or `menu` anytime to return home!
+- 🎓 **Survive the Tech Interview & Viva:** 15 challenging developer interview questions with lives, scoring, and examiner feedback.
+- 🚨 **Real-World Git Problem Solver:** 5 critical disaster scenarios (secret leaks, wrong branch commits, merge conflicts, giant files, lost commits).
 - 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
 - ⚡ **Aliases Helper:** Inspect configured productivity shortcuts (`git files`, `git lg`, etc.).
 

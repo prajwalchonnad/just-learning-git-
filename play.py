@@ -779,7 +779,7 @@ def mode_git_for_humans():
     print(f"\n  {Color.DIM}Next step → Mode 2: Practice Arena (Low difficulty) to type the commands yourself.{Color.RESET}\n")
     input(f"{Color.DIM}Press Enter to return to the main menu...{Color.RESET}")
 
-# ----------------- COMMAND CHALLENGES BY DIFFICULTY -----------------
+# ----------------- COMMAND CHALLENGES BY DIFFICULTY (30 TOTAL) -----------------
 
 CHALLENGES_LOW = [
     {
@@ -799,12 +799,20 @@ CHALLENGES_LOW = [
         "why": "git status is the most used Git command. Run it constantly — it always tells you what's going on."
     },
     {
-        "concept": "Staging files before saving",
+        "concept": "Staging all files before saving",
         "situation": "You edited two files today. You want to include all of them\n  in your next commit. Git doesn't save anything automatically —\n  you have to explicitly select what goes into the next snapshot.",
         "task": "Stage all changed files in the current directory:",
         "valid": ["git add .", "git add -A", "git add --all"],
         "easy_hint": "git add .",
         "why": "The dot '.' means 'everything here'. git add picks what goes into your next commit."
+    },
+    {
+        "concept": "Staging one specific file only",
+        "situation": "You modified 'README.md' and 'app.py'. You only want to stage\n  'README.md' right now so your commit is focused on documentation.",
+        "task": "Stage only the file 'README.md':",
+        "valid": ["git add README.md"],
+        "easy_hint": "git add README.md",
+        "why": "Naming a specific file stages only that file, leaving other modified files unstaged."
     },
     {
         "concept": "Saving a snapshot with a message",
@@ -826,6 +834,38 @@ CHALLENGES_LOW = [
         "valid": ["git log", "git lg", "git log --oneline", "git log -n 5"],
         "easy_hint": "git log",
         "why": "git log lists every commit in reverse order (newest first). Each has a unique ID, author, date, and message."
+    },
+    {
+        "concept": "Viewing compact one-line commit log",
+        "situation": "You want to quickly scan past commits without reading multi-line blocks for each one.",
+        "task": "Display the commit history with each commit on a single line:",
+        "valid": ["git log --oneline", "git lg"],
+        "easy_hint": "git log --oneline",
+        "why": "'--oneline' condenses each commit to its 7-character SHA and commit subject message."
+    },
+    {
+        "concept": "Inspecting line-by-line differences",
+        "situation": "You edited 'style.css'. Before staging it, you want to see the exact lines added or removed.",
+        "task": "Show the unstaged modifications in your working tree:",
+        "valid": ["git diff", "git diff style.css"],
+        "easy_hint": "git diff",
+        "why": "'git diff' shows + (green) for added lines and - (red) for deleted lines in files that haven't been staged yet."
+    },
+    {
+        "concept": "Listing local branches",
+        "situation": "You want to check what branches exist in your local repository and see which one you are currently on.",
+        "task": "List all local branches in the repository:",
+        "valid": ["git branch", "git branch --list"],
+        "easy_hint": "git branch",
+        "why": "'git branch' lists all branches, marking the currently checked-out branch with an asterisk (*)."
+    },
+    {
+        "concept": "Checking your installed Git version",
+        "situation": "You opened a new terminal and want to quickly verify that Git is installed and see which version is running.",
+        "task": "Check the installed Git version:",
+        "valid": ["git --version", "git version", "git -v"],
+        "easy_hint": "git --version",
+        "why": "Verifies that the Git binary is available on your system PATH."
     }
 ]
 
@@ -836,7 +876,7 @@ CHALLENGES_MEDIUM = [
         "task": "Create a new branch called 'search-feature' and switch to it in one command:",
         "valid": ["git checkout -b search-feature", "git switch -c search-feature"],
         "hint": "git checkout -b search-feature",
-        "why": "The -b flag creates the branch AND switches to it. Without -b, git checkout just switches to an existing branch."
+        "why": "The -b flag creates the branch AND switches to it. (Modern syntax: git switch -c search-feature)."
     },
     {
         "concept": "Switching back to an existing branch",
@@ -863,12 +903,52 @@ CHALLENGES_MEDIUM = [
         "why": "git pull = git fetch + git merge. It downloads remote changes and applies them to your current branch."
     },
     {
-        "concept": "Staging only one specific file",
-        "situation": "You edited three files today: index.html, style.css, and app.js.\n  But only the index.html changes are ready. You want to commit just that file\n  and leave the other two for a separate commit.",
-        "task": "Stage only the file 'index.html':",
-        "valid": ["git add index.html"],
-        "hint": "git add index.html",
-        "why": "Specifying a filename instead of '.' gives you precise control over what goes into each commit."
+        "concept": "Downloading remote updates WITHOUT merging",
+        "situation": "You want to see what your teammates pushed to 'origin' without touching or merging into your local files yet.",
+        "task": "Fetch remote updates from 'origin' safely without modifying your local working files:",
+        "valid": ["git fetch", "git fetch origin", "git fetch --all"],
+        "hint": "git fetch origin",
+        "why": "'git fetch' downloads remote commits and updates remote branches (origin/main) without changing your local working directory."
+    },
+    {
+        "concept": "Merging a feature branch into main",
+        "situation": "You switched to 'main'. Your work on 'search-feature' is complete and tested.\n  Now you want to bring the commits from 'search-feature' into 'main'.",
+        "task": "Merge 'search-feature' into the current branch:",
+        "valid": ["git merge search-feature"],
+        "hint": "git merge search-feature",
+        "why": "'git merge <branch>' brings the target branch's commits into your current checked-out branch."
+    },
+    {
+        "concept": "Deleting a completed feature branch",
+        "situation": "You already merged 'search-feature' into 'main'. You want to clean up your local branch list.",
+        "task": "Safely delete the local branch named 'search-feature':",
+        "valid": ["git branch -d search-feature"],
+        "hint": "git branch -d search-feature",
+        "why": "The lowercase '-d' safely deletes the branch only if it has already been merged."
+    },
+    {
+        "concept": "Cloning a repository from GitHub",
+        "situation": "You joined a new project. You need to download the full repository from GitHub onto your computer.",
+        "task": "Clone the repo at 'https://github.com/example/repo.git':",
+        "valid": ["git clone https://github.com/example/repo.git"],
+        "hint": "git clone https://github.com/example/repo.git",
+        "why": "'git clone' copies the entire Git database, remote connections, and working files in one command."
+    },
+    {
+        "concept": "Inspecting the last 5 commits concisely",
+        "situation": "You want to inspect only the latest 5 commits in concise format.",
+        "task": "Show exactly the last 5 commits on one line each:",
+        "valid": ["git log -n 5 --oneline", "git log --oneline -n 5", "git log -5 --oneline"],
+        "hint": "git log -n 5 --oneline",
+        "why": "'-n 5' limits the output count to 5, keeping your terminal uncluttered."
+    },
+    {
+        "concept": "Filtering commit history by author",
+        "situation": "You are doing code review and want to view only the commits made by contributor 'Alice'.",
+        "task": "Filter git log to show commits by author 'Alice':",
+        "valid": ['git log --author="Alice"', "git log --author='Alice'", "git log --author=Alice"],
+        "hint": 'git log --author="Alice"',
+        "why": "'--author' filters history by author name or email pattern."
     }
 ]
 
@@ -898,12 +978,60 @@ CHALLENGES_HIGH = [
         "why": "git stash pop applies the stashed changes back to your working directory and removes the stash entry."
     },
     {
-        "concept": "Marking a release version",
+        "concept": "Marking a release version with a lightweight tag",
         "situation": "Your team just finished testing v2.0 of the app.\n  You want to mark the current commit as an official release\n  so the team can always refer back to exactly this version.",
         "task": "Create a lightweight tag named 'v2.0' on the current commit:",
         "valid": ["git tag v2.0", "git tag -a v2.0 -m 'v2.0'", 'git tag -a v2.0 -m "v2.0"'],
         "hint": "git tag v2.0",
         "why": "Tags are permanent named pointers to specific commits. Use them for version releases so you can always find them."
+    },
+    {
+        "concept": "Creating an annotated tag with metadata and message",
+        "situation": "For an official public production release, you want to attach author, date, and a release description message 'production launch'.",
+        "task": "Create an annotated tag 'v1.0' with message 'production launch':",
+        "valid": [
+            'git tag -a v1.0 -m "production launch"',
+            "git tag -a v1.0 -m 'production launch'",
+            'git tag -a v1.0 -m"production launch"'
+        ],
+        "hint": 'git tag -a v1.0 -m "production launch"',
+        "why": "Annotated tags (-a) store complete cryptographic object data including tagger info and message."
+    },
+    {
+        "concept": "Unstaging a file without discarding local edits",
+        "situation": "You accidentally ran 'git add config.json'. You do NOT want config.json in the upcoming commit,\n  but you want to keep all the changes you wrote in the file on disk.",
+        "task": "Unstage 'config.json' while preserving its changes on disk:",
+        "valid": [
+            "git restore --staged config.json",
+            "git reset HEAD config.json",
+            "git reset config.json"
+        ],
+        "hint": "git restore --staged config.json",
+        "why": "'git restore --staged' pulls the file back out of the staging index without altering your file on disk."
+    },
+    {
+        "concept": "Discarding unwanted modifications in working directory",
+        "situation": "You made experimental edits in 'style.css' that didn't work out.\n  You haven't staged it yet, and you want to discard your changes and revert 'style.css' back to the last commit.",
+        "task": "Discard all uncommitted changes in 'style.css':",
+        "valid": ["git restore style.css", "git checkout -- style.css"],
+        "hint": "git restore style.css",
+        "why": "'git restore <file>' discards uncommitted working tree modifications and resets the file to the last committed version."
+    },
+    {
+        "concept": "Amending the latest commit without changing message",
+        "situation": "You just made a commit, but realized you forgot to stage 'assets/logo.png'.\n  You staged it with 'git add assets/logo.png' and want to merge it into that latest commit without re-typing the message.",
+        "task": "Amend the latest commit keeping its existing commit message:",
+        "valid": ["git commit --amend --no-edit", "git commit --amend -C HEAD"],
+        "hint": "git commit --amend --no-edit",
+        "why": "'--amend --no-edit' updates the last commit with new staged files while keeping the exact same commit message."
+    },
+    {
+        "concept": "Cherry-picking a specific commit from another branch",
+        "situation": "Branch 'experimental' has a bugfix in commit 'c4b1a8f' that you need on 'main' right now without merging the whole branch.",
+        "task": "Apply commit 'c4b1a8f' onto your current branch:",
+        "valid": ["git cherry-pick c4b1a8f"],
+        "hint": "git cherry-pick c4b1a8f",
+        "why": "'git cherry-pick' copies and applies a single specific commit SHA from any branch onto your current branch."
     },
     {
         "concept": "Recovering commits after an accidental reset",
