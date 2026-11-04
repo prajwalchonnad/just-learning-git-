@@ -29,7 +29,7 @@ python play.py
 
 ### Features inside:
 - 🐣 **'Git for Humans' Story Mode:** Understand Git in 3 minutes with video games & cooking + instant pop quiz.
-- 🎯 **'Type The Command' Practice Arena:** Real scenarios where you type actual commands to build genuine muscle memory.
+- 🎯 **'Type The Command' Practice Arena:** Choose from **Low (Absolute Beginner)**, **Medium (Apprentice)**, and **High (Git Ninja)** difficulty levels with instant hints, friendly analogies, and zero academic jargon. Type `0` or `menu` anytime to return home!
 - 🎓 **Survive the Tech Interview & Viva:** Rapid-fire questions simulating tough tech interviewers and examiners.
 - 🚨 **"Oh No, Git!" Scenarios:** Real-world production fires, secret leaks, and disaster recoveries.
 - 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
