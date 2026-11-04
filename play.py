@@ -81,144 +81,144 @@ BANNER_ART = r"""
 """
 
 BANNER = f"""{Color.CYAN}{Color.BOLD}{BANNER_ART}{Color.RESET}
-{Color.YELLOW}{Color.BOLD}       🚀 Interactive Git Learning Arcade & Real-World Developer Simulator ⚡
+{Color.YELLOW}{Color.BOLD}              🚀 Learn Git with real scenarios — interactive, fun, and practical.
 {Color.RESET}"""
 
 # ----------------- GAME DATA -----------------
 
 VIVA_QUESTIONS = [
     {
-        "q": "Senior Engineer / Examiner asks: 'What is the exact difference between git fetch and git pull?'",
+        "q": "What is the difference between 'git fetch' and 'git pull'?",
         "options": [
-            "A) git fetch is only for local branches; git pull is only for remote repositories.",
-            "B) git fetch downloads remote changes without merging; git pull fetches AND merges them.",
-            "C) git fetch overwrites local uncommitted changes; git pull preserves them.",
-            "D) There is no difference; git fetch is deprecated syntax."
+            "A) They are identical commands with different names.",
+            "B) git fetch downloads remote changes but does NOT merge; git pull downloads AND merges.",
+            "C) git fetch only works on GitHub; git pull works everywhere.",
+            "D) git fetch merges automatically; git pull asks for confirmation first."
         ],
         "ans": "B",
-        "tip": "Core Concept: git fetch is safe and doesn't touch your working tree. git pull = git fetch + git merge!",
-        "praise": "Interviewer nods with approval: 'Clean, accurate answer. You understand remote tracking.'",
-        "roast": "Interviewer takes notes: 'Remember: git fetch only inspects & downloads; git pull automatically merges!'"
+        "tip": "git fetch is safe — it updates your remote tracking branches without touching your local files. git pull = fetch + merge in one step.",
+        "praise": "Correct! Knowing this distinction helps you avoid surprise merges on important branches.",
+        "roast": "Not quite. git fetch downloads changes but leaves your local branch untouched. git pull goes further and merges them in."
     },
     {
-        "q": "You made a commit with a critical bug directly on 'main' and ALREADY PUSHED IT to the team's remote GitHub repository. What is the safest way to undo it without breaking teammates' local clones?",
+        "q": "You pushed a buggy commit directly to 'main' and teammates have already pulled it. What is the safest way to undo it?",
         "options": [
-            "A) git reset --hard HEAD~1 followed by git push --force",
+            "A) git reset --hard HEAD~1  then force push",
             "B) git revert <commit-id>",
-            "C) git rm -r *",
-            "D) git checkout -b rollback"
+            "C) Delete the repository and start fresh",
+            "D) Manually edit the files and commit again without documenting it"
         ],
         "ans": "B",
-        "tip": "Safety Rule: On public/shared branches, ALWAYS use 'git revert'. It creates a new inverse commit instead of rewriting history!",
-        "praise": "Exactly right! You preserved shared history and prevented massive merge conflicts for your team.",
-        "roast": "Careful! Force-pushing a hard reset rewrites shared history and corrupts your teammates' local branches. Use git revert!"
+        "tip": "git revert creates a new commit that undoes the changes — it does NOT rewrite history, so it is safe for shared branches.",
+        "praise": "Exactly right. git revert is the go-to for undoing shared commits because it preserves the full history everyone else already has.",
+        "roast": "git reset --hard + force push would rewrite history that your teammates already have — that breaks their repositories."
     },
     {
-        "q": "You are half-way through coding a new feature when an urgent hotfix request comes in for 'main'. You don't want to commit incomplete, broken code. What command shelves your changes temporarily?",
+        "q": "You are halfway through a feature when an urgent bug is reported on 'main'. You cannot commit unfinished code. What do you do?",
         "options": [
-            "A) git stash (or git stash save 'wip')",
-            "B) git branch --temp",
-            "C) git clean -fd",
-            "D) git checkout -f main"
+            "A) git stash  — to save your current work temporarily",
+            "B) git commit -m 'WIP do not review'  and push to main",
+            "C) Copy all files to a backup folder manually",
+            "D) git checkout main -f  which discards all your in-progress changes"
         ],
         "ans": "A",
-        "tip": "Workspace Hygiene: 'git stash' safely tucks away dirty uncommitted changes onto a temporary stack so you can switch branches cleanly.",
-        "praise": "Clean move! Your working tree is clean and your work is safely preserved in the stash stack.",
-        "roast": "Watch out! 'git checkout -f' or 'git clean' can discard uncommitted work permanently. Always use 'git stash'!"
+        "tip": "git stash shelves your uncommitted changes and gives you a clean working tree so you can safely switch branches.",
+        "praise": "Perfect. git stash is exactly the tool for this — your work is saved, your workspace is clean, and you can fix the bug.",
+        "roast": "git stash is the right answer. It saves your in-progress work without committing it, so you can switch branches cleanly."
     },
     {
-        "q": "How do you cherry-pick a range of commits from commit A up to commit B (inclusive of both A and B)?",
+        "q": "How do you cherry-pick commits from commit A through commit B inclusive?",
         "options": [
             "A) git cherry-pick A..B",
             "B) git cherry-pick A^..B",
             "C) git cherry-pick --range A B",
-            "D) git cherry-pick A+B"
+            "D) git cherry-pick A B  (listing both SHA IDs separated by a space)"
         ],
         "ans": "B",
-        "tip": "Range Syntax: In Git revision ranges, A..B is exclusive of A (it means 'reachable from B but not A'). Adding the caret A^..B includes A as well!",
-        "praise": "Spot on! That caret '^' is the secret handshake of Git professionals who understand revision ranges.",
-        "roast": "Almost! In Git, 'A..B' skips commit A. You must write 'A^..B' to include commit A itself!"
+        "tip": "In Git range syntax, A..B excludes A itself. Using A^..B (caret before A) includes commit A in the range.",
+        "praise": "Correct! The caret ^ is the key detail here. Without it you'd miss the first commit in the range.",
+        "roast": "Close! A..B actually excludes commit A. You need A^..B so the range starts from A and goes through B inclusive."
     },
     {
-        "q": "Your lead asks: 'What does this command do: git log --author=\"JohnDoe\" --since=\"2024-01-01\"'?",
+        "q": "What does this command output? → git log --author=\"Alice\" --since=\"2024-01-01\"",
         "options": [
-            "A) Re-attributes all commits after Jan 1, 2024 to JohnDoe.",
-            "B) Deletes commits by JohnDoe after Jan 1, 2024.",
-            "C) Filters the commit history to display only commits authored by JohnDoe on or after Jan 1, 2024.",
-            "D) Searches file contents in the codebase for the string 'JohnDoe'."
+            "A) All commits across the entire repository regardless of author or date",
+            "B) Deletes all of Alice's commits made after Jan 1, 2024",
+            "C) Shows only commits made by Alice since January 1, 2024",
+            "D) Changes the author of recent commits to Alice"
         ],
         "ans": "C",
-        "tip": "Log Auditing: git log provides powerful investigation flags like --author, --since, --until, and --grep.",
-        "praise": "Clean answer! You know how to audit Git history effectively.",
-        "roast": "Incorrect! 'git log' is strictly a read-only inspection tool. It filters commits by author and date range."
+        "tip": "git log supports powerful filters: --author filters by contributor, --since filters by date. Very useful for auditing or reviewing.",
+        "praise": "Correct. This is a commonly used combination for reviewing a team member's recent contributions.",
+        "roast": "git log only reads and displays history — it never modifies commits. --author and --since are filters that narrow down what is shown."
     },
     {
-        "q": "What is the key technical difference between a lightweight tag and an annotated tag in Git?",
+        "q": "What is the difference between a lightweight tag and an annotated tag?",
         "options": [
-            "A) Lightweight tags can only be created on branches named 'release'.",
-            "B) Lightweight tags are simple pointers/bookmarks to a commit hash; annotated tags are full Git objects with author name, email, date, and message.",
-            "C) Lightweight tags expire automatically after 30 days.",
-            "D) Annotated tags can only be created by repository owners."
+            "A) There is no functional difference — it is just a naming preference.",
+            "B) Lightweight tags are simple commit pointers; annotated tags store author, date, and a message.",
+            "C) Annotated tags can only be pushed to private repositories.",
+            "D) Lightweight tags expire after 30 days."
         ],
         "ans": "B",
-        "tip": "Versioning Standards: Use annotated tags (git tag -a v1.0 -m '...') for public releases so release metadata is cryptographically preserved.",
-        "praise": "Precise and accurate! Lightweight tags are quick bookmarks; annotated tags are official release records.",
-        "roast": "Not quite! Lightweight tags are simple pointers (like a branch that doesn't move). Annotated tags store complete metadata."
+        "tip": "Use lightweight tags for temporary bookmarks. Use annotated tags (git tag -a) for official releases — they carry full metadata.",
+        "praise": "Exactly right. For software releases, annotated tags are the standard because they include context about who tagged and why.",
+        "roast": "Lightweight tags are essentially just named pointers to a commit. Annotated tags (-a flag) store a full object with author, date, and message."
     },
     {
-        "q": "When running 'git merge feature-branch -m \"Integrate user authentication\"', what happens?",
+        "q": "You are on branch 'feature'. Running 'git merge main' does what?",
         "options": [
-            "A) It immediately deletes the feature branch after merging.",
-            "B) It merges feature-branch into the currently checked-out branch, recording a merge commit with the specified message.",
-            "C) It renames feature-branch to 'Integrate user authentication'.",
-            "D) It only merges files that have no conflicts, ignoring the rest."
+            "A) Pushes your feature branch commits to main",
+            "B) Deletes your feature branch",
+            "C) Brings the latest commits from main into your current feature branch",
+            "D) Resets your feature branch to match main exactly"
         ],
-        "ans": "B",
-        "tip": "Branch Integration: Merging combines branch histories. Providing '-m' sets a custom, human-readable merge commit message.",
-        "praise": "Clean merge understanding! You understand branch integration.",
-        "roast": "Incorrect! Merging combines branch histories into your current branch and attaches your custom commit message."
+        "ans": "C",
+        "tip": "Merge direction matters: you're ON feature, merging FROM main. So main's changes come INTO feature — keeping feature up to date.",
+        "praise": "Correct. This is a common workflow — keeping your feature branch updated with what others have merged into main.",
+        "roast": "The merge target is always your CURRENT branch. Since you're on feature, main's commits flow INTO feature, not the other way around."
     }
 ]
 
 DISASTER_SCENARIOS = [
     {
-        "title": "🚨 Production Crash Hotfix",
-        "story": "Commit 'prod981' introduced a fatal database query timeout directly on 'main'. The application is returning 500 errors to real users right now. The team needs to roll back the changes immediately without rewriting git history on the remote repository.",
-        "prompt": "Which command safely creates a new commit that reverses the exact changes of 'prod981'?",
+        "title": "You committed directly to main instead of your feature branch",
+        "story": "You were heads-down coding and forgot to switch branches. You just ran\n  'git commit -m \"add payment feature\"' — and the commit landed on main.\n  Your team has a rule: no direct commits to main.",
+        "prompt": "You haven't pushed yet. What is the cleanest way to move that commit to your feature branch and undo it on main?",
         "choices": [
-            "git revert prod981 --no-edit",
-            "git reset --hard HEAD~1",
-            "git rm -rf .",
-            "git checkout -b fix-branch"
+            "git checkout feature && git cherry-pick main && git checkout main && git reset --hard HEAD~1",
+            "git reset --hard HEAD~1  (just delete the commit on main, losing your work)",
+            "git push -f origin main  (force push and hope nobody notices)",
+            "git revert HEAD  (create an undo commit on main, then manually copy code to feature)"
         ],
         "ans_idx": 1,
-        "reaction": "✅ Production restored! 'git revert' safely deployed the inverse commit without breaking teammates' branches."
+        "reaction": "Correct! Cherry-pick moves the commit to feature, then reset --hard removes it from main cleanly — since it hasn't been pushed, rewriting local history is safe here."
     },
     {
-        "title": "🔐 Accidental API Secret in Staging Area",
-        "story": "You added a live production database password and OpenAI API key into a '.env' file. You ran 'git add .' and realized '.env' is sitting staged for the upcoming commit. It has NOT been committed yet.",
-        "prompt": "How do you remove '.env' from the staging area WITHOUT deleting the file from your computer disk?",
+        "title": "You accidentally staged your .env file (it has real API keys)",
+        "story": "You ran 'git add .' and then noticed '.env' is now staged.\n  It contains your database password and API tokens. It has NOT been committed yet.\n  You need to unstage it without losing the file.",
+        "prompt": "Which command removes '.env' from the staging area but keeps the file on disk?",
         "choices": [
-            "rm -f .env",
+            "rm -f .env  (deletes the file entirely — worst option)",
             "git restore --staged .env",
-            "git push origin main",
-            "git checkout -b secrets"
+            "git commit -m 'oops'  (commits it anyway)",
+            "git push origin main  (uploads the secret to GitHub)"
         ],
         "ans_idx": 2,
-        "reaction": "✅ Secret safely unstaged! The file remains on your disk, and you can now add '.env' to your '.gitignore'."
+        "reaction": "Correct! git restore --staged removes the file from staging without touching it on disk. Next step: add .env to your .gitignore file!"
     },
     {
-        "title": "⚡ Accidental 'git reset --hard' Recovery",
-        "story": "A developer accidentally typed 'git reset --hard HEAD~3' instead of soft reset. Three days of work have disappeared from 'git log' and the terminal shows a clean working tree. Heart rate: 180 BPM.",
-        "prompt": "Which Git recovery tool logs every update to HEAD and lets you find the lost commit SHA?",
+        "title": "You ran 'git reset --hard' and your last 3 commits seem gone",
+        "story": "You ran 'git reset --hard HEAD~3' trying to undo 3 commits.\n  But you actually needed those commits — they had a week of work.\n  'git log' doesn't show them anymore. Panic sets in.",
+        "prompt": "Which Git tool records every movement of HEAD and can recover the lost commit SHA?",
         "choices": [
-            "git status",
-            "git reflog",
-            "git log -p",
-            "git fsck --lost-found"
+            "git log  (only shows the current reachable history — the commits are gone from here)",
+            "git status  (shows working directory state, not lost commits)",
+            "git reflog  (records all HEAD movements including resets — your commits are still here)",
+            "git stash list  (shows stashed changes, not reset commits)"
         ],
-        "ans_idx": 2,
-        "reaction": "✅ Commits rescued! 'git reflog' showed the exact commit SHA before the reset. You checked it out and saved the work!"
+        "ans_idx": 3,
+        "reaction": "Correct! git reflog is your safety net. Run it, find the SHA of your lost commit, then run 'git reset --hard <that-SHA>' to recover everything."
     }
 ]
 
@@ -298,41 +298,59 @@ def mode_viva_gauntlet():
 def mode_disaster_recovery():
     clear_screen()
     print(f"{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║               🚨 MODE 2: 'OH NO, GIT!' DISASTER SIMULATOR          ║")
+    print("║           🚨 MODE: REAL-WORLD GIT PROBLEM SOLVER                   ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
-    print_slow("Real-world emergency situations. Can you fix them before production burns down?\n", 0.02)
+    print_slow("These are problems that actually happen to developers every day.", 0.015, Color.CYAN)
+    print_slow("Read the situation carefully and pick the right Git command to fix it.\n", 0.015)
 
     score = 0
     for i, scenario in enumerate(DISASTER_SCENARIOS, 1):
-        print(f"\n{Color.BOLD}{Color.YELLOW}─── SCENARIO {i}: {scenario['title']} ───{Color.RESET}")
-        print_slow(f"\n{scenario['story']}", 0.015, Color.WHITE)
-        print_slow(f"{Color.CYAN}{scenario['prompt']}{Color.RESET}\n", 0.015)
+        clear_screen()
+        print(f"{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+        print("║           🚨 MODE: REAL-WORLD GIT PROBLEM SOLVER                   ║")
+        print(f"╚════════════════════════════════════════════════════════════════════╝\n")
+        print(f"{Color.BOLD}{Color.YELLOW}── SCENARIO {i}/3 ──────────────────────────────────────────────────{Color.RESET}")
+        print(f"\n{Color.BOLD}{Color.WHITE}{scenario['title']}{Color.RESET}\n")
+        print_slow(scenario['story'], 0.013, Color.WHITE)
+        print(f"\n{Color.CYAN}{Color.BOLD}What do you do?{Color.RESET}\n  {scenario['prompt']}\n")
 
         for idx, ch in enumerate(scenario["choices"], 1):
-            print(f"  {Color.YELLOW}[{idx}] {ch}{Color.RESET}")
+            print(f"  {Color.YELLOW}[{idx}]{Color.RESET} {ch}")
 
         while True:
-            raw_input = input(f"\n{Color.BOLD}Select your tool [1 - 4] (or '0' for Menu): {Color.RESET}").strip().lower()
-            if raw_input in ["0", "menu", "home", "q", "exit"]:
+            raw_pick = input(f"\n{Color.BOLD}Your answer [1 - 4] (or '0' for Menu): {Color.RESET}").strip().lower()
+            if raw_pick in ["0", "menu", "home", "q", "exit"]:
                 print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
                 time.sleep(0.5)
                 return
             try:
-                pick = int(raw_input)
+                pick = int(raw_pick)
                 if 1 <= pick <= 4:
                     break
             except ValueError:
                 pass
-            print(f"{Color.RED}Enter a number from 1 to 4 (or '0' for Menu)!{Color.RESET}")
+            print(f"{Color.RED}Enter a number from 1 to 4 (or '0' for Menu).{Color.RESET}")
 
         if pick == scenario["ans_idx"]:
             score += 150
-            print(f"\n{Color.GREEN}{Color.BOLD}{scenario['reaction']}{Color.RESET} (+150 pts)\n")
+            print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (+150 pts){Color.RESET}")
+            print(f"{Color.GREEN}{scenario['reaction']}{Color.RESET}\n")
         else:
-            print(f"\n{Color.RED}{Color.BOLD}💥 DISASTER ESCALATED! That wasn't the right fix!{Color.RESET}\n")
+            correct_choice = scenario["choices"][scenario["ans_idx"] - 1]
+            print(f"\n{Color.RED}{Color.BOLD}❌ Not quite. The right answer was [{scenario['ans_idx']}]:{Color.RESET}")
+            print(f"   {Color.WHITE}{correct_choice}{Color.RESET}")
+            print(f"\n{Color.DIM}{scenario['reaction']}{Color.RESET}\n")
         time.sleep(1.5)
 
-    print(f"{Color.CYAN}Disaster Simulation Complete! Score: {score}/450{Color.RESET}")
+    print(f"\n{Color.BOLD}{Color.MAGENTA}═══════════════════════════════════════════════════")
+    print(f"   Problem Solver Complete! Score: {score}/450")
+    if score >= 400:
+        print(f"   ✅ Excellent! You handle real Git emergencies with confidence.")
+    elif score >= 200:
+        print(f"   👍 Good job! Review the ones you missed to build confidence.")
+    else:
+        print(f"   📖 Check the GIT_COMMANDS.md cheatsheet to review these scenarios.")
+    print(f"═══════════════════════════════════════════════════{Color.RESET}\n")
     input(f"{Color.DIM}Press Enter to return to main menu...{Color.RESET}")
 
 def mode_vtu_cheatbook():
@@ -365,261 +383,278 @@ def mode_vtu_cheatbook():
 def mode_git_for_humans():
     clear_screen()
     print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║         🐣 'GIT FOR HUMANS': THE ANTI-BORING INTERACTIVE STORY      ║")
+    print("║              🐣 GIT FOR HUMANS — START HERE                        ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
-    print_slow("Welcome! If words like 'cryptographic hash tree' make you want to take a nap,", 0.02, Color.CYAN)
-    print_slow("you are in the right place. Let's understand Git through real life and video games.\n", 0.02, Color.WHITE)
+    print_slow("Never used Git before? Perfect. This takes 5 minutes.", 0.015, Color.CYAN)
+    print_slow("No jargon. Just real situations and what Git does for you.\n", 0.015, Color.WHITE)
 
-    # Act 1
-    print(f"{Color.BOLD}─── ACT 1: THE TRAGEDY OF DESKTOP ICONS ───{Color.RESET}")
-    print_slow("Imagine it is 2:00 AM. You are writing an important document (or recipe, or code).", 0.015)
-    print_slow("You hit 'Save As' and your desktop looks like this:\n", 0.015)
-    print(f"  📄 my_project.txt")
-    print(f"  📄 my_project_v2.txt")
-    print(f"  📄 my_project_final.txt")
-    print(f"  📄 my_project_really_final_mom_swears.txt")
-    print(f"  📄 my_project_USE_THIS_OR_DIE.txt\n")
-    
-    step1 = input(f"{Color.YELLOW}Hit [Enter] to see how Git fixes this madness (or '0' for Menu)...{Color.RESET}").strip().lower()
-    if step1 in ["0", "menu", "home", "q", "exit"]:
-        print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
-        return
+    # --- ACT 1: The problem Git solves ---
+    print(f"{Color.BOLD}── PART 1: Why Does Git Exist? ──────────────────────────────────────{Color.RESET}\n")
+    print_slow("You've probably done this before:", 0.015)
+    print(f"""
+  📄 report.docx
+  📄 report_v2.docx
+  📄 report_FINAL.docx
+  📄 report_FINAL_actual.docx
+  📄 report_USE_THIS_ONE.docx
+""")
+    print_slow("That is manual version control. It works, but it is a disaster to manage.", 0.015)
+    print_slow("Git solves this. Instead of saving copies, Git tracks every change inside one folder.\n", 0.015, Color.GREEN)
 
-    # Act 2
+    s = input(f"{Color.DIM}[Enter to continue, '0' to go back to menu]{Color.RESET} ").strip().lower()
+    if s in ["0", "menu", "q"]: return
+
+    # --- ACT 2: What Git actually is ---
     clear_screen()
-    print(f"{Color.BOLD}─── ACT 2: THE VIDEO GAME SAVE SYSTEM ───{Color.RESET}\n")
-    print_slow("Git is NOT rocket science. Git is literally just a SAVE SYSTEM from a video game! 🎮", 0.02, Color.GREEN)
-    print_slow("""
-  1. git init       -> You clicked 'New Game' in GTA / Elden Ring.
-  2. git add        -> Putting loot into your Amazon shopping cart.
-  3. git commit     -> Saving your game at a bonfire / checkpoint.
-  4. git push       -> Cloud Save to PlayStation Plus / Steam (GitHub).
-""", 0.015)
+    print(f"{Color.BOLD}── PART 2: What Git Actually Does ───────────────────────────────────{Color.RESET}\n")
+    print_slow("Git keeps a timeline of snapshots of your project.", 0.015, Color.CYAN)
+    print_slow("Every time you save a checkpoint, Git remembers exactly what changed and when.\n", 0.015)
 
-    step2 = input(f"{Color.YELLOW}Hit [Enter] to play the 'Save & Catastrophe' simulation (or '0' for Menu)...{Color.RESET}").strip().lower()
-    if step2 in ["0", "menu", "home", "q", "exit"]:
-        print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
-        return
+    print(f"""  {Color.GREEN}git init{Color.RESET}      →  Tell Git to start tracking this folder.
+  {Color.GREEN}git add .{Color.RESET}     →  Select the files you want to include in the next snapshot.
+  {Color.GREEN}git commit{Color.RESET}    →  Save the snapshot with a short note describing what changed.
+  {Color.GREEN}git push{Color.RESET}      →  Upload your snapshots to GitHub so they are backed up online.
+  {Color.GREEN}git pull{Color.RESET}      →  Download snapshots from GitHub (e.g. from a teammate).
+""")
+    print_slow("That's the core. Everything else in Git builds on these five commands.", 0.015, Color.WHITE)
 
-    # Act 3: Interactive Decision
+    s = input(f"\n{Color.DIM}[Enter to continue, '0' to go back to menu]{Color.RESET} ").strip().lower()
+    if s in ["0", "menu", "q"]: return
+
+    # --- ACT 3: Branching — real scenario ---
     clear_screen()
-    print(f"{Color.BOLD}─── ACT 3: THE PARALLEL UNIVERSE (BRANCHING) ───{Color.RESET}\n")
-    print_slow("You are cooking your famous biryani. It is perfect.", 0.015)
-    print_slow("Suddenly, your roommate says: 'Bro, add dark chocolate and pineapples to it!' 🍍🍫", 0.015, Color.MAGENTA)
-    print_slow("Do you ruin your main pot? NO! You create a PARALLEL UNIVERSE (git branch)!\n", 0.015)
-    
-    print(f"  Timeline A (main)       : Delicious Normal Biryani")
-    print(f"  Timeline B (experiment) : Chocolate Pineapple Chaos\n")
+    print(f"{Color.BOLD}── PART 3: Working Without Breaking Things (Branches) ──────────────{Color.RESET}\n")
+    print_slow("Here's a real situation:", 0.015)
+    print_slow("Your app is working. You want to add a new login feature.", 0.015)
+    print_slow("But what if the new code breaks the existing app while you're writing it?\n", 0.015, Color.RED)
 
-    print_slow("You taste Timeline B... It tastes like pure regret.", 0.015, Color.RED)
-    print_slow("What do you do with Git?\n", 0.015)
-    print(f"  [1] Keep Timeline A and peacefully delete Timeline B. (Main pot was never touched!)")
-    print(f"  [2] Throw away the entire kitchen and order Swiggy.")
-    print(f"  [0] 🏠 Return to Main Menu")
-    
-    ans = input(f"\n{Color.BOLD}Your choice [1 or 2] (or '0' for Menu): {Color.RESET}").strip().lower()
-    if ans in ["0", "menu", "home", "q", "exit"]:
-        print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
+    print_slow("The answer: create a branch.", 0.015, Color.GREEN)
+    print(f"""
+  {Color.CYAN}git checkout -b login-feature{Color.RESET}
+
+  → This creates a separate working copy of your project called 'login-feature'.
+  → You build and test on this branch. The main app stays untouched.
+  → When the feature is ready and tested, you merge it into main.
+  → If you decide to scrap it, delete the branch. Main was never affected.
+""")
+    print_slow("This is how professional teams work on features safely.", 0.015, Color.WHITE)
+
+    s = input(f"{Color.DIM}[Enter to continue, '0' to go back to menu]{Color.RESET} ").strip().lower()
+    if s in ["0", "menu", "q"]: return
+
+    # --- ACT 4: Interactive decision ---
+    clear_screen()
+    print(f"{Color.BOLD}── PART 4: Quick Check — What Would You Do? ─────────────────────────{Color.RESET}\n")
+    print_slow("You just found a critical bug on the main branch.", 0.015)
+    print_slow("You were in the middle of building a new feature. You haven't committed yet.\n", 0.015)
+    print(f"  {Color.YELLOW}[1]{Color.RESET} Run 'git stash' to save your in-progress work, switch to main, fix the bug.")
+    print(f"  {Color.YELLOW}[2]{Color.RESET} Commit the half-finished feature code and push it to main to fix later.")
+    print(f"  {Color.YELLOW}[3]{Color.RESET} Manually copy your files to the Desktop and switch branches.")
+    print(f"  {Color.CYAN}[0]{Color.RESET} Back to Menu\n")
+
+    ans = input(f"{Color.BOLD}Your answer [1 / 2 / 3]: {Color.RESET}").strip()
+    if ans in ["0", "menu", "q"]:
         return
-    if ans == "1":
-        print(f"\n{Color.GREEN}{Color.BOLD}🎉 EXACTLY! That is 'git branch' and 'git merge'. You only merge if it tastes good!{Color.RESET}\n")
+    elif ans == "1":
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Exactly right.{Color.RESET}")
+        print("  'git stash' saves your unfinished work without committing it.")
+        print("  You get a clean workspace, fix the bug on main, then run 'git stash pop' to get your work back.")
+    elif ans == "2":
+        print(f"\n{Color.RED}❌ Not ideal.{Color.RESET}")
+        print("  Pushing half-finished code to main can break things for your whole team.")
+        print("  'git stash' is the right tool here — it saves your work temporarily without committing.")
     else:
-        print(f"\n{Color.YELLOW}Ordering food is tempting, but with Git, Timeline A was 100% safe all along!{Color.RESET}\n")
+        print(f"\n{Color.RED}❌ Manual file copying is what Git is designed to replace.{Color.RESET}")
+        print("  Use 'git stash'. It saves your changes, cleans the workspace, and restores everything when you're done.")
 
-    # Act 4: Quick 3-Question Checkpoint Quiz
+    time.sleep(1.5)
+
+    # --- ACT 5: Checkpoint Quiz ---
     clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}─── ACT 4: QUICK POP QUIZ (TEST YOUR HUMAN INTUITION) ───{Color.RESET}\n")
-    print_slow("Reading is good, but answering proves you actually got it! 3 fast questions:\n", 0.015)
+    print(f"{Color.YELLOW}{Color.BOLD}── PART 5: Quick Quiz — 3 Questions ─────────────────────────────────{Color.RESET}\n")
+    print_slow("Answer these to confirm you've got the basics.\n", 0.015)
 
-    human_quiz = [
+    quiz = [
         {
-            "q": "1. What is 'git add' most similar to in real life?",
-            "opts": ["A) Burning your laptop", "B) Putting items in your Amazon shopping cart before checkout", "C) Sending an email to Linus Torvalds"],
+            "q": "1. You edited a file and want Git to include it in the next snapshot. What command do you run?",
+            "opts": ["A) git commit", "B) git add <filename>", "C) git push"],
             "ans": "B",
-            "explain": "git add stages files into the cart so you can commit (buy) them next!"
+            "explain": "'git add' stages the file — it tells Git 'include this in my next commit'. Without it, the file change is ignored."
         },
         {
-            "q": "2. In video games, what is a 'git commit'?",
-            "opts": ["A) A bonfire / checkpoint where you save your game", "B) Dying to the final boss", "C) Quitting without saving"],
-            "ans": "A",
-            "explain": "git commit creates a permanent checkpoint you can always return to."
+            "q": "2. Your teammate pushed new code to GitHub. How do you get their changes on your machine?",
+            "opts": ["A) git push", "B) git init", "C) git pull"],
+            "ans": "C",
+            "explain": "'git pull' downloads and merges changes from the remote repository into your local copy."
         },
         {
-            "q": "3. Why do developers use 'git branch'?",
-            "opts": ["A) Because they love botany", "B) To experiment in a safe parallel timeline without breaking the main project", "C) To delete all files"],
+            "q": "3. You want to try a new feature without risking the working code. What do you create?",
+            "opts": ["A) A new folder called 'backup'", "B) A new branch", "C) A new repository"],
             "ans": "B",
-            "explain": "Branches let you try risky ideas. If they fail, delete the branch. Main stays perfect!"
+            "explain": "A branch is a safe, isolated copy of your project. Work on it freely — the main branch is untouched until you merge."
         }
     ]
 
     h_score = 0
-    for item in human_quiz:
+    for item in quiz:
         print(f"{Color.CYAN}{Color.BOLD}{item['q']}{Color.RESET}")
         for opt in item["opts"]:
             print(f"  {opt}")
-        choice = input(f"{Color.BOLD}Your answer [A/B/C] (or '0' for Menu): {Color.RESET}").strip().upper()
-        if choice in ["0", "MENU", "HOME", "Q", "EXIT"]:
+        choice = input(f"{Color.BOLD}  Your answer [A/B/C] (or '0' for Menu): {Color.RESET}").strip().upper()
+        if choice in ["0", "MENU", "Q", "EXIT"]:
             print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
             return
         if choice == item["ans"]:
             h_score += 1
-            print(f"{Color.GREEN}✅ Spot on! {item['explain']}{Color.RESET}\n")
+            print(f"{Color.GREEN}  ✅ Correct! {item['explain']}{Color.RESET}\n")
         else:
-            print(f"{Color.RED}❌ Not quite! {item['explain']}{Color.RESET}\n")
-        time.sleep(1)
+            print(f"{Color.RED}  ❌ Not quite. {item['explain']}{Color.RESET}\n")
+        time.sleep(0.8)
 
-    print(f"{Color.MAGENTA}{Color.BOLD}🎉 You scored {h_score}/3 on the beginner checkpoint! You're ready for real terminal work!{Color.RESET}\n")
+    print(f"{Color.BOLD}{Color.MAGENTA}═══════════════════════════════════════════════════")
+    print(f"   You scored {h_score}/3.")
+    if h_score == 3:
+        print("   ✅ You've got the fundamentals. Try Mode 2 to practice typing commands!")
+    elif h_score >= 1:
+        print("   👍 Good start. Re-read the parts you missed, then try the Practice Arena.")
+    else:
+        print("   📖 No worries — go through GIT_FOR_HUMANS.md and come back. You'll get it.")
+    print(f"═══════════════════════════════════════════════════{Color.RESET}\n")
     input(f"{Color.DIM}Press Enter to return to the main menu...{Color.RESET}")
 
 # ----------------- COMMAND CHALLENGES BY DIFFICULTY -----------------
 
 CHALLENGES_LOW = [
     {
-        "concept": "🌱 Step 1: Planting Your First Checkpoint Station",
-        "human_story": "You just made a brand-new folder on your computer for a project.\n  Before Git can track anything, you need to turn this regular folder into a Git repository.",
-        "analogy": "🎮 Like clicking 'New Game' or planting your very first campfire save point in Dark Souls.",
-        "task": "Initialize a brand-new Git repository inside this folder:",
+        "concept": "Starting fresh — initializing a repository",
+        "situation": "You just created a new folder called 'my-project' for your work.\n  Right now it is a plain folder. Git doesn't know about it yet.\n  You need to tell Git to start tracking this folder.",
+        "task": "Run the command that initializes Git in the current folder:",
         "valid": ["git init", "git init ."],
         "easy_hint": "git init",
-        "why": "This creates an invisible '.git' folder where Git stores all your snapshots."
+        "why": "This creates a hidden '.git' folder inside your project. That's where Git stores all your history."
     },
     {
-        "concept": "👀 Step 2: Looking Inside Your Adventure Bag",
-        "human_story": "You added or modified some files in your folder.\n  You want to ask Git: 'Hey, what files are changed, new, or waiting to be saved?'",
-        "analogy": "🎒 Like peeking into your backpack to inspect what loot you're carrying before saving.",
-        "task": "Check the status of all your working files:",
+        "concept": "Checking what has changed",
+        "situation": "You edited a file called 'index.html'.\n  Before doing anything else, you want to see what files have changed,\n  which are staged, and which are untracked.",
+        "task": "Run the command to see the current state of your working directory:",
         "valid": ["git status", "git st", "git status -s", "git status --short"],
-        "easy_hint": "git status (or shortcut: git st)",
-        "why": "Never commit blindly! 'git status' is a developer's most-used daily command."
+        "easy_hint": "git status",
+        "why": "git status is the most used Git command. Run it constantly — it always tells you what's going on."
     },
     {
-        "concept": "🛒 Step 3: Putting Items in the Shopping Cart",
-        "human_story": "Git never saves your files automatically without your permission.\n  You must gather the files you want to include in the upcoming save point.",
-        "analogy": "🛒 Like placing items into your Amazon shopping cart before hitting Checkout.",
-        "task": "Stage (pack) ALL modified files in the current folder (use the dot '.'):",
+        "concept": "Staging files before saving",
+        "situation": "You edited two files today. You want to include all of them\n  in your next commit. Git doesn't save anything automatically —\n  you have to explicitly select what goes into the next snapshot.",
+        "task": "Stage all changed files in the current directory:",
         "valid": ["git add .", "git add -A", "git add --all"],
         "easy_hint": "git add .",
-        "why": "The dot '.' means 'everything in this directory'. Now your files are staged!"
+        "why": "The dot '.' means 'everything here'. git add picks what goes into your next commit."
     },
     {
-        "concept": "💾 Step 4: Sealing Your Save Point with a Note",
-        "human_story": "Your files are staged in the cart! Now you want to permanently lock in the save point\n  with a short note describing what you accomplished.",
-        "analogy": "📸 Like taking a snapshot and writing a caption on the back of the photo.",
-        "task": "Commit your staged files with the message: 'first save':",
+        "concept": "Saving a snapshot with a message",
+        "situation": "You staged your changes. Now you want to permanently save\n  that snapshot with a note describing what you did.\n  The message should be: 'add homepage layout'",
+        "task": "Commit your staged files with the message: 'add homepage layout'",
         "valid": [
-            'git commit -m "first save"',
-            "git commit -m 'first save'",
-            'git commit -m"first save"',
-            "git commit -m'first save'",
-            "git commit -m first save"
+            'git commit -m "add homepage layout"',
+            "git commit -m 'add homepage layout'",
+            'git commit -m"add homepage layout"',
+            "git commit -m'add homepage layout'"
         ],
-        "easy_hint": 'git commit -m "first save"',
-        "why": "The '-m' flag attaches a message. Unlabeled save points confuse future-you!"
+        "easy_hint": 'git commit -m "add homepage layout"',
+        "why": "Every commit needs a message (-m flag). It describes what changed so you (and your team) can understand the history."
     },
     {
-        "concept": "📜 Step 5: Reading the History Book",
-        "human_story": "You want to look back in time and view the chronological list of all checkpoints you made.",
-        "analogy": "📖 Like opening your diary to see every past save point with its date and message.",
-        "task": "View your project's commit history log:",
+        "concept": "Viewing the commit history",
+        "situation": "You've made a few commits over the past few days.\n  You want to see all of them — who made them, when, and what the message said.",
+        "task": "Show the full commit history of this repository:",
         "valid": ["git log", "git lg", "git log --oneline", "git log -n 5"],
-        "easy_hint": "git log (or shortcut: git lg)",
-        "why": "Lists each commit's unique SHA code, author, date, and description."
+        "easy_hint": "git log",
+        "why": "git log lists every commit in reverse order (newest first). Each has a unique ID, author, date, and message."
     }
 ]
 
 CHALLENGES_MEDIUM = [
     {
-        "concept": "🌿 Step 1: Branching into a Parallel Universe",
-        "human_story": "You want to test a crazy new idea without risking breaking your working code on 'main'.",
-        "analogy": "🌌 Creating an alternate timeline: if it works, merge it; if it fails, delete it with zero damage.",
-        "task": "Create a new branch called 'feature' and switch to it in ONE command:",
-        "valid": ["git checkout -b feature", "git switch -c feature"],
-        "hint": "git checkout -b feature (or modern: git switch -c feature)",
-        "why": "The '-b' flag means 'create a new branch and jump onto it immediately'."
+        "concept": "Creating and switching to a new branch",
+        "situation": "You're on 'main' and want to start building a new 'search' feature.\n  You don't want to work directly on main — you need a separate branch\n  so the working code stays safe while you build.",
+        "task": "Create a new branch called 'search-feature' and switch to it in one command:",
+        "valid": ["git checkout -b search-feature", "git switch -c search-feature"],
+        "hint": "git checkout -b search-feature",
+        "why": "The -b flag creates the branch AND switches to it. Without -b, git checkout just switches to an existing branch."
     },
     {
-        "concept": "🔀 Step 2: Teleporting Back to Home Base",
-        "human_story": "You finished inspecting your experiment. Now you want to hop back to the existing 'main' branch.",
-        "analogy": "🏠 Teleporting back to your home base timeline.",
-        "task": "Switch back to the existing branch named 'main':",
+        "concept": "Switching back to an existing branch",
+        "situation": "You're on 'search-feature'. Your team lead just told you to\n  review something on the 'main' branch. You need to switch without losing anything.",
+        "task": "Switch to the already-existing branch called 'main':",
         "valid": ["git checkout main", "git switch main"],
-        "hint": "git checkout main (or: git switch main)",
-        "why": "No '-b' here because 'main' already exists — you're just switching to it!"
+        "hint": "git checkout main",
+        "why": "No -b flag here — that would try to create a new branch. Without -b, git checkout just switches to main."
     },
     {
-        "concept": "☁️ Step 3: Backing Up Your Work to the Cloud",
-        "human_story": "Your commits exist only on your laptop right now. If your laptop falls in pasta sauce, it's gone!\n  You want to upload your 'main' branch commits to the remote cloud server ('origin').",
-        "analogy": "☁️ Cloud Save syncing your game progress to PlayStation Cloud or Steam.",
-        "task": "Push your local 'main' branch commits to remote 'origin':",
+        "concept": "Uploading your commits to GitHub",
+        "situation": "You've made 3 commits locally on the 'main' branch.\n  None of them are on GitHub yet. You want to upload them so\n  they're backed up and visible to your team.",
+        "task": "Push your local 'main' branch to the remote called 'origin':",
         "valid": ["git push origin main", "git push", "git push -u origin main"],
         "hint": "git push origin main",
-        "why": "'origin' is the nickname of your GitHub repo, and 'main' is the branch."
+        "why": "'origin' is the default name for your GitHub remote. 'main' is the branch you're pushing."
     },
     {
-        "concept": "📥 Step 4: Downloading Teammate Updates",
-        "human_story": "Your teammate Prajwal pushed changes to GitHub. You want to fetch AND combine their latest commits into your local folder.",
-        "analogy": "📦 Downloading and applying the latest game patch.",
-        "task": "Pull the latest commits from the remote repository:",
+        "concept": "Downloading your teammate's new commits",
+        "situation": "Your teammate pushed a bug fix to GitHub an hour ago.\n  Your local copy doesn't have it. You need to download\n  AND apply their latest commits to your machine.",
+        "task": "Download and merge the latest commits from the remote repository:",
         "valid": ["git pull", "git pull origin main"],
         "hint": "git pull",
-        "why": "'git pull' downloads (fetch) and combines (merge) remote changes in one step."
+        "why": "git pull = git fetch + git merge. It downloads remote changes and applies them to your current branch."
     },
     {
-        "concept": "🎯 Step 5: Packing Only One Specific File",
-        "human_story": "You edited 5 different files, but you only want to stage 'index.html' for this specific commit.",
-        "analogy": "🛒 Putting only pasta into your shopping cart, leaving sauce for later.",
-        "task": "Stage ONLY the file named 'index.html':",
+        "concept": "Staging only one specific file",
+        "situation": "You edited three files today: index.html, style.css, and app.js.\n  But only the index.html changes are ready. You want to commit just that file\n  and leave the other two for a separate commit.",
+        "task": "Stage only the file 'index.html':",
         "valid": ["git add index.html"],
         "hint": "git add index.html",
-        "why": "Instead of 'git add .', specifying a filename stages only that particular file."
+        "why": "Specifying a filename instead of '.' gives you precise control over what goes into each commit."
     }
 ]
 
 CHALLENGES_HIGH = [
     {
-        "concept": "🛡️ Emergency 1: The Safe Public Undo",
-        "human_story": "You pushed bad commit 'abc123' to GitHub. Teammates already pulled it! You cannot delete it without breaking their repos.",
-        "analogy": "🩹 Publishing an official counter-transaction or correction note instead of rewriting history.",
-        "task": "Safely undo commit 'abc123' by creating a public inverse commit:",
-        "valid": ["git revert abc123", "git revert abc123 --no-edit", "git revert --no-edit abc123"],
-        "hint": "git revert abc123",
-        "why": "'git revert' creates a brand-new commit that undoes the changes cleanly and safely."
+        "concept": "Safely undoing a pushed commit",
+        "situation": "You pushed commit 'a3f9c12' to main and teammates already pulled it.\n  It has a bug. You cannot use git reset because that would rewrite\n  history that your teammates already have.",
+        "task": "Create a new commit that undoes commit 'a3f9c12' without rewriting history:",
+        "valid": ["git revert a3f9c12", "git revert a3f9c12 --no-edit", "git revert --no-edit a3f9c12"],
+        "hint": "git revert a3f9c12",
+        "why": "git revert doesn't erase the bad commit — it creates a new one that undoes it. Safe for shared branches."
     },
     {
-        "concept": "🧹 Emergency 2: The Digital Junk Drawer (Stash)",
-        "human_story": "You're half-way through typing messy code, but an urgent bug arrives on 'main'. You don't want to commit half-baked code.",
-        "analogy": "🧹 Sweeping your messy room under the rug temporarily so guests can walk in.",
-        "task": "Temporarily shelve your dirty uncommitted changes with a stash:",
+        "concept": "Saving unfinished work before switching branches",
+        "situation": "You're halfway through writing new code on 'feature' branch.\n  An urgent bug was just reported on 'main'. You need to switch branches\n  but you can't commit unfinished code.",
+        "task": "Temporarily save your uncommitted changes so the workspace is clean:",
         "valid": ["git stash", "git stash save", "git stash push"],
         "hint": "git stash",
-        "why": "Your working tree becomes 100% clean, letting you switch branches freely."
+        "why": "git stash shelves your in-progress changes. Your workspace is clean, you switch to main, fix the bug, then come back."
     },
     {
-        "concept": "📦 Emergency 3: Pulling Work Back Out of the Drawer",
-        "human_story": "You fixed the urgent bug! Now you're back on your branch and want your unfinished work back on your desk.",
-        "analogy": "🧰 Pulling your tools back out of the toolbox onto your workbench.",
-        "task": "Re-apply and remove your latest stashed changes in one step:",
+        "concept": "Restoring stashed work after fixing the bug",
+        "situation": "You fixed the urgent bug on main. Now you're back on 'feature' branch.\n  Your unfinished code from before is still in the stash.\n  You want to get it back and remove it from the stash in one step.",
+        "task": "Restore and remove the most recent stash entry:",
         "valid": ["git stash pop", "git stash apply"],
-        "hint": "git stash pop (or: git stash apply)",
-        "why": "'pop' applies the stashed changes and deletes the stash item in one go."
+        "hint": "git stash pop",
+        "why": "git stash pop applies the stashed changes back to your working directory and removes the stash entry."
     },
     {
-        "concept": "🏷️ Milestone: Slapping an Official Release Sticker",
-        "human_story": "Your software is ready for launch! You want to mark the current commit as official milestone 'v1.0'.",
-        "analogy": "🏆 Pressing a permanent gold wax seal 'v1.0' onto the document.",
-        "task": "Create a lightweight tag named 'v1.0':",
-        "valid": ["git tag v1.0", "git tag -a v1.0 -m 'v1.0'", 'git tag -a v1.0 -m "v1.0"'],
-        "hint": "git tag v1.0",
-        "why": "Tags are permanent, human-friendly bookmarks used for version releases."
+        "concept": "Marking a release version",
+        "situation": "Your team just finished testing v2.0 of the app.\n  You want to mark the current commit as an official release\n  so the team can always refer back to exactly this version.",
+        "task": "Create a lightweight tag named 'v2.0' on the current commit:",
+        "valid": ["git tag v2.0", "git tag -a v2.0 -m 'v2.0'", 'git tag -a v2.0 -m "v2.0"'],
+        "hint": "git tag v2.0",
+        "why": "Tags are permanent named pointers to specific commits. Use them for version releases so you can always find them."
     },
     {
-        "concept": "🕵️ The Black Box Flight Recorder (Reflog)",
-        "human_story": "Someone ran 'git reset --hard' by accident! A commit seems completely gone from the log. You need the black box recorder.",
-        "analogy": "📼 Rewinding the security camera footage to find where a dropped item fell.",
-        "task": "View the reflog history of all HEAD movements:",
+        "concept": "Recovering commits after an accidental reset",
+        "situation": "A developer on your team ran 'git reset --hard HEAD~5' by mistake.\n  Five commits appear gone from git log. But Git almost never truly deletes\n  data — there's a hidden timeline you can check.",
+        "task": "Show the full timeline of all HEAD movements including the 'lost' ones:",
         "valid": ["git reflog", "git reflog show"],
         "hint": "git reflog",
-        "why": "'git reflog' records every single movement of HEAD. In Git, almost nothing is truly lost!"
+        "why": "git reflog records every movement of HEAD, including resets. Find the commit SHA and run 'git reset --hard <SHA>' to recover."
     }
 ]
 
@@ -628,69 +663,66 @@ def run_arena_level(level_name, challenges, level_color):
     print(f"{level_color}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
     print(f"║   🎯 PRACTICE ARENA: {level_name:<45}║")
     print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
-    print(f"{Color.DIM}[Tip: Type 'menu' or '0' at any prompt to return to Main Menu. Type 'hint' for help!]{Color.RESET}\n")
+    print(f"{Color.DIM}  Type 'hint' for a hint. Type '0' or 'menu' anytime to go back to Main Menu.{Color.RESET}\n")
 
     score = 0
     total = len(challenges)
 
     for i, ch in enumerate(challenges, 1):
-        print(f"\n{level_color}{Color.BOLD}─── CHALLENGE {i}/{total}: {ch['concept']} ───{Color.RESET}")
-        print(f"\n{Color.BOLD}📖 What's happening:{Color.RESET}\n  {ch['human_story']}")
-        print(f"\n{Color.CYAN}{Color.BOLD}🎮 Human Analogy:{Color.RESET}\n  {ch['analogy']}")
-        print(f"\n{Color.YELLOW}{Color.BOLD}🎯 Your Task:{Color.RESET}\n  {ch['task']}")
-        
-        # In Easy / Low mode: Give the hint right upfront!
+        clear_screen()
+        print(f"{level_color}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+        print(f"║   🎯 PRACTICE ARENA: {level_name:<45}║")
+        print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}")
+        print(f"\n{level_color}{Color.BOLD}── Challenge {i}/{total}: {ch['concept']} ──────────────{Color.RESET}")
+
+        # Print situation (supports both 'situation' key for new data and 'human_story' for legacy)
+        situation_text = ch.get("situation") or ch.get("human_story", "")
+        print(f"\n{Color.BOLD}Situation:{Color.RESET}\n  {situation_text}")
+        print(f"\n{Color.YELLOW}{Color.BOLD}Your task:{Color.RESET} {ch['task']}")
+
+        # In Easy / Low mode: Give the hint upfront
         if "easy_hint" in ch:
-            print(f"\n  {Color.GREEN}💡 Helpful Hint: Just type: {Color.BOLD}{ch['easy_hint']}{Color.RESET}")
-        
+            print(f"\n  {Color.GREEN}💡 Hint: {Color.BOLD}{ch['easy_hint']}{Color.RESET}")
+
         attempts = 0
         max_attempts = 2
         while attempts < max_attempts:
-            prompt_str = f"\n{Color.DIM}[Type command, 'hint', or '0' / 'menu' to exit]{Color.RESET}\n{Color.BOLD}{Color.CYAN}$ {Color.RESET}"
-            user_cmd = input(prompt_str).strip()
-            
-            # Check for home / main menu navigation
+            user_cmd = input(f"\n{Color.DIM}[Type your command, 'hint', or '0' to exit]{Color.RESET}\n{Color.BOLD}{Color.CYAN}$ {Color.RESET}").strip()
+
             if user_cmd.lower() in ["0", "menu", "home", "back", "exit", "q"]:
                 print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
-                time.sleep(0.6)
-                return False  # Do not replay, go to main menu
-            
-            # Check for explicit hint request
+                time.sleep(0.5)
+                return False
+
             if user_cmd.lower() == "hint":
-                hint_text = ch.get("easy_hint") or ch.get("hint")
+                hint_text = ch.get("easy_hint") or ch.get("hint", "")
                 print(f"  {Color.YELLOW}💡 Hint:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
                 continue
-            
+
             if not user_cmd:
                 continue
-            
-            # Normalize whitespace and quotes
+
+            # Normalize whitespace and quote style
             normalized = " ".join(user_cmd.split())
-            
-            # Match against valid solutions
-            is_valid = normalized in ch["valid"]
-            if not is_valid:
-                # Check with quotes normalized (e.g. ' -> ")
-                alt_normalized = normalized.replace("'", '"')
-                alt_valid = [v.replace("'", '"') for v in ch["valid"]]
-                is_valid = alt_normalized in alt_valid
+            alt_normalized = normalized.replace("'", '"')
+            alt_valid = [v.replace("'", '"') for v in ch["valid"]]
+            is_valid = normalized in ch["valid"] or alt_normalized in alt_valid
 
             if is_valid:
                 points = 100 if attempts == 0 else 50
                 score += points
-                print(f"\n{Color.GREEN}{Color.BOLD}✅ PERFECT! (+{points} pts){Color.RESET}")
-                print(f"  {Color.GREEN}💡 Why this works:{Color.RESET} {ch['why']}\n")
+                print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (+{points} pts){Color.RESET}")
+                print(f"  {Color.DIM}{ch['why']}{Color.RESET}\n")
                 break
             else:
                 attempts += 1
-                hint_text = ch.get("easy_hint") or ch.get("hint")
+                hint_text = ch.get("easy_hint") or ch.get("hint", "")
                 if attempts < max_attempts:
-                    print(f"\n{Color.RED}❌ Close, but not quite!{Color.RESET}")
-                    print(f"   {Color.YELLOW}💡 Try this:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
+                    print(f"\n{Color.RED}❌ Not quite.{Color.RESET}  Hint: {Color.BOLD}{hint_text}{Color.RESET}")
                 else:
-                    print(f"\n{Color.RED}❌ Out of attempts! Expected command:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
-                    print(f"  {Color.DIM}💡 Why this works: {ch['why']}{Color.RESET}\n")
-        
+                    print(f"\n{Color.RED}❌ The answer was:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
+                    print(f"  {Color.DIM}{ch['why']}{Color.RESET}\n")
+
         time.sleep(0.8)
 
     max_possible = total * 100
