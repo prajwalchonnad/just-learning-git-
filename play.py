@@ -787,7 +787,7 @@ CHALLENGES_LOW = [
         "situation": "You just created a new folder called 'my-project' for your work.\n  Right now it is a plain folder. Git doesn't know about it yet.\n  You need to tell Git to start tracking this folder.",
         "task": "Run the command that initializes Git in the current folder:",
         "valid": ["git init", "git init ."],
-        "easy_hint": "git init",
+        "hint": "Think of the subcommand used to 'initialize' a repository: git <subcommand>",
         "why": "This creates a hidden '.git' folder inside your project. That's where Git stores all your history."
     },
     {
@@ -795,7 +795,7 @@ CHALLENGES_LOW = [
         "situation": "You edited a file called 'index.html'.\n  Before doing anything else, you want to see what files have changed,\n  which are staged, and which are untracked.",
         "task": "Run the command to see the current state of your working directory:",
         "valid": ["git status", "git st", "git status -s", "git status --short"],
-        "easy_hint": "git status",
+        "hint": "Look for the subcommand that reports working tree 'status' (starts with 's')",
         "why": "git status is the most used Git command. Run it constantly — it always tells you what's going on."
     },
     {
@@ -803,7 +803,7 @@ CHALLENGES_LOW = [
         "situation": "You edited two files today. You want to include all of them\n  in your next commit. Git doesn't save anything automatically —\n  you have to explicitly select what goes into the next snapshot.",
         "task": "Stage all changed files in the current directory:",
         "valid": ["git add .", "git add -A", "git add --all"],
-        "easy_hint": "git add .",
+        "hint": "Use the 'add' subcommand followed by a symbol meaning 'current directory / everything here'",
         "why": "The dot '.' means 'everything here'. git add picks what goes into your next commit."
     },
     {
@@ -811,7 +811,7 @@ CHALLENGES_LOW = [
         "situation": "You modified 'README.md' and 'app.py'. You only want to stage\n  'README.md' right now so your commit is focused on documentation.",
         "task": "Stage only the file 'README.md':",
         "valid": ["git add README.md"],
-        "easy_hint": "git add README.md",
+        "hint": "Use 'git add' followed by the exact filename you want to stage",
         "why": "Naming a specific file stages only that file, leaving other modified files unstaged."
     },
     {
@@ -824,7 +824,7 @@ CHALLENGES_LOW = [
             'git commit -m"add homepage layout"',
             "git commit -m'add homepage layout'"
         ],
-        "easy_hint": 'git commit -m "add homepage layout"',
+        "hint": "Use 'git commit' with the message flag (-m) followed by the message in quotes",
         "why": "Every commit needs a message (-m flag). It describes what changed so you (and your team) can understand the history."
     },
     {
@@ -832,7 +832,7 @@ CHALLENGES_LOW = [
         "situation": "You've made a few commits over the past few days.\n  You want to see all of them — who made them, when, and what the message said.",
         "task": "Show the full commit history of this repository:",
         "valid": ["git log", "git lg", "git log --oneline", "git log -n 5"],
-        "easy_hint": "git log",
+        "hint": "A 3-letter word meaning record or history log: git <subcommand>",
         "why": "git log lists every commit in reverse order (newest first). Each has a unique ID, author, date, and message."
     },
     {
@@ -840,7 +840,7 @@ CHALLENGES_LOW = [
         "situation": "You want to quickly scan past commits without reading multi-line blocks for each one.",
         "task": "Display the commit history with each commit on a single line:",
         "valid": ["git log --oneline", "git lg"],
-        "easy_hint": "git log --oneline",
+        "hint": "Add a flag to 'git log' that condenses each commit to a single line: --one...",
         "why": "'--oneline' condenses each commit to its 7-character SHA and commit subject message."
     },
     {
@@ -848,7 +848,7 @@ CHALLENGES_LOW = [
         "situation": "You edited 'style.css'. Before staging it, you want to see the exact lines added or removed.",
         "task": "Show the unstaged modifications in your working tree:",
         "valid": ["git diff", "git diff style.css"],
-        "easy_hint": "git diff",
+        "hint": "The subcommand name is short for 'differences' (4 letters)",
         "why": "'git diff' shows + (green) for added lines and - (red) for deleted lines in files that haven't been staged yet."
     },
     {
@@ -856,7 +856,7 @@ CHALLENGES_LOW = [
         "situation": "You want to check what branches exist in your local repository and see which one you are currently on.",
         "task": "List all local branches in the repository:",
         "valid": ["git branch", "git branch --list"],
-        "easy_hint": "git branch",
+        "hint": "Use the command named after tree limbs: git <subcommand>",
         "why": "'git branch' lists all branches, marking the currently checked-out branch with an asterisk (*)."
     },
     {
@@ -864,7 +864,7 @@ CHALLENGES_LOW = [
         "situation": "You opened a new terminal and want to quickly verify that Git is installed and see which version is running.",
         "task": "Check the installed Git version:",
         "valid": ["git --version", "git version", "git -v"],
-        "easy_hint": "git --version",
+        "hint": "Use the standard double-dash version flag with git: git --v...",
         "why": "Verifies that the Git binary is available on your system PATH."
     }
 ]
@@ -875,7 +875,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You're on 'main' and want to start building a new 'search' feature.\n  You don't want to work directly on main — you need a separate branch\n  so the working code stays safe while you build.",
         "task": "Create a new branch called 'search-feature' and switch to it in one command:",
         "valid": ["git checkout -b search-feature", "git switch -c search-feature"],
-        "hint": "git checkout -b search-feature",
+        "hint": "Use 'checkout' with the new-branch flag (-b) or 'switch' with (-c), followed by the branch name",
         "why": "The -b flag creates the branch AND switches to it. (Modern syntax: git switch -c search-feature)."
     },
     {
@@ -883,7 +883,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You're on 'search-feature'. Your team lead just told you to\n  review something on the 'main' branch. You need to switch without losing anything.",
         "task": "Switch to the already-existing branch called 'main':",
         "valid": ["git checkout main", "git switch main"],
-        "hint": "git checkout main",
+        "hint": "Use 'git checkout <branch>' or 'git switch <branch>' (no -b or -c needed for existing branches)",
         "why": "No -b flag here — that would try to create a new branch. Without -b, git checkout just switches to main."
     },
     {
@@ -891,7 +891,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You've made 3 commits locally on the 'main' branch.\n  None of them are on GitHub yet. You want to upload them so\n  they're backed up and visible to your team.",
         "task": "Push your local 'main' branch to the remote called 'origin':",
         "valid": ["git push origin main", "git push", "git push -u origin main"],
-        "hint": "git push origin main",
+        "hint": "Use 'push' followed by the remote name ('origin') and branch name ('main')",
         "why": "'origin' is the default name for your GitHub remote. 'main' is the branch you're pushing."
     },
     {
@@ -899,7 +899,7 @@ CHALLENGES_MEDIUM = [
         "situation": "Your teammate pushed a bug fix to GitHub an hour ago.\n  Your local copy doesn't have it. You need to download\n  AND apply their latest commits to your machine.",
         "task": "Download and merge the latest commits from the remote repository:",
         "valid": ["git pull", "git pull origin main"],
-        "hint": "git pull",
+        "hint": "A 4-letter command that downloads AND merges remote changes into your active branch",
         "why": "git pull = git fetch + git merge. It downloads remote changes and applies them to your current branch."
     },
     {
@@ -907,7 +907,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You want to see what your teammates pushed to 'origin' without touching or merging into your local files yet.",
         "task": "Fetch remote updates from 'origin' safely without modifying your local working files:",
         "valid": ["git fetch", "git fetch origin", "git fetch --all"],
-        "hint": "git fetch origin",
+        "hint": "A 5-letter command that downloads remote commits without touching your working directory",
         "why": "'git fetch' downloads remote commits and updates remote branches (origin/main) without changing your local working directory."
     },
     {
@@ -915,7 +915,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You switched to 'main'. Your work on 'search-feature' is complete and tested.\n  Now you want to bring the commits from 'search-feature' into 'main'.",
         "task": "Merge 'search-feature' into the current branch:",
         "valid": ["git merge search-feature"],
-        "hint": "git merge search-feature",
+        "hint": "Use the 'merge' command followed by the name of the branch you want to bring in",
         "why": "'git merge <branch>' brings the target branch's commits into your current checked-out branch."
     },
     {
@@ -923,7 +923,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You already merged 'search-feature' into 'main'. You want to clean up your local branch list.",
         "task": "Safely delete the local branch named 'search-feature':",
         "valid": ["git branch -d search-feature"],
-        "hint": "git branch -d search-feature",
+        "hint": "Use 'git branch' with the safe delete flag (-d) and the branch name",
         "why": "The lowercase '-d' safely deletes the branch only if it has already been merged."
     },
     {
@@ -931,7 +931,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You joined a new project. You need to download the full repository from GitHub onto your computer.",
         "task": "Clone the repo at 'https://github.com/example/repo.git':",
         "valid": ["git clone https://github.com/example/repo.git"],
-        "hint": "git clone https://github.com/example/repo.git",
+        "hint": "Use the command that creates a full copy of a remote repo: git <subcommand> <url>",
         "why": "'git clone' copies the entire Git database, remote connections, and working files in one command."
     },
     {
@@ -939,7 +939,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You want to inspect only the latest 5 commits in concise format.",
         "task": "Show exactly the last 5 commits on one line each:",
         "valid": ["git log -n 5 --oneline", "git log --oneline -n 5", "git log -5 --oneline"],
-        "hint": "git log -n 5 --oneline",
+        "hint": "Combine 'git log' with a count limit flag (-n 5) and the single-line flag (--oneline)",
         "why": "'-n 5' limits the output count to 5, keeping your terminal uncluttered."
     },
     {
@@ -947,7 +947,7 @@ CHALLENGES_MEDIUM = [
         "situation": "You are doing code review and want to view only the commits made by contributor 'Alice'.",
         "task": "Filter git log to show commits by author 'Alice':",
         "valid": ['git log --author="Alice"', "git log --author='Alice'", "git log --author=Alice"],
-        "hint": 'git log --author="Alice"',
+        "hint": "Pass the author filter flag to git log: git log --author=\"...\"",
         "why": "'--author' filters history by author name or email pattern."
     }
 ]
@@ -958,7 +958,7 @@ CHALLENGES_HIGH = [
         "situation": "You pushed commit 'a3f9c12' to main and teammates already pulled it.\n  It has a bug. You cannot use git reset because that would rewrite\n  history that your teammates already have.",
         "task": "Create a new commit that undoes commit 'a3f9c12' without rewriting history:",
         "valid": ["git revert a3f9c12", "git revert a3f9c12 --no-edit", "git revert --no-edit a3f9c12"],
-        "hint": "git revert a3f9c12",
+        "hint": "Use the command that creates an inverse commit to safely undo changes: git <subcommand> <commit-id>",
         "why": "git revert doesn't erase the bad commit — it creates a new one that undoes it. Safe for shared branches."
     },
     {
@@ -966,7 +966,7 @@ CHALLENGES_HIGH = [
         "situation": "You're halfway through writing new code on 'feature' branch.\n  An urgent bug was just reported on 'main'. You need to switch branches\n  but you can't commit unfinished code.",
         "task": "Temporarily save your uncommitted changes so the workspace is clean:",
         "valid": ["git stash", "git stash save", "git stash push"],
-        "hint": "git stash",
+        "hint": "A 5-letter command that shelves your uncommitted changes into a temporary drawer",
         "why": "git stash shelves your in-progress changes. Your workspace is clean, you switch to main, fix the bug, then come back."
     },
     {
@@ -974,7 +974,7 @@ CHALLENGES_HIGH = [
         "situation": "You fixed the urgent bug on main. Now you're back on 'feature' branch.\n  Your unfinished code from before is still in the stash.\n  You want to get it back and remove it from the stash in one step.",
         "task": "Restore and remove the most recent stash entry:",
         "valid": ["git stash pop", "git stash apply"],
-        "hint": "git stash pop",
+        "hint": "Use 'git stash' with the action that applies and drops the entry (like popping a stack)",
         "why": "git stash pop applies the stashed changes back to your working directory and removes the stash entry."
     },
     {
@@ -982,7 +982,7 @@ CHALLENGES_HIGH = [
         "situation": "Your team just finished testing v2.0 of the app.\n  You want to mark the current commit as an official release\n  so the team can always refer back to exactly this version.",
         "task": "Create a lightweight tag named 'v2.0' on the current commit:",
         "valid": ["git tag v2.0", "git tag -a v2.0 -m 'v2.0'", 'git tag -a v2.0 -m "v2.0"'],
-        "hint": "git tag v2.0",
+        "hint": "Use the tag command followed by the version name: git <subcommand> <tagname>",
         "why": "Tags are permanent named pointers to specific commits. Use them for version releases so you can always find them."
     },
     {
@@ -994,7 +994,7 @@ CHALLENGES_HIGH = [
             "git tag -a v1.0 -m 'production launch'",
             'git tag -a v1.0 -m"production launch"'
         ],
-        "hint": 'git tag -a v1.0 -m "production launch"',
+        "hint": "Use 'git tag' with the annotated flag (-a) and message flag (-m)",
         "why": "Annotated tags (-a) store complete cryptographic object data including tagger info and message."
     },
     {
@@ -1006,7 +1006,7 @@ CHALLENGES_HIGH = [
             "git reset HEAD config.json",
             "git reset config.json"
         ],
-        "hint": "git restore --staged config.json",
+        "hint": "Use 'git restore' with the flag that targets staged files: --staged",
         "why": "'git restore --staged' pulls the file back out of the staging index without altering your file on disk."
     },
     {
@@ -1014,7 +1014,7 @@ CHALLENGES_HIGH = [
         "situation": "You made experimental edits in 'style.css' that didn't work out.\n  You haven't staged it yet, and you want to discard your changes and revert 'style.css' back to the last commit.",
         "task": "Discard all uncommitted changes in 'style.css':",
         "valid": ["git restore style.css", "git checkout -- style.css"],
-        "hint": "git restore style.css",
+        "hint": "Use the restore command followed by the filename (without --staged)",
         "why": "'git restore <file>' discards uncommitted working tree modifications and resets the file to the last committed version."
     },
     {
@@ -1022,7 +1022,7 @@ CHALLENGES_HIGH = [
         "situation": "You just made a commit, but realized you forgot to stage 'assets/logo.png'.\n  You staged it with 'git add assets/logo.png' and want to merge it into that latest commit without re-typing the message.",
         "task": "Amend the latest commit keeping its existing commit message:",
         "valid": ["git commit --amend --no-edit", "git commit --amend -C HEAD"],
-        "hint": "git commit --amend --no-edit",
+        "hint": "Combine 'git commit' with the amend flag (--amend) and a flag to skip editing the message (--no-edit)",
         "why": "'--amend --no-edit' updates the last commit with new staged files while keeping the exact same commit message."
     },
     {
@@ -1030,7 +1030,7 @@ CHALLENGES_HIGH = [
         "situation": "Branch 'experimental' has a bugfix in commit 'c4b1a8f' that you need on 'main' right now without merging the whole branch.",
         "task": "Apply commit 'c4b1a8f' onto your current branch:",
         "valid": ["git cherry-pick c4b1a8f"],
-        "hint": "git cherry-pick c4b1a8f",
+        "hint": "The command is named after picking fruit: git cherry-... followed by the commit SHA",
         "why": "'git cherry-pick' copies and applies a single specific commit SHA from any branch onto your current branch."
     },
     {
@@ -1038,7 +1038,7 @@ CHALLENGES_HIGH = [
         "situation": "A developer on your team ran 'git reset --hard HEAD~5' by mistake.\n  Five commits appear gone from git log. But Git almost never truly deletes\n  data — there's a hidden timeline you can check.",
         "task": "Show the full timeline of all HEAD movements including the 'lost' ones:",
         "valid": ["git reflog", "git reflog show"],
-        "hint": "git reflog",
+        "hint": "A 6-letter command short for 'reference log' — Git's flight recorder",
         "why": "git reflog records every movement of HEAD, including resets. Find the commit SHA and run 'git reset --hard <SHA>' to recover."
     }
 ]
@@ -1048,7 +1048,7 @@ def run_arena_level(level_name, challenges, level_color):
     print(f"{level_color}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
     print(f"║   🎯 PRACTICE ARENA: {level_name:<45}║")
     print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
-    print(f"{Color.DIM}  Type 'hint' for a hint. Type '0' or 'menu' anytime to go back to Main Menu.{Color.RESET}\n")
+    print(f"{Color.DIM}  Type 'hint' if you need a clue. Type '0' or 'menu' anytime to return to Main Menu.{Color.RESET}\n")
 
     score = 0
     total = len(challenges)
@@ -1060,19 +1060,14 @@ def run_arena_level(level_name, challenges, level_color):
         print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}")
         print(f"\n{level_color}{Color.BOLD}── Challenge {i}/{total}: {ch['concept']} ──────────────{Color.RESET}")
 
-        # Print situation (supports both 'situation' key for new data and 'human_story' for legacy)
         situation_text = ch.get("situation") or ch.get("human_story", "")
         print(f"\n{Color.BOLD}Situation:{Color.RESET}\n  {situation_text}")
         print(f"\n{Color.YELLOW}{Color.BOLD}Your task:{Color.RESET} {ch['task']}")
 
-        # In Easy / Low mode: Give the hint upfront
-        if "easy_hint" in ch:
-            print(f"\n  {Color.GREEN}💡 Hint: {Color.BOLD}{ch['easy_hint']}{Color.RESET}")
-
         attempts = 0
         max_attempts = 2
         while attempts < max_attempts:
-            user_cmd = input(f"\n{Color.DIM}[Type your command, 'hint', or '0' to exit]{Color.RESET}\n{Color.BOLD}{Color.CYAN}$ {Color.RESET}").strip()
+            user_cmd = input(f"\n{Color.DIM}[Type your command, 'hint', or '0' for Menu]{Color.RESET}\n{Color.BOLD}{Color.CYAN}$ {Color.RESET}").strip()
 
             if user_cmd.lower() in ["0", "menu", "home", "back", "exit", "q"]:
                 print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
@@ -1080,8 +1075,7 @@ def run_arena_level(level_name, challenges, level_color):
                 return False
 
             if user_cmd.lower() == "hint":
-                hint_text = ch.get("easy_hint") or ch.get("hint", "")
-                print(f"  {Color.YELLOW}💡 Hint:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
+                print(f"  {Color.YELLOW}💡 Clue:{Color.RESET} {ch['hint']}")
                 continue
 
             if not user_cmd:
@@ -1101,11 +1095,11 @@ def run_arena_level(level_name, challenges, level_color):
                 break
             else:
                 attempts += 1
-                hint_text = ch.get("easy_hint") or ch.get("hint", "")
                 if attempts < max_attempts:
-                    print(f"\n{Color.RED}❌ Not quite.{Color.RESET}  Hint: {Color.BOLD}{hint_text}{Color.RESET}")
+                    print(f"\n{Color.RED}❌ Not quite.{Color.RESET}  💡 Clue: {ch['hint']}")
                 else:
-                    print(f"\n{Color.RED}❌ The answer was:{Color.RESET} {Color.BOLD}{hint_text}{Color.RESET}")
+                    expected_answer = ch["valid"][0]
+                    print(f"\n{Color.RED}❌ Out of attempts. The command was:{Color.RESET} {Color.BOLD}{expected_answer}{Color.RESET}")
                     print(f"  {Color.DIM}{ch['why']}{Color.RESET}\n")
 
         time.sleep(0.8)
@@ -1113,6 +1107,20 @@ def run_arena_level(level_name, challenges, level_color):
     max_possible = total * 100
     print(f"\n{Color.BOLD}{Color.MAGENTA}═══════════════════════════════════════════════════")
     print(f"   {level_name} LEVEL FINISHED! Final Score: {score}/{max_possible}")
+    if score >= max_possible * 0.8:
+        print(f"   🏆 Rank: Champion! Your terminal muscle memory is exceptional!")
+    elif score >= max_possible * 0.5:
+        print(f"   ⭐ Rank: Solid Developer! Great progress, keep building the habit!")
+    else:
+        print(f"   🌱 Rank: Apprentice. Play again or check 'Git for Humans' to level up!")
+    print(f"═══════════════════════════════════════════════════{Color.RESET}\n")
+    
+    print(f"  {Color.YELLOW}[1] 🔄 Play Another Difficulty Level{Color.RESET}")
+    print(f"  {Color.CYAN}[0] 🏠 Return to Main Menu{Color.RESET}\n")
+    nxt = input(f"{Color.BOLD}Choose [1 or 0]: {Color.RESET}").strip().lower()
+    if nxt in ["1", "replay", "r"]:
+        return True
+    return False
     if score >= max_possible * 0.8:
         print(f"   🏆 Rank: Champion! Your terminal muscle memory is exceptional!")
     elif score >= max_possible * 0.5:
