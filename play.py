@@ -436,8 +436,10 @@ def mode_disaster_recovery():
     print_slow("Read the situation carefully and pick the right Git command to fix it.\n", 0.015)
 
     score = 0
-    total_scenarios = len(DISASTER_SCENARIOS)
-    for i, scenario in enumerate(DISASTER_SCENARIOS, 1):
+    scenarios = list(DISASTER_SCENARIOS)
+    random.shuffle(scenarios)
+    total_scenarios = len(scenarios)
+    for i, scenario in enumerate(scenarios, 1):
         clear_screen()
         print(f"{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
         print("║           🚨 MODE: REAL-WORLD GIT PROBLEM SOLVER                   ║")
@@ -700,31 +702,31 @@ def mode_git_for_humans():
 
     quiz = [
         {
-            "q": "1. You're on a team and your app is working. You want to add a new feature safely.\n   What should you do FIRST?",
+            "q": "You're on a team and your app is working. You want to add a new feature safely.\n   What should you do FIRST?",
             "opts": ["A) Start editing files directly on main", "B) Create a new branch for the feature", "C) Fork the entire repository"],
             "ans": "B",
             "explain": "Always branch before feature work. Main stays safe while you build on the branch."
         },
         {
-            "q": "2. You edited 4 files. You only want to include 'login.js' in this commit. What do you run?",
+            "q": "You edited 4 files. You only want to include 'login.js' in this commit. What do you run?",
             "opts": ["A) git add .", "B) git commit login.js", "C) git add login.js"],
             "ans": "C",
             "explain": "git add <filename> stages just that one file. 'git add .' would stage all 4 files."
         },
         {
-            "q": "3. You committed a bug and your teammates already pulled it. What is the safe way to undo it?",
+            "q": "You committed a bug and your teammates already pulled it. What is the safe way to undo it?",
             "opts": ["A) git reset --hard HEAD~1 then force push", "B) git revert <commit-id>", "C) Delete the repository"],
             "ans": "B",
             "explain": "git revert creates a new undo commit. It never rewrites history that teammates already have."
         },
         {
-            "q": "4. You're halfway through writing code when an urgent bug appears on main.\n   You can't commit yet. What do you do?",
+            "q": "You're halfway through writing code when an urgent bug appears on main.\n   You can't commit yet. What do you do?",
             "opts": ["A) git stash to temporarily save your work", "B) git commit -m 'WIP' to main", "C) Copy files to Desktop manually"],
             "ans": "A",
             "explain": "git stash shelves your changes cleanly. Run git stash pop to get them back later."
         },
         {
-            "q": "5. What is the difference between git fetch and git pull?",
+            "q": "What is the difference between git fetch and git pull?",
             "opts": [
                 "A) They do the same thing",
                 "B) git fetch downloads but doesn't merge; git pull downloads AND merges",
@@ -734,22 +736,25 @@ def mode_git_for_humans():
             "explain": "git fetch is safe — it updates remote tracking without touching your local branch. git pull = fetch + merge."
         },
         {
-            "q": "6. You ran 'git reset --hard HEAD~3' by accident and your commits look gone.\n   Which command can still find them?",
+            "q": "You ran 'git reset --hard HEAD~3' by accident and your commits look gone.\n   Which command can still find them?",
             "opts": ["A) git log", "B) git status", "C) git reflog"],
             "ans": "C",
             "explain": "git reflog records every HEAD movement including resets. Your commits are still there — find their SHA and reset back to it."
         },
         {
-            "q": "7. Which file tells Git which files to never track?",
+            "q": "Which file tells Git which files to never track?",
             "opts": ["A) .gitconfig", "B) .gitignore", "C) .gitkeep"],
             "ans": "B",
             "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc."
         }
     ]
 
+    shuffled_quiz = list(quiz)
+    random.shuffle(shuffled_quiz)
+
     h_score = 0
-    for item in quiz:
-        print(f"{Color.CYAN}{Color.BOLD}{item['q']}{Color.RESET}")
+    for idx, item in enumerate(shuffled_quiz, 1):
+        print(f"{Color.CYAN}{Color.BOLD}{idx}. {item['q']}{Color.RESET}")
         for opt in item["opts"]:
             print(f"  {opt}")
         choice = input(f"{Color.BOLD}  Your answer [A/B/C] (or '0' to exit): {Color.RESET}").strip().upper()
@@ -1081,9 +1086,11 @@ def run_arena_level(level_name, challenges, level_color):
     print(f"{Color.DIM}  Type 'hint' if you need a clue. Type '0' or 'menu' anytime to return to Main Menu.{Color.RESET}\n")
 
     score = 0
-    total = len(challenges)
+    active_challenges = list(challenges)
+    random.shuffle(active_challenges)
+    total = len(active_challenges)
 
-    for i, ch in enumerate(challenges, 1):
+    for i, ch in enumerate(active_challenges, 1):
         clear_screen()
         print(f"{level_color}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
         print(f"║   🎯 PRACTICE ARENA: {level_name:<45}║")
