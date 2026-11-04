@@ -13,6 +13,8 @@ import time
 import random
 import os
 
+import subprocess
+
 # Ensure UTF-8 output on Windows consoles
 if sys.platform == "win32":
     try:
@@ -23,10 +25,24 @@ if sys.platform == "win32":
 # Auto-launch into a dedicated spacious window on Windows
 if sys.platform == "win32" and "--new-window" not in sys.argv and "--no-window" not in sys.argv:
     script_path = os.path.abspath(__file__)
-    cmd = f'start "JUST LEARNING GIT - Arcade" cmd /c "mode con: cols=108 lines=40 && python \\"{script_path}\\" --new-window"'
-    os.system(cmd)
-    print("\n\033[92m[*] Launching 'JUST LEARNING GIT' in a new dedicated arcade window! Ready!\033[0m\n")
-    sys.exit(0)
+    try:
+        subprocess.Popen(
+            [sys.executable, script_path, "--new-window"],
+            creationflags=subprocess.CREATE_NEW_CONSOLE
+        )
+        print("\n\033[92m[*] Launching 'JUST LEARNING GIT' in a new dedicated arcade window! 🚀\033[0m\n")
+        sys.exit(0)
+    except Exception:
+        # Fallback to current window if popup fails
+        pass
+
+# Configure the window if running in dedicated mode
+if sys.platform == "win32":
+    try:
+        os.system("title 🎮 JUST LEARNING GIT - Arcade")
+        os.system("mode con: cols=108 lines=40 >nul 2>&1")
+    except Exception:
+        pass
 
 # Terminal Colors & Formatting
 class Color:
