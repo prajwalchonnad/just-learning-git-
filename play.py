@@ -388,34 +388,175 @@ def mode_git_for_humans():
     else:
         print(f"\n{Color.YELLOW}Ordering food is tempting, but with Git, Timeline A was 100% safe all along!{Color.RESET}\n")
 
-    print_slow(f"{Color.CYAN}Summary: You don't need to be a computer genius to use Git.", 0.02)
-    print_slow("You just need to know: Checkpoints (commit), Parallel Timelines (branch), and Cloud Saves (push).", 0.02)
-    print_slow(f"Congratulations! You now understand 90% of Git concepts! 🚀{Color.RESET}\n", 0.02)
+    # Act 4: Quick 3-Question Checkpoint Quiz
+    clear_screen()
+    print(f"{Color.YELLOW}{Color.BOLD}─── ACT 4: QUICK POP QUIZ (TEST YOUR HUMAN INTUITION) ───{Color.RESET}\n")
+    print_slow("Reading is good, but answering proves you actually got it! 3 fast questions:\n", 0.015)
+
+    human_quiz = [
+        {
+            "q": "1. What is 'git add' most similar to in real life?",
+            "opts": ["A) Burning your laptop", "B) Putting items in your Amazon shopping cart before checkout", "C) Sending an email to Linus Torvalds"],
+            "ans": "B",
+            "explain": "git add stages files into the cart so you can commit (buy) them next!"
+        },
+        {
+            "q": "2. In video games, what is a 'git commit'?",
+            "opts": ["A) A bonfire / checkpoint where you save your game", "B) Dying to the final boss", "C) Quitting without saving"],
+            "ans": "A",
+            "explain": "git commit creates a permanent checkpoint you can always return to."
+        },
+        {
+            "q": "3. Why do developers use 'git branch'?",
+            "opts": ["A) Because they love botany", "B) To experiment in a safe parallel timeline without breaking the main project", "C) To delete all files"],
+            "ans": "B",
+            "explain": "Branches let you try risky ideas. If they fail, delete the branch. Main stays perfect!"
+        }
+    ]
+
+    h_score = 0
+    for item in human_quiz:
+        print(f"{Color.CYAN}{Color.BOLD}{item['q']}{Color.RESET}")
+        for opt in item["opts"]:
+            print(f"  {opt}")
+        choice = input(f"{Color.BOLD}Your answer [A/B/C]: {Color.RESET}").strip().upper()
+        if choice == item["ans"]:
+            h_score += 1
+            print(f"{Color.GREEN}✅ Spot on! {item['explain']}{Color.RESET}\n")
+        else:
+            print(f"{Color.RED}❌ Not quite! {item['explain']}{Color.RESET}\n")
+        time.sleep(1)
+
+    print(f"{Color.MAGENTA}{Color.BOLD}🎉 You scored {h_score}/3 on the beginner checkpoint! You're ready for real terminal work!{Color.RESET}\n")
     input(f"{Color.DIM}Press Enter to return to the main menu...{Color.RESET}")
+
+# Interactive Command Typing Arena
+COMMAND_CHALLENGES = [
+    {
+        "task": "You just created a project folder. Initialize a brand-new Git repository in it:",
+        "valid": ["git init"],
+        "hint": "git init"
+    },
+    {
+        "task": "Check what files have been modified, staged, or are untracked:",
+        "valid": ["git status", "git st", "git status -s", "git status --short"],
+        "hint": "git status (or your shortcut: git st)"
+    },
+    {
+        "task": "Stage ALL modified and new files in the current folder for the next commit:",
+        "valid": ["git add .", "git add -A", "git add --all"],
+        "hint": "git add ."
+    },
+    {
+        "task": "Commit your staged files with the message: 'fix login bug':",
+        "valid": ['git commit -m "fix login bug"', "git commit -m 'fix login bug'", 'git commit -m"fix login bug"'],
+        "hint": 'git commit -m "fix login bug"'
+    },
+    {
+        "task": "Create a new branch called 'feature' and switch to it in one command:",
+        "valid": ["git checkout -b feature", "git switch -c feature"],
+        "hint": "git checkout -b feature (or modern: git switch -c feature)"
+    },
+    {
+        "task": "Switch back to the existing branch named 'main':",
+        "valid": ["git checkout main", "git switch main"],
+        "hint": "git checkout main (or git switch main)"
+    },
+    {
+        "task": "Safely undo the bad commit 'abc123' without deleting history (creates an inverse commit):",
+        "valid": ["git revert abc123", "git revert abc123 --no-edit", "git revert --no-edit abc123"],
+        "hint": "git revert abc123"
+    },
+    {
+        "task": "Temporarily save and shelve your uncommitted changes so your workspace is clean:",
+        "valid": ["git stash", "git stash save", "git stash push"],
+        "hint": "git stash"
+    },
+    {
+        "task": "Push your local 'main' branch commits to the remote server ('origin'):",
+        "valid": ["git push origin main", "git push", "git push -u origin main"],
+        "hint": "git push origin main"
+    },
+    {
+        "task": "Download the latest updates from remote 'origin' WITHOUT merging into your local files:",
+        "valid": ["git fetch", "git fetch origin", "git fetch --all"],
+        "hint": "git fetch origin"
+    }
+]
+
+def mode_command_arena():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║        🎯 MODE 2: 'TYPE THE COMMAND' HANDS-ON PRACTICE ARENA       ║")
+    print("╚════════════════════════════════════════════════════════════════════╝\n")
+    print_slow("Reading won't build muscle memory — typing real commands will!", 0.015, Color.CYAN)
+    print_slow("Read the scenario, then TYPE the exact Git command into the prompt.\n", 0.015, Color.WHITE)
+
+    score = 0
+    challenges = list(COMMAND_CHALLENGES)
+    random.shuffle(challenges)
+    selected = challenges[:6]
+
+    for i, ch in enumerate(selected, 1):
+        print(f"{Color.BOLD}{Color.WHITE}─── CHALLENGE {i}/6 ───{Color.RESET}")
+        print_slow(f"{Color.YELLOW}Scenario: {ch['task']}{Color.RESET}", 0.015)
+        
+        attempts = 0
+        while attempts < 2:
+            user_cmd = input(f"{Color.BOLD}{Color.CYAN}$ {Color.RESET}").strip()
+            
+            # Normalize whitespace
+            normalized = " ".join(user_cmd.split())
+            if normalized in ch["valid"]:
+                points = 100 if attempts == 0 else 50
+                score += points
+                print(f"\n{Color.GREEN}{Color.BOLD}✅ PERFECT! (+{points} pts){Color.RESET}\n")
+                break
+            else:
+                attempts += 1
+                if attempts == 1:
+                    print(f"{Color.RED}❌ Close, but not quite! Try once more. Hint: starts with '{ch['hint'].split()[0]}'{Color.RESET}")
+                else:
+                    print(f"\n{Color.RED}❌ Out of attempts! Expected command:{Color.RESET} {Color.BOLD}{ch['hint']}{Color.RESET}\n")
+        time.sleep(1)
+
+    print(f"{Color.BOLD}{Color.MAGENTA}═══════════════════════════════════════════════════")
+    print(f"   ARENA FINISHED! Final Score: {score}/600")
+    if score >= 500:
+        print(f"   🥷 Rank: True Git Ninja! Your terminal muscle memory is unmatched!")
+    elif score >= 300:
+        print(f"   🍝 Rank: Al Dente Coder! Good command knowledge, keep practicing!")
+    else:
+        print(f"   🧄 Rank: Apprentice. Check GIT_COMMANDS.md to level up!")
+    print(f"═══════════════════════════════════════════════════{Color.RESET}\n")
+    input(f"{Color.DIM}Press Enter to return to main menu...{Color.RESET}")
 
 def main():
     while True:
         clear_screen()
         print(BANNER)
         print(f"{Color.BOLD}Welcome to the interactive Git arcade! Choose your adventure:{Color.RESET}\n")
-        print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Story Mode: Explain Like I'm 5 & Find Git Boring)")
-        print(f"  {Color.CYAN}[2]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
-        print(f"  {Color.RED}[3]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
-        print(f"  {Color.GREEN}[4]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
-        print(f"  {Color.BLUE}[5]{Color.RESET} ⚡ Show My Configured Git Aliases")
-        print(f"  {Color.MAGENTA}[6]{Color.RESET} 🏃 Exit to Terminal")
+        print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Story Mode + Quick Quiz)")
+        print(f"  {Color.GREEN}[2]{Color.RESET} 🎯 'Type The Command' Practice Arena (Hands-On Muscle Memory)")
+        print(f"  {Color.CYAN}[3]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
+        print(f"  {Color.RED}[4]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
+        print(f"  {Color.BLUE}[5]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
+        print(f"  {Color.MAGENTA}[6]{Color.RESET} ⚡ Show My Configured Git Aliases")
+        print(f"  {Color.WHITE}[7]{Color.RESET} 🏃 Exit to Terminal")
         
-        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 6]: {Color.RESET}").strip()
+        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 7]: {Color.RESET}").strip()
 
         if choice == "1":
             mode_git_for_humans()
         elif choice == "2":
-            mode_viva_gauntlet()
+            mode_command_arena()
         elif choice == "3":
-            mode_disaster_recovery()
+            mode_viva_gauntlet()
         elif choice == "4":
-            mode_vtu_cheatbook()
+            mode_disaster_recovery()
         elif choice == "5":
+            mode_vtu_cheatbook()
+        elif choice == "6":
             clear_screen()
             print(f"\n{Color.YELLOW}{Color.BOLD}⚡ YOUR SUPERCHARGED GIT ALIASES:{Color.RESET}\n")
             print(f"  {Color.CYAN}git st{Color.RESET}    -> Instant status check")
@@ -423,7 +564,7 @@ def main():
             print(f"  {Color.CYAN}git files{Color.RESET} -> View commits with file names and stats")
             print(f"  {Color.CYAN}git last{Color.RESET}  -> Deep inspection of the latest commit\n")
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
-        elif choice in ["6", "q", "exit"]:
+        elif choice in ["7", "q", "exit"]:
             print(f"\n{Color.GREEN}Keep committing like a ninja! Bye Prajwal! 🚀{Color.RESET}\n")
             break
 

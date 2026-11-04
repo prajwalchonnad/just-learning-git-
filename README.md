@@ -28,6 +28,8 @@ python play.py
 *(On Windows, you can also just double-click `play.bat`! It pops open a dedicated retro arcade window automatically).*
 
 ### Features inside:
+- 🐣 **'Git for Humans' Story Mode:** Understand Git in 3 minutes with video games & cooking + instant pop quiz.
+- 🎯 **'Type The Command' Practice Arena:** Real scenarios where you type actual commands to build genuine muscle memory.
 - 🎓 **Survive the Tech Interview & Viva:** Rapid-fire questions simulating tough tech interviewers and examiners.
 - 🚨 **"Oh No, Git!" Scenarios:** Real-world production fires, secret leaks, and disaster recoveries.
 - 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
