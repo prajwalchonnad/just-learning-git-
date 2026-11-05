@@ -1684,7 +1684,7 @@ def main():
             print(f"  {Color.CYAN}git last{Color.RESET}  -> Deep inspection of the latest commit\n")
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
         elif choice in ["8", "q", "exit"]:
-            print(f"\n{Color.GREEN}Keep committing like a ninja! Bye Prajwal! 🚀{Color.RESET}\n")
+            print(f"\n{Color.GREEN}Keep committing like a ninja! Bye soldier! 🫡{Color.RESET}\n")
             time.sleep(0.8)
             break
 
@@ -1692,7 +1692,7 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print(f"\n\n{Color.YELLOW}Game exited. See you in the commits! 👋{Color.RESET}\n")
+        print(f"\n\n{Color.YELLOW}Game exited. Bye soldier! 🫡{Color.RESET}\n")
     except Exception as e:
         print(f"\n{Color.RED}Something went wrong: {e}{Color.RESET}\n")
         import traceback
