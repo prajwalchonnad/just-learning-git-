@@ -281,6 +281,136 @@ VIVA_QUESTIONS = [
         "tip": "Force pushing replaces remote history with your local history. If teammates pushed work in between, their work is wiped out.",
         "praise": "Exactly right. Use --force-with-lease if you ever must force-push, and never do it on shared branches!",
         "roast": "Force push overwrites remote history. If teammates pulled or pushed in between, you risk deleting their work."
+    },
+    {
+        "q": "What is the primary difference between 'git pull' and 'git pull --rebase'?",
+        "options": [
+            "A) git pull --rebase downloads faster by compressing history.",
+            "B) git pull merges upstream commits with a merge commit; git pull --rebase replays your local unpushed commits on top of upstream for a linear history.",
+            "C) git pull --rebase deletes local unpushed commits.",
+            "D) git pull --rebase only works when connected over SSH."
+        ],
+        "ans": "B",
+        "tip": "Many professional teams prefer 'git pull --rebase' because it prevents noisy 'Merge branch main into feature' clutter commits.",
+        "praise": "Outstanding! Rebasing during pull keeps your Git log perfectly linear and clean.",
+        "roast": "git pull --rebase avoids creating merge commits by replaying your local commits atop the updated remote tracking branch."
+    },
+    {
+        "q": "What does 'git merge --squash feature' do when run on the main branch?",
+        "options": [
+            "A) Compresses the Git database into a single zip file.",
+            "B) Deletes the feature branch and aborts all work.",
+            "C) Combines all commits from the feature branch into a single staged change without automatically committing.",
+            "D) Automatically force-pushes all feature commits directly to production."
+        ],
+        "ans": "C",
+        "tip": "Squash merge is popular for feature branches with lots of messy WIP commits — it condenses them into one clean commit on main.",
+        "praise": "Exactly right. Squash merges all branch modifications into the staging area, letting you write a clean single commit message.",
+        "roast": "--squash condenses all the changes of a branch into your staging area so you can make one single cohesive commit."
+    },
+    {
+        "q": "What problem does 'git worktree' solve for developers?",
+        "options": [
+            "A) It automatically designs UI wireframes from markdown.",
+            "B) It allows you to check out and work on multiple branches simultaneously in separate directories without switching or stashing.",
+            "C) It replaces GitHub by hosting repositories on peer-to-peer torrent networks.",
+            "D) It converts Git repositories into Subversion repositories."
+        ],
+        "ans": "B",
+        "tip": "With git worktree, you never have to stash dirty code just to review a PR or do a hotfix — you open a second folder on that branch instantly.",
+        "praise": "Pro-tier knowledge! Worktrees eliminate the need to duplicate clone repos or constantly stash work to switch branches.",
+        "roast": "git worktree allows you to link multiple working trees to the same repository database, letting you check out multiple branches at once."
+    },
+    {
+        "q": "In Git 2.23+, what is the difference between 'git restore <file>' and 'git restore --staged <file>'?",
+        "options": [
+            "A) git restore <file> discards unstaged working tree changes; --staged unstages a file while keeping disk modifications intact.",
+            "B) --staged deletes the file from disk permanently.",
+            "C) They do the exact same thing.",
+            "D) git restore only works on files under 1MB."
+        ],
+        "ans": "A",
+        "tip": "Git 2.23 introduced 'git restore' to replace the confusingly overloaded 'git checkout -- <file>'.",
+        "praise": "Clean and precise! Modern Git separates branch switching ('git switch') from file restoration ('git restore').",
+        "roast": "git restore <file> resets your working copy. Adding --staged targets the staging area (index) without altering the file on disk."
+    },
+    {
+        "q": "What does running 'git clean -fd' do?",
+        "options": [
+            "A) Formats all Python code using the Black formatter.",
+            "B) Forcefully deletes all untracked files and directories from your working tree.",
+            "C) Deletes all merged remote branches on GitHub.",
+            "D) Fixes corrupted git commit objects."
+        ],
+        "ans": "B",
+        "tip": "Always run 'git clean -nd' (dry-run) first to preview what would be deleted before running the destructive -f flag!",
+        "praise": "Correct! -f forces deletion and -d includes untracked directories.",
+        "roast": "git clean removes untracked files. -f is force, and -d includes untracked directories. Use with caution!"
+    },
+    {
+        "q": "How can you see which developer last changed each line of 'server.py' between lines 50 and 80?",
+        "options": [
+            "A) git log -n 1 server.py",
+            "B) git diff server.py",
+            "C) git blame -L 50,80 server.py",
+            "D) git show server.py:50-80"
+        ],
+        "ans": "C",
+        "tip": "git blame annotates each line in a file with the commit hash, author name, and date it was last modified.",
+        "praise": "Spot on! git blame with -L line ranges is essential for code archaeology and finding context behind changes.",
+        "roast": "git blame with -L <start>,<end> shows line-by-line author and commit info for that specific range."
+    },
+    {
+        "q": "In an interactive rebase ('git rebase -i'), what is the difference between 'squash' and 'fixup'?",
+        "options": [
+            "A) squash deletes the commit; fixup renames it.",
+            "B) squash combines the commit and prompts to merge both messages; fixup combines the commit but discards this commit's message.",
+            "C) fixup only works on test files; squash works on code files.",
+            "D) There is no functional difference."
+        ],
+        "ans": "B",
+        "tip": "Use 'fixup' when fixing a typo or small lint issue — you don't need 'fix typo' preserved in the final commit message.",
+        "praise": "Expert answer! fixup is the cleanest way to absorb minor bugfix patches into previous commits silently.",
+        "roast": "Both combine into the prior commit, but fixup automatically discards the commit message, keeping history cleaner."
+    },
+    {
+        "q": "Where do client-side Git hooks reside in a repository, and how are they executed?",
+        "options": [
+            "A) In the cloud on GitHub Actions servers.",
+            "B) Inside the .git/hooks/ directory as executable scripts triggered by events like pre-commit or pre-push.",
+            "C) In package.json under scripts.",
+            "D) In a global system folder managed by the operating system kernel."
+        ],
+        "ans": "B",
+        "tip": "Git hooks are client-side scripts (bash, python, node) that run locally before actions like committing or pushing.",
+        "praise": "Correct! .git/hooks holds local hook scripts that automate linting, tests, and commit message validation.",
+        "roast": "Git hooks live in .git/hooks/. They are local scripts triggered before or after git operations."
+    },
+    {
+        "q": "What is a shallow clone ('git clone --depth 1 <url>') and why is it heavily used in CI/CD pipelines?",
+        "options": [
+            "A) It only clones README files to save memory.",
+            "B) It downloads only the latest single commit snapshot without full history, saving bandwidth and build time.",
+            "C) It encrypts the repository with SSL certificates.",
+            "D) It only clones branches created in the last 24 hours."
+        ],
+        "ans": "B",
+        "tip": "CI/CD runners only need to build and test the latest code — downloading 10 years of commit history wastes time and bandwidth.",
+        "praise": "Exact understanding! Shallow clones drastically accelerate automated build and test pipelines.",
+        "roast": "--depth 1 truncates history to just the latest commit, minimizing transfer size for automated build environments."
+    },
+    {
+        "q": "How does Git verify data integrity and uniquely identify every blob, tree, and commit object?",
+        "options": [
+            "A) By assigning an auto-incrementing integer ID (1, 2, 3...).",
+            "B) By recording the file's Windows creation timestamp.",
+            "C) By computing a cryptographic hash (SHA-1 or SHA-256) of the object's type, size, and content.",
+            "D) By asking the GitHub server to assign an ID over HTTP."
+        ],
+        "ans": "C",
+        "tip": "This is why Git is called 'content-addressable storage' — if a single byte in a file changes, its hash changes completely.",
+        "praise": "Master-level computer science comprehension! Git's object model guarantees that history cannot be silently tampered with.",
+        "roast": "Git uses cryptographic hashing (SHA) of object headers and content. Any modification produces a completely different hash."
     }
 ]
 
@@ -349,6 +479,45 @@ DISASTER_SCENARIOS = [
         ],
         "ans_idx": 1,
         "reaction": "Correct! 'git rm --cached' unstages the file without deleting it from disk, and '--amend' rewires the latest commit so the giant file is never saved in Git history."
+    },
+    {
+        "title": "Git pull rejected: local uncommitted changes would be overwritten",
+        "story": "You modified 'api.py' and have not committed it yet. You ran 'git pull'\n  to grab your teammate's new endpoints, but Git aborted with:\n  'error: Your local changes to the following files would be overwritten by merge: api.py'",
+        "prompt": "How do you download your teammate's updates safely without losing your local in-progress code?",
+        "choices": [
+            "git stash && git pull && git stash pop",
+            "git push --force origin main  (force push your uncommitted code)",
+            "git reset --hard HEAD  (wipe all your uncommitted code to let the pull succeed)",
+            "rm api.py && git pull  (delete the file and start your work over)"
+        ],
+        "ans_idx": 1,
+        "reaction": "Correct! Stashing temporarily shelters your uncommitted modifications. The pull finishes cleanly, and 'git stash pop' puts your changes back on top!"
+    },
+    {
+        "title": "Committed with the wrong author email on your laptop",
+        "story": "You just made your first commit in the company repo, but realized your Git author config\n  was still set to your personal gaming email: 'gamer99@gmail.com'. You haven't pushed yet.",
+        "prompt": "How do you correct the author name and email on your latest local commit before pushing?",
+        "choices": [
+            "git commit --amend --author=\"Jane Doe <jane@company.com>\" --no-edit",
+            "git push --force origin main  (push it anyway and change it on GitHub web UI)",
+            "Delete your GitHub account and create a new one",
+            "git revert HEAD  (creates a second commit with the same wrong email)"
+        ],
+        "ans_idx": 1,
+        "reaction": "Correct! 'git commit --amend --author=...' cleanly updates the authorship metadata of the tip commit without modifying its code or message."
+    },
+    {
+        "title": "Hit a merge conflict midway through an interactive rebase",
+        "story": "You ran 'git rebase -i main' to tidy up your feature branch. On commit 2 of 4,\n  Git stopped with a conflict in 'models.py'. You opened the file, removed the markers,\n  and verified the code is correct.",
+        "prompt": "After staging the resolved 'models.py' with 'git add models.py', which command resumes the rebase?",
+        "choices": [
+            "git rebase --continue",
+            "git commit -m \"fix conflict\"  (never run git commit during an active rebase!)",
+            "git rebase --abort  (aborts the rebase and wipes all your rebase progress)",
+            "git push origin feature"
+        ],
+        "ans_idx": 1,
+        "reaction": "Correct! During a rebase, never run 'git commit'! Stage your resolved files with 'git add' and run 'git rebase --continue' to apply the remaining commits."
     }
 ]
 
@@ -746,6 +915,36 @@ def mode_git_for_humans():
             "opts": ["A) .gitconfig", "B) .gitignore", "C) .gitkeep"],
             "ans": "B",
             "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc."
+        },
+        {
+            "q": "Under the hood, what is a Git branch?",
+            "opts": [
+                "A) A complete copy of every file in the project duplicated in a folder",
+                "B) A tiny 41-byte text file containing a 40-character commit hash pointer",
+                "C) A zip archive stored on GitHub cloud servers"
+            ],
+            "ans": "B",
+            "explain": "Branches in Git are lightweight pointers — just 41 bytes on disk containing a commit hash. Creating a branch is virtually instantaneous."
+        },
+        {
+            "q": "What is the difference between 'git reset --soft' and 'git reset --hard'?",
+            "opts": [
+                "A) --soft keeps changes staged in the index; --hard wipes changes from both staging and working directory",
+                "B) --soft only works on feature branches; --hard only works on main",
+                "C) There is no difference; they are exact synonyms"
+            ],
+            "ans": "A",
+            "explain": "git reset --soft moves HEAD back while keeping your code staged. --hard resets everything back to that commit, discarding uncommitted work."
+        },
+        {
+            "q": "What is the golden rule of Git rebasing?",
+            "opts": [
+                "A) Only rebase on weekends",
+                "B) Never rebase commits that have already been pushed to a public, shared branch",
+                "C) Rebase every time you run git status"
+            ],
+            "ans": "B",
+            "explain": "Rebasing rewrites commit hashes. If teammates have already pulled those commits, rewiring shared history breaks their repositories."
         }
     ]
 
@@ -772,13 +971,13 @@ def mode_git_for_humans():
     print(f"{Color.BOLD}{Color.MAGENTA}╔════════════════════════════════════════════════════════════════════╗")
     print(f"║                 GIT FOR HUMANS — COMPLETE                          ║")
     print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
-    print(f"  Final Quiz Score: {Color.BOLD}{h_score}/7{Color.RESET}\n")
-    if h_score == 7:
-        print(f"  {Color.GREEN}✅ Perfect score! You genuinely understand Git. Jump into the Practice Arena next.{Color.RESET}")
+    print(f"  Final Quiz Score: {Color.BOLD}{h_score}/10{Color.RESET}\n")
+    if h_score == 10:
+        print(f"  {Color.GREEN}✅ Perfect score (10/10)! You genuinely understand Git from first principles. Jump into the Practice Arena next.{Color.RESET}")
+    elif h_score >= 8:
+        print(f"  {Color.GREEN}👍 Strong result ({h_score}/10). Re-read the parts you missed, then try the Practice Arena.{Color.RESET}")
     elif h_score >= 5:
-        print(f"  {Color.GREEN}👍 Strong result. Re-read the parts you missed, then try the Practice Arena.{Color.RESET}")
-    elif h_score >= 3:
-        print(f"  {Color.YELLOW}📖 Getting there. Go back through Parts 5–8 and try the quiz again.{Color.RESET}")
+        print(f"  {Color.YELLOW}📖 Getting there ({h_score}/10). Go back through Parts 5–10 and try the quiz again.{Color.RESET}")
     else:
         print(f"  {Color.YELLOW}📖 Take your time — re-read from Part 3 onwards, then come back.{Color.RESET}")
     print(f"\n  {Color.DIM}Next step → Mode 2: Practice Arena (Low difficulty) to type the commands yourself.{Color.RESET}\n")
@@ -881,6 +1080,24 @@ CHALLENGES_LOW = [
         "hint": "Use the standard double-dash version flag with git: git --v...",
         "output": "git version 2.44.0.windows.1",
         "why": "Verifies that the Git binary is available on your system PATH."
+    },
+    {
+        "concept": "Inspecting short compact status",
+        "situation": "You want a fast, two-letter abbreviated overview of what files are modified and untracked without long explanations.",
+        "task": "Run git status in compact short mode:",
+        "valid": ["git status -s", "git status --short"],
+        "hint": "Add the short flag (-s or --short) to the status command",
+        "output": " M index.html\n?? notes.txt",
+        "why": "'git status -s' shows a concise two-column format: column 1 is staging state, column 2 is working tree state."
+    },
+    {
+        "concept": "Inspecting the latest commit in detail",
+        "situation": "You want to inspect the author, timestamp, commit message, and full code diff of the latest commit (HEAD).",
+        "task": "Display the latest commit's metadata and diff:",
+        "valid": ["git show", "git show HEAD"],
+        "hint": "Use the 4-letter subcommand that displays an object's contents: git <subcommand>",
+        "output": "commit 4a8b1c9 (HEAD -> main)\nAuthor: Prajwal Chonnad <prajwal@example.com>\nDate:   Wed Nov 4 14:30:00 2026 +0530\n\n    add homepage layout\n\ndiff --git a/index.html b/index.html\n--- a/index.html\n+++ b/index.html\n@@ -1,3 +1,6 @@\n+<header>Welcome</header>",
+        "why": "'git show' (or 'git show HEAD') presents the full details and diff of the most recent snapshot."
     }
 ]
 
@@ -974,6 +1191,24 @@ CHALLENGES_MEDIUM = [
         "hint": "Pass the author filter flag to git log: git log --author=\"...\"",
         "output": "commit 8c2a10d5e1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6\nAuthor: Alice <alice@example.com>\nDate:   Tue Nov 3 17:15:00 2026 +0530\n\n    configure routes",
         "why": "'--author' filters history by author name or email pattern."
+    },
+    {
+        "concept": "Checking remote repository URLs",
+        "situation": "You want to verify which GitHub repository URLs your project is connected to for fetching and pushing.",
+        "task": "List all configured remote connections with their full URLs:",
+        "valid": ["git remote -v", "git remote --verbose"],
+        "hint": "Use 'git remote' with the verbose flag (-v or --verbose)",
+        "output": "origin  https://github.com/example/my-project.git (fetch)\norigin  https://github.com/example/my-project.git (push)",
+        "why": "'git remote -v' shows the exact fetch and push URLs mapped to the 'origin' remote alias."
+    },
+    {
+        "concept": "Renaming a local branch cleanly",
+        "situation": "You created a branch called 'search-ui' but your team's convention requires 'feature-search'. You want to rename it without losing commits.",
+        "task": "Rename the current branch to 'feature-search':",
+        "valid": ["git branch -m feature-search", "git branch -m search-ui feature-search"],
+        "hint": "Use 'git branch' with the move/rename flag (-m) followed by the new branch name",
+        "output": "(Renamed branch to 'feature-search' — HEAD and all commit history are preserved)",
+        "why": "The '-m' flag renames/moves a branch safely while retaining all linked commit references."
     }
 ]
 
@@ -1075,6 +1310,24 @@ CHALLENGES_HIGH = [
         "hint": "A 6-letter command short for 'reference log' — Git's flight recorder",
         "output": "4a8b1c9 (HEAD -> main) HEAD@{0}: commit: add homepage layout\ne2f7b10 HEAD@{1}: commit: initial setup\n9b3d1f0 HEAD@{2}: checkout: moving from search-feature to main\nc4b1a8f HEAD@{3}: commit: fix: resolve critical auth token leak",
         "why": "git reflog records every movement of HEAD, including resets. Find the commit SHA and run 'git reset --hard <SHA>' to recover."
+    },
+    {
+        "concept": "Dry-run preview before deleting untracked files",
+        "situation": "You have various temporary logs and test scripts scattered in your project. You want to see which untracked files 'git clean' would delete without actually deleting anything yet.",
+        "task": "Perform a safe dry-run preview of git clean:",
+        "valid": ["git clean -n", "git clean --dry-run", "git clean -nd", "git clean -dn"],
+        "hint": "Combine 'git clean' with the dry-run flag (-n or --dry-run)",
+        "output": "Would remove debug_test.log\nWould remove temp_cache/\nWould remove scratch.py",
+        "why": "'git clean -n' lists untracked files that are candidates for deletion without modifying your filesystem."
+    },
+    {
+        "concept": "Working on multiple branches simultaneously with worktree",
+        "situation": "You are deep in a feature branch, but need to check out 'hotfix-branch' in a new folder '../hotfix' to fix a critical bug without stashing or switching.",
+        "task": "Add a new linked worktree for 'hotfix-branch' at '../hotfix':",
+        "valid": ["git worktree add ../hotfix hotfix-branch", "git worktree add ../hotfix"],
+        "hint": "Use 'git worktree add' followed by the destination path ('../hotfix') and the branch name ('hotfix-branch')",
+        "output": "Preparing worktree (checking out 'hotfix-branch')\nHEAD is now at 8f1e2d3 fix: resolve critical auth token leak",
+        "why": "'git worktree add' links a second working directory to your repository, allowing you to build and test multiple branches at once."
     }
 ]
 
