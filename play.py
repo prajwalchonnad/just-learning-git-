@@ -859,303 +859,595 @@ parent hash, author, and commit message directly from the raw database!""")
             print(f"{Color.YELLOW}{Color.BOLD}Internals Score: {i_score}/3{Color.RESET}\n")
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
 
-def _gfh_pause(label="Continue"):
-    """Helper: press Enter to proceed, or type 0 to go back to menu."""
-    s = input(f"\n{Color.DIM}[ Press Enter to {label}, or type '0' to return to Menu ]{Color.RESET} ").strip().lower()
-    return s not in ["0", "menu", "q", "exit"]
+def _gfh_nav_bar(current_part, total_parts=10):
+    print(f"\n{Color.BOLD}{Color.WHITE}────────────────────────────────────────────────────────────────────────────────────{Color.RESET}")
+    prev_str = f"{Color.YELLOW}[P]{Color.RESET} Previous ⏪" if current_part > 1 else f"{Color.DIM}[P] Previous{Color.RESET}"
+    next_str = f"{Color.YELLOW}[N]{Color.RESET} Next ⏩" if current_part < total_parts else f"{Color.GREEN}[T]{Color.RESET} Start Quiz 🏁"
+    sim_str = f"{Color.GREEN}[T]{Color.RESET} Try Mini-Sim 🎮" if current_part < total_parts else ""
+    print(f"  {next_str}   {prev_str}   {sim_str}   {Color.CYAN}[1-10]{Color.RESET} Jump to Part   {Color.DIM}[0]{Color.RESET} Menu")
+    print(f"{Color.BOLD}{Color.WHITE}────────────────────────────────────────────────────────────────────────────────────{Color.RESET}")
+    choice = input(f"{Color.BOLD}Your choice [Enter=Next, P=Prev, T=Sim, 1-{total_parts}, 0=Menu]: {Color.RESET}").strip().lower()
+    return choice
+
+def _gfh_sim_part1():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 1: Escape the Manual Backup Nightmare!                ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("Your project folder is currently cluttered with duplicate copies:")
+    print(f"  📁 my-project/")
+    print(f"     ├── {Color.RED}report.docx{Color.RESET}")
+    print(f"     ├── {Color.RED}report_v2.docx{Color.RESET}")
+    print(f"     ├── {Color.RED}report_FINAL.docx{Color.RESET}")
+    print(f"     └── {Color.RED}report_FINAL_actual_USE_THIS.docx{Color.RESET}\n")
+    print("Let's replace manual confusion with Git version control.")
+    cmd = input(f"{Color.BOLD}Type the command to initialize Git tracking in this folder: {Color.RESET}").strip()
+    if cmd in ["git init", "git init ."]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Initialized!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("Initialized empty Git repository in /my-project/.git/")
+        print(f"\n{Color.YELLOW}✨ Look at your folder now:{Color.RESET}")
+        print(f"  📁 my-project/")
+        print(f"     ├── {Color.GREEN}report.docx{Color.RESET}   (ONE clean file!)")
+        print(f"     └── {Color.MAGENTA}.git/{Color.RESET}         (Hidden engine recording all historical snapshots)")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git init{Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 1...{Color.RESET}")
+
+def _gfh_sim_part2():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 2: Moving Code Through the 3 Stages                   ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("Stage 1: You just edited 'app.py' in your Working Directory.")
+    print("Stage 2: Staging Area (curating files for snapshot)")
+    print("Stage 3: Commit History (permanent database)\n")
+    cmd1 = input(f"{Color.BOLD}Step 1: Type the command to stage 'app.py' into the staging area: {Color.RESET}").strip()
+    if cmd1 in ["git add app.py", "git add .", "git add -A"]:
+        print(f"\n{Color.GREEN}✅ Staged! 'git status' now shows 'app.py' in green ready for commit.{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 Hint: 'git add app.py' stages the file.{Color.RESET}")
+
+    cmd2 = input(f"\n{Color.BOLD}Step 2: Commit staged changes with message 'setup app': {Color.RESET}").strip()
+    if cmd2 in ['git commit -m "setup app"', "git commit -m 'setup app'", 'git commit -m"setup app"', "git commit -m'setup app'"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}🎉 Snapshot Sealed!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("[main (root-commit) 4a8b1c9] setup app\n 1 file changed, 18 insertions(+)")
+        print(f"\n{Color.YELLOW}Commit 4a8b1c9 is now permanently recorded in .git!{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git commit -m \"setup app\"{Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 2...{Color.RESET}")
+
+def _gfh_sim_part3():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 3: The Daily 5 Workflow Drill                         ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("It's 9:00 AM. You sit at your desk to start work on a team project.")
+    print("Before you touch a single line of code, what should you do first?\n")
+    cmd = input(f"{Color.BOLD}Type the command to download teammate commits from GitHub: {Color.RESET}").strip()
+    if cmd in ["git pull", "git pull origin main", "git pull origin"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Perfect morning habit!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("Updating e2f7b10..4a8b1c9\nFast-forward\n server.py | 12 ++++++++++++\n 1 file changed, 12 insertions(+)")
+        print(f"\n{Color.YELLOW}Your local files are now 100% up-to-date with your team. Zero surprise conflicts!{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git pull (always pull before you code!){Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 3...{Color.RESET}")
+
+def _gfh_sim_part4():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 4: Read the Diff Like a Pro                           ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("Here is a real line-by-line diff from 'git diff':\n")
+    print(f"{Color.WHITE}diff --git a/auth.py b/auth.py{Color.RESET}")
+    print(f"{Color.WHITE}--- a/auth.py{Color.RESET}")
+    print(f"{Color.WHITE}+++ b/auth.py{Color.RESET}")
+    print(f"{Color.CYAN}@@ -5,3 +5,4 @@{Color.RESET}")
+    print(f"{Color.WHITE} def login(username, password):{Color.RESET}")
+    print(f"{Color.RED}-    if password == \"1234\": return True{Color.RESET}")
+    print(f"{Color.GREEN}+    if verify_hash(password): return True{Color.RESET}")
+    print(f"{Color.GREEN}+    log_security_audit(username){Color.RESET}")
+    print(f"{Color.WHITE}     return False{Color.RESET}\n")
+    ans = input(f"{Color.BOLD}Question: How many lines were ADDED (+) in this diff? [Type a number]: {Color.RESET}").strip()
+    if ans == "2":
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (2 lines added, 1 line deleted){Color.RESET}")
+        print("Green lines with '+' are additions; red lines with '-' are deletions.")
+        print("Always run 'git diff' before committing so you never save unintended edits!")
+    else:
+        print(f"\n{Color.YELLOW}💡 Count the lines starting with '+': there are 2 lines added.{Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 4...{Color.RESET}")
+
+def _gfh_sim_part5():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 5: Creating an Isolated Universe (Branching)          ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("Your production app is running smoothly on branch 'main'.")
+    print("You want to build an experimental feature called 'ai-chat' in complete isolation.\n")
+    cmd = input(f"{Color.BOLD}Create and switch to new branch 'ai-chat' in one command: {Color.RESET}").strip()
+    if cmd in ["git checkout -b ai-chat", "git switch -c ai-chat"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Parallel Universe Created!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("Switched to a new branch 'ai-chat'")
+        print(f"\n{Color.YELLOW}Visualizing branch pointers:{Color.RESET}")
+        print("  main:     4a8b1c9 (Production safe — untouched!)")
+        print("  ai-chat:  4a8b1c9 (* HEAD is here! Code freely without fear)")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git checkout -b ai-chat (or git switch -c ai-chat){Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 5...{Color.RESET}")
+
+def _gfh_sim_part6():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 6: Inspect Remote Changes Safely                      ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("Your teammate Sarah says she pushed updates to GitHub.")
+    print("You want to see her new commits WITHOUT modifying or merging anything into your local files yet.\n")
+    cmd = input(f"{Color.BOLD}What command fetches remote commits without merging? {Color.RESET}").strip()
+    if cmd in ["git fetch", "git fetch origin"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ Safe Inspection!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("From https://github.com/example/repo\n * [new branch]      sarah-feature -> origin/sarah-feature")
+        print(f"\n{Color.YELLOW}Your working directory was NOT touched at all. git fetch is 100% safe!{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git fetch (downloads remote refs without merging){Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 6...{Color.RESET}")
+
+def _gfh_sim_part7():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 7: Emergency Staging Rescue                           ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("🚨 EMERGENCY: You ran 'git add .' and accidentally staged '.env'!")
+    print("'.env' contains your real production database password and Stripe API secret key.")
+    print("You have NOT committed yet. You must unstage '.env' immediately without deleting the file!\n")
+    cmd = input(f"{Color.BOLD}Type the command to unstage '.env' safely: {Color.RESET}").strip()
+    if cmd in ["git restore --staged .env", "git reset HEAD .env", "git reset .env"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}🛡️ SECRET SAVED!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("(Unstaged changes in '.env' — file kept safely on disk)")
+        print(f"\n{Color.YELLOW}'.env' is out of the staging index! Next step: add '.env' to your .gitignore!{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git restore --staged .env (or git reset HEAD .env){Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 7...{Color.RESET}")
+
+def _gfh_sim_part8():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 8: The Git Flight Recorder (Reflog)                   ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("A junior engineer ran 'git reset --hard HEAD~3' by mistake.")
+    print("All 3 commits appear gone from 'git log'. Panic ensues!")
+    print("What 6-letter command opens Git's internal flight recorder to find the lost commit hash?\n")
+    cmd = input(f"{Color.BOLD}Type the command: {Color.RESET}").strip()
+    if cmd in ["git reflog", "git reflog show"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✨ FLIGHT RECORDER OPENED!{Color.RESET}")
+        print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
+        print("4a8b1c9 HEAD@{0}: reset: moving to HEAD~3\n9b3d1f0 HEAD@{1}: commit: add user profile picture\n8c2a10d HEAD@{2}: commit: implement stripe checkout")
+        print(f"\n{Color.YELLOW}The lost commit '9b3d1f0' is found! Running 'git reset --hard 9b3d1f0' restores it completely.{Color.RESET}")
+    else:
+        print(f"\n{Color.YELLOW}💡 The command was: git reflog (Git's black box recorder!){Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 8...{Color.RESET}")
+
+def _gfh_sim_part9():
+    clear_screen()
+    print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+    print("║  🎮 MINI-SIM 9: The .gitignore Bouncer                             ║")
+    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+    print("You are configuring .gitignore for a new repository.")
+    print("Which of these items MUST be added to .gitignore?\n")
+    print("  [1] main.py (Your core application logic)")
+    print("  [2] .env (Contains database passwords and API tokens)")
+    print("  [3] node_modules/ or __pycache__/ (Giant auto-generated build dependencies)")
+    print("  [4] README.md (Project documentation for teammates)\n")
+    ans = input(f"{Color.BOLD}Type the numbers that belong in .gitignore (e.g. '2 3'): {Color.RESET}").strip().replace(",", " ")
+    parts = set(ans.split())
+    if parts == {"2", "3"} or ans in ["23", "32"]:
+        print(f"\n{Color.GREEN}{Color.BOLD}✅ 100% Correct!{Color.RESET}")
+        print("Never commit secrets (.env) or generated dependencies (node_modules, __pycache__).")
+        print("Tracked code (main.py) and documentation (README.md) should ALWAYS be committed.")
+    else:
+        print(f"\n{Color.YELLOW}💡 The correct files were [2] and [3]! Secrets and generated folders never belong in Git.{Color.RESET}")
+    input(f"\n{Color.DIM}Press Enter to return to Part 9...{Color.RESET}")
 
 def mode_git_for_humans():
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║              🐣  GIT FOR HUMANS — THE COMPLETE GUIDE               ║")
-    print("╚════════════════════════════════════════════════════════════════════╝\n")
-    print_slow("Never used Git before? Good. This guide walks you through everything.", 0.013, Color.CYAN)
-    print_slow("Read every part. By the end you'll understand Git well enough to actually use it.\n", 0.013)
-    print(f"  {Color.DIM}10 parts + a final quiz. Type '0' at any [Enter] prompt to go back to menu.{Color.RESET}\n")
-    if not _gfh_pause("start Part 1"): return
+    current_part = 1
+    total_parts = 10
 
-    # ─── PART 1 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 1 / 10 : Why Does Git Exist? ───────────────────────────────{Color.RESET}\n")
-    print_slow("Everyone has done this at some point:", 0.013)
-    print(f"""
-  📄 report.docx
-  📄 report_v2.docx
-  📄 report_FINAL.docx
-  📄 report_FINAL_actual.docx
-  📄 report_USE_THIS_ONE_FOR_REAL.docx
+    while True:
+        clear_screen()
+        if current_part == 1:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 1 / 10 : Why Does Git Exist? (The Problem We All Face)    ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Everyone has done this manual file nightmare at some point:\n")
+            print(f"  📄 {Color.RED}report.docx{Color.RESET}")
+            print(f"  📄 {Color.RED}report_v2.docx{Color.RESET}")
+            print(f"  📄 {Color.RED}report_FINAL.docx{Color.RESET}")
+            print(f"  📄 {Color.RED}report_FINAL_actual_USE_THIS.docx{Color.RESET}\n")
+            print(f"{Color.BOLD}Why manual copying fails:{Color.RESET}")
+            print("  • Which file is actually the latest working code?")
+            print("  • What changed between v2 and FINAL? Who changed it?")
+            print("  • How do you undo one bad line from 3 days ago without losing today's work?")
+            print("  • How can two developers work on the same file without overwriting each other?\n")
+            print(f"{Color.GREEN}{Color.BOLD}Git's Solution:{Color.RESET}")
+            print("  Your project lives in ONE clean folder. Git runs quietly inside a hidden")
+            print("  '.git' folder, recording a cryptographic timeline of snapshots called 'commits'.\n")
+
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part1()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                print(f"{Color.YELLOW}You are already at Part 1!{Color.RESET}")
+                time.sleep(0.6)
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 2
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
+
+        elif current_part == 2:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 2 / 10 : The 3 Stages of Git (Working, Staging, History)  ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Most Git confusion vanishes once you understand your computer has 3 areas:\n")
+            print(f"""  ┌─────────────────────────┐      git add       ┌─────────────────────────┐     git commit     ┌─────────────────────────┐
+  │    Working Directory    │ ─────────────────► │   Staging Area (Index)  │ ─────────────────► │    Commit History       │
+  │  (Files you edit here)  │                    │   (Curated checkpoint)  │                    │  (Permanent database)   │
+  └─────────────────────────┘                    └─────────────────────────┘                    └─────────────────────────┘
 """)
-    print_slow("That is called manual version control.", 0.013)
-    print_slow("You're making a new copy every time you're scared to overwrite your old work.", 0.013)
-    print_slow("It works for a while, but it breaks down fast:\n", 0.013)
-    print(f"  • Which file is actually the latest?\n  • What changed between v2 and FINAL?\n  • How do you undo just one specific change from 3 days ago?\n  • How do two people work on the same file simultaneously?\n")
-    print_slow("Git solves ALL of this — automatically, cleanly, and without duplicate files.", 0.013, Color.GREEN)
-    print_slow("Your project stays in ONE folder. Git tracks every single change inside it.", 0.013, Color.GREEN)
-    if not _gfh_pause("Part 2"): return
+            print(f"  1. {Color.BOLD}Working Directory:{Color.RESET} The active files you see in VS Code / File Explorer.")
+            print(f"  2. {Color.BOLD}Staging Area (The Index):{Color.RESET} The staging buffer where you curate what goes into the next snapshot.")
+            print(f"  3. {Color.BOLD}Commit History (Local Repo):{Color.RESET} Permanent snapshots stored in .git with author, date, and message.\n")
+            print(f"{Color.CYAN}💡 Git vs GitHub:{Color.RESET} Git is the local version control tool. GitHub is the cloud host.")
 
-    # ─── PART 2 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 2 / 10 : What Git Actually Is ──────────────────────────────{Color.RESET}\n")
-    print_slow("Git is a version control system. That means it tracks changes to files over time.", 0.013)
-    print_slow("Think of it as a detailed timeline of your project:\n", 0.013)
-    print(f"""  {Color.DIM}── Jan 10 ──► Jan 11 ──► Jan 12 ──► Jan 15 ──► today{Color.RESET}
-       |          |          |          |          |
-    "init"    "added     "fixed    "added     "updated
-              login"     bug"     signup"    README"
-""")
-    print_slow("Each point on that timeline is called a commit.", 0.013, Color.CYAN)
-    print_slow("You can go back to any commit at any time. Nothing is ever truly lost.\n", 0.013)
-    print_slow("Git runs locally on your machine. GitHub is a website that hosts your Git history online", 0.013)
-    print_slow("— it's a backup and sharing platform. Git ≠ GitHub. Git is the tool, GitHub is the cloud.\n", 0.013, Color.WHITE)
-    if not _gfh_pause("Part 3"): return
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part2()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 1
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 3
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    # ─── PART 3 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 3 / 10 : The 5 Commands That Cover 80% of Daily Git ────────{Color.RESET}\n")
-    print_slow("You don't need to memorize everything. Start with these five:\n", 0.013)
-    print(f"  {Color.GREEN}{Color.BOLD}git init{Color.RESET}        — Start tracking a folder with Git. Run this once per project.")
-    print(f"  {Color.GREEN}{Color.BOLD}git add .{Color.RESET}       — Stage all changed files (select what goes in the next snapshot).")
-    print(f"  {Color.GREEN}{Color.BOLD}git commit -m{Color.RESET}   — Save a snapshot with a message. e.g. git commit -m \"add login form\"")
-    print(f"  {Color.GREEN}{Color.BOLD}git push{Color.RESET}        — Upload your commits to GitHub (backup + share with team).")
-    print(f"  {Color.GREEN}{Color.BOLD}git pull{Color.RESET}        — Download your teammate's latest commits from GitHub.\n")
-    print_slow("That's it for the basics. Everything else in Git is built on top of these.", 0.013, Color.WHITE)
-    print_slow("\nThe typical daily workflow looks like this:\n", 0.013)
-    print(f"  1. Edit your files")
-    print(f"  2. {Color.GREEN}git add .{Color.RESET}                       ← stage everything changed")
-    print(f"  3. {Color.GREEN}git commit -m \"what you did\"{Color.RESET}    ← save a snapshot")
-    print(f"  4. {Color.GREEN}git push{Color.RESET}                        ← upload to GitHub")
-    print(f"  5. Next day: {Color.GREEN}git pull{Color.RESET}              ← get teammate changes first\n")
-    if not _gfh_pause("Part 4"): return
+        elif current_part == 3:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 3 / 10 : The 5 Commands Covering 80% of Daily Git         ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("You don't need to memorize 100 commands. Start with these five:\n")
+            print(f"  1. {Color.GREEN}{Color.BOLD}git init{Color.RESET}        — Start tracking a folder with Git (run once per project).")
+            print(f"  2. {Color.GREEN}{Color.BOLD}git add .{Color.RESET}       — Stage all changed files (select what goes in the next snapshot).")
+            print(f"  3. {Color.GREEN}{Color.BOLD}git commit -m{Color.RESET}   — Save staged changes with a message (e.g. git commit -m \"add login\").")
+            print(f"  4. {Color.GREEN}{Color.BOLD}git push{Color.RESET}        — Upload your commits to GitHub (cloud backup + team sync).")
+            print(f"  5. {Color.GREEN}{Color.BOLD}git pull{Color.RESET}        — Download your teammate's latest commits from GitHub.\n")
+            print(f"{Color.BOLD}The Daily Loop:{Color.RESET}")
+            print(f"  Morning: {Color.GREEN}git pull{Color.RESET} → Code → {Color.GREEN}git add .{Color.RESET} → {Color.GREEN}git commit -m \"...\"{Color.RESET} → Evening: {Color.GREEN}git push{Color.RESET}\n")
 
-    # ─── PART 4 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 4 / 10 : Understanding What Changed ─────────────────────────{Color.RESET}\n")
-    print_slow("Before committing, you can inspect what changed.\n", 0.013)
-    print(f"  {Color.CYAN}git status{Color.RESET}         — Shows which files are changed, staged, or untracked.")
-    print(f"                       Red  = changed but NOT yet staged")
-    print(f"                       Green = staged and ready to commit\n")
-    print(f"  {Color.CYAN}git diff{Color.RESET}           — Shows the EXACT lines that changed in unstaged files.")
-    print(f"                       Lines starting with + are additions.")
-    print(f"                       Lines starting with - are deletions.\n")
-    print(f"  {Color.CYAN}git diff --staged{Color.RESET}  — Shows the diff for files that ARE staged (after git add).\n")
-    print_slow("Good habit: always run 'git status' and 'git diff' before committing.", 0.013, Color.GREEN)
-    print_slow("Never commit blindly. Know exactly what you're saving.", 0.013, Color.GREEN)
-    if not _gfh_pause("Part 5"): return
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part3()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 2
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 4
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    # ─── PART 5 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 5 / 10 : Branching — Working Safely ────────────────────────{Color.RESET}\n")
-    print_slow("Problem: your app works perfectly on 'main'. You want to add a search feature.", 0.013)
-    print_slow("If you code directly on main and break something, the working version is gone.\n", 0.013, Color.RED)
-    print_slow("Solution: branches.\n", 0.013, Color.GREEN)
-    print(f"  A branch is an independent copy of your code where you can work freely.")
-    print(f"  When the feature is done and tested, you merge it back into main.\n")
-    print(f"  {Color.CYAN}git checkout -b search-feature{Color.RESET}   ← create new branch + switch to it")
-    print(f"  {Color.DIM}... write code, commit as usual ...{Color.RESET}")
-    print(f"  {Color.CYAN}git checkout main{Color.RESET}                ← go back to main")
-    print(f"  {Color.CYAN}git merge search-feature{Color.RESET}         ← bring search-feature code into main\n")
-    print_slow("The key point: main was untouched the entire time you were building.", 0.013, Color.WHITE)
-    print_slow("If the feature was bad, just delete the branch. Zero damage to main.", 0.013)
-    print(f"\n  {Color.CYAN}git branch{Color.RESET}            ← list all branches")
-    print(f"  {Color.CYAN}git branch -d feature{Color.RESET}  ← delete a merged branch\n")
-    if not _gfh_pause("Part 6"): return
+        elif current_part == 4:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 4 / 10 : Inspecting What Changed (Status & Diffs)         ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Never commit blindly. Git gives you tools to review changes line-by-line:\n")
+            print(f"  • {Color.CYAN}git status{Color.RESET}         — Shows which files are changed, staged, or untracked.")
+            print(f"                       Red   = modified in working directory (not yet staged)")
+            print(f"                       Green = staged and ready to commit in index\n")
+            print(f"  • {Color.CYAN}git diff{Color.RESET}           — Line-by-line diff of unstaged changes (+ green, - red).")
+            print(f"  • {Color.CYAN}git diff --staged{Color.RESET}  — Line-by-line diff of files that ARE already staged.\n")
+            print(f"{Color.GREEN}{Color.BOLD}Pro Habit:{Color.RESET} Always run 'git status' and 'git diff' before committing!")
 
-    # ─── PART 6 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 6 / 10 : Working With Teammates ────────────────────────────{Color.RESET}\n")
-    print_slow("Git becomes very powerful when multiple people work on the same project.\n", 0.013)
-    print(f"  {Color.CYAN}git clone <url>{Color.RESET}       — Download an entire repository from GitHub to your machine.")
-    print(f"                         You only do this once per project.\n")
-    print(f"  {Color.CYAN}git fetch origin{Color.RESET}      — Check what your teammates pushed WITHOUT merging it in.")
-    print(f"                         Safe to run any time — doesn't affect your code.\n")
-    print(f"  {Color.CYAN}git pull{Color.RESET}              — Download AND merge teammate commits into your current branch.")
-    print(f"                         Do this every morning before starting work.\n")
-    print(f"  {Color.CYAN}git push origin main{Color.RESET}  — Upload your commits to the shared remote.\n")
-    print_slow("Common team workflow:\n", 0.013)
-    print(f"  1. {Color.GREEN}git pull{Color.RESET}                     ← get latest before you start")
-    print(f"  2. Create a branch, do your work, commit")
-    print(f"  3. {Color.GREEN}git push origin your-branch{Color.RESET}  ← push your branch")
-    print(f"  4. Open a Pull Request on GitHub for teammates to review")
-    print(f"  5. After approval, merge it into main\n")
-    print_slow("This workflow prevents conflicts and keeps everyone in sync.", 0.013, Color.WHITE)
-    if not _gfh_pause("Part 7"): return
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part4()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 3
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 5
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    # ─── PART 7 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 7 / 10 : Undoing Mistakes ──────────────────────────────────{Color.RESET}\n")
-    print_slow("Everyone makes mistakes. Git almost always lets you undo them.\n", 0.013)
-    print(f"  {Color.CYAN}Scenario 1: You committed something wrong (not pushed yet){Color.RESET}")
-    print(f"  → {Color.GREEN}git reset --soft HEAD~1{Color.RESET}   ← undo the commit, keep changes staged")
-    print(f"  → {Color.GREEN}git reset HEAD~1{Color.RESET}          ← undo commit, unstage changes (keep files)\n")
-    print(f"  {Color.CYAN}Scenario 2: You committed wrong (already pushed to shared branch){Color.RESET}")
-    print(f"  → {Color.GREEN}git revert <commit-id>{Color.RESET}    ← creates a NEW commit that undoes it")
-    print(f"     Safe for shared branches — doesn't rewrite history\n")
-    print(f"  {Color.CYAN}Scenario 3: You have unfinished work but need to switch branches{Color.RESET}")
-    print(f"  → {Color.GREEN}git stash{Color.RESET}                 ← temporarily shelves your changes")
-    print(f"  → {Color.GREEN}git stash pop{Color.RESET}             ← brings them back when you're ready\n")
-    print(f"  {Color.CYAN}Scenario 4: You forgot to include a file in your last commit{Color.RESET}")
-    print(f"  → {Color.GREEN}git add forgotten-file.txt{Color.RESET}")
-    print(f"  → {Color.GREEN}git commit --amend --no-edit{Color.RESET}  ← adds it to the previous commit\n")
-    print_slow("Rule of thumb: if the commit was pushed, use revert. If not, use reset.", 0.013, Color.YELLOW)
-    if not _gfh_pause("Part 8"): return
+        elif current_part == 5:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 5 / 10 : Branching — Working in Total Safety              ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Problem: Your app works perfectly on 'main'. You want to add a feature.")
+            print("If you code on main and introduce a bug, your working production app is broken!\n")
+            print(f"{Color.GREEN}{Color.BOLD}Solution: Branches (Parallel Universes){Color.RESET}\n")
+            print(f"  main branch:        ● ─────── ● ─────── ● ────────────────────── ● (Merge commit)")
+            print(f"                                 \\                        /")
+            print(f"  feature branch:                 ● ──────── ● ──────── ●")
+            print(f"                              (develop in 100% isolation)\n")
+            print(f"  1. {Color.CYAN}git checkout -b feature{Color.RESET}   ← Create branch + switch to it (or git switch -c feature)")
+            print(f"  2. Code and commit freely on the branch.")
+            print(f"  3. {Color.CYAN}git checkout main{Color.RESET}         ← Switch back to main")
+            print(f"  4. {Color.CYAN}git merge feature{Color.RESET}         ← Combine tested code into main")
+            print(f"  5. {Color.CYAN}git branch -d feature{Color.RESET}     ← Safely delete the merged branch\n")
 
-    # ─── PART 8 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 8 / 10 : Reading Project History ───────────────────────────{Color.RESET}\n")
-    print_slow("Git stores the full history of everything. Here's how to read it:\n", 0.013)
-    print(f"  {Color.CYAN}git log{Color.RESET}                       — Full commit history (newest first)")
-    print(f"  {Color.CYAN}git log --oneline{Color.RESET}             — Compact one-line-per-commit view")
-    print(f"  {Color.CYAN}git log -n 5{Color.RESET}                  — Show only the last 5 commits")
-    print(f"  {Color.CYAN}git log --author=\"Prajwal\"{Color.RESET}    — Filter by who made the commit")
-    print(f"  {Color.CYAN}git log --since=\"2024-01-01\"{Color.RESET}  — Filter by date\n")
-    print(f"  {Color.CYAN}git show <commit-id>{Color.RESET}          — See exactly what changed in one commit")
-    print(f"  {Color.CYAN}git diff main..feature{Color.RESET}        — See all differences between two branches\n")
-    print_slow("Every commit has a unique ID (called a SHA) that looks like: a3f9c12", 0.013)
-    print_slow("You can use those IDs to refer to specific commits in other commands.\n", 0.013)
-    print(f"  {Color.GREEN}git reflog{Color.RESET}  — The ultimate safety net: shows every HEAD movement.")
-    print(f"              Even if commits look 'gone' after a reset, reflog shows them.\n")
-    if not _gfh_pause("Part 9"): return
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part5()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 4
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 6
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    # ─── PART 9 ───────────────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 9 / 10 : Good Habits That Save You Later ───────────────────{Color.RESET}\n")
-    print_slow("These habits take 10 seconds each but save hours of debugging:\n", 0.013)
-    print(f"  {Color.GREEN}1. Write clear commit messages{Color.RESET}")
-    print(f"     Bad:  git commit -m \"stuff\"")
-    print(f"     Bad:  git commit -m \"fix\"")
-    print(f"     Good: git commit -m \"fix: prevent crash when user submits empty form\"\n")
-    print(f"  {Color.GREEN}2. Create a .gitignore file{Color.RESET}")
-    print(f"     This tells Git which files to NEVER track:")
-    print(f"     → .env  (passwords and API keys — NEVER commit these)")
-    print(f"     → node_modules/  (auto-generated, huge, should be rebuilt from package.json)")
-    print(f"     → __pycache__/   (Python build files)\n")
-    print(f"  {Color.GREEN}3. Commit small and often{Color.RESET}")
-    print(f"     One logical change per commit. Not 'everything I did in 3 days'.")
-    print(f"     Small commits are easy to review, revert, and understand.\n")
-    print(f"  {Color.GREEN}4. Never commit directly to main on a team project{Color.RESET}")
-    print(f"     Always use a branch. Even for a one-line fix.\n")
-    print(f"  {Color.GREEN}5. Pull before you push{Color.RESET}")
-    print(f"     Always run git pull before git push to avoid conflicts.\n")
-    if not _gfh_pause("the final quiz"): return
+        elif current_part == 6:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 6 / 10 : Collaborating with Teammates (Push, Fetch, Pull) ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("When working on team projects hosted on GitHub:\n")
+            print(f"  • {Color.CYAN}git clone <url>{Color.RESET}       — Download complete repository from GitHub (do once).")
+            print(f"  • {Color.CYAN}git fetch origin{Color.RESET}      — Check remote commits WITHOUT merging (100% safe inspection).")
+            print(f"  • {Color.CYAN}git pull origin main{Color.RESET}  — Download AND merge teammate commits into your active branch.")
+            print(f"  • {Color.CYAN}git push origin <br>{Color.RESET}  — Upload your local branch commits to GitHub.\n")
+            print(f"{Color.BOLD}The Standard PR Workflow:{Color.RESET}")
+            print("  1. git pull  →  2. git checkout -b feature  →  3. Commit  →  4. git push origin feature")
+            print("  5. Open Pull Request on GitHub  →  6. Code Review & Merge into main!\n")
 
-    # ─── PART 10: QUIZ ───────────────────────────────────────────────────────
-    clear_screen()
-    print(f"{Color.YELLOW}{Color.BOLD}── PART 10 / 10 : Final Quiz — 7 Questions ─────────────────────────{Color.RESET}\n")
-    print_slow("Answer these based on what you just read. No tricks — just checking you got it.\n", 0.013)
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part6()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 5
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 7
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    quiz = [
-        {
-            "q": "You're on a team and your app is working. You want to add a new feature safely.\n   What should you do FIRST?",
-            "opts": ["A) Start editing files directly on main", "B) Create a new branch for the feature", "C) Fork the entire repository"],
-            "ans": "B",
-            "explain": "Always branch before feature work. Main stays safe while you build on the branch."
-        },
-        {
-            "q": "You edited 4 files. You only want to include 'login.js' in this commit. What do you run?",
-            "opts": ["A) git add .", "B) git commit login.js", "C) git add login.js"],
-            "ans": "C",
-            "explain": "git add <filename> stages just that one file. 'git add .' would stage all 4 files."
-        },
-        {
-            "q": "You committed a bug and your teammates already pulled it. What is the safe way to undo it?",
-            "opts": ["A) git reset --hard HEAD~1 then force push", "B) git revert <commit-id>", "C) Delete the repository"],
-            "ans": "B",
-            "explain": "git revert creates a new undo commit. It never rewrites history that teammates already have."
-        },
-        {
-            "q": "You're halfway through writing code when an urgent bug appears on main.\n   You can't commit yet. What do you do?",
-            "opts": ["A) git stash to temporarily save your work", "B) git commit -m 'WIP' to main", "C) Copy files to Desktop manually"],
-            "ans": "A",
-            "explain": "git stash shelves your changes cleanly. Run git stash pop to get them back later."
-        },
-        {
-            "q": "What is the difference between git fetch and git pull?",
-            "opts": [
-                "A) They do the same thing",
-                "B) git fetch downloads but doesn't merge; git pull downloads AND merges",
-                "C) git pull is for GitHub only; git fetch works everywhere"
-            ],
-            "ans": "B",
-            "explain": "git fetch is safe — it updates remote tracking without touching your local branch. git pull = fetch + merge."
-        },
-        {
-            "q": "You ran 'git reset --hard HEAD~3' by accident and your commits look gone.\n   Which command can still find them?",
-            "opts": ["A) git log", "B) git status", "C) git reflog"],
-            "ans": "C",
-            "explain": "git reflog records every HEAD movement including resets. Your commits are still there — find their SHA and reset back to it."
-        },
-        {
-            "q": "Which file tells Git which files to never track?",
-            "opts": ["A) .gitconfig", "B) .gitignore", "C) .gitkeep"],
-            "ans": "B",
-            "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc."
-        },
-        {
-            "q": "Under the hood, what is a Git branch?",
-            "opts": [
-                "A) A complete copy of every file in the project duplicated in a folder",
-                "B) A tiny 41-byte text file containing a 40-character commit hash pointer",
-                "C) A zip archive stored on GitHub cloud servers"
-            ],
-            "ans": "B",
-            "explain": "Branches in Git are lightweight pointers — just 41 bytes on disk containing a commit hash. Creating a branch is virtually instantaneous."
-        },
-        {
-            "q": "What is the difference between 'git reset --soft' and 'git reset --hard'?",
-            "opts": [
-                "A) --soft keeps changes staged in the index; --hard wipes changes from both staging and working directory",
-                "B) --soft only works on feature branches; --hard only works on main",
-                "C) There is no difference; they are exact synonyms"
-            ],
-            "ans": "A",
-            "explain": "git reset --soft moves HEAD back while keeping your code staged. --hard resets everything back to that commit, discarding uncommitted work."
-        },
-        {
-            "q": "What is the golden rule of Git rebasing?",
-            "opts": [
-                "A) Only rebase on weekends",
-                "B) Never rebase commits that have already been pushed to a public, shared branch",
-                "C) Rebase every time you run git status"
-            ],
-            "ans": "B",
-            "explain": "Rebasing rewrites commit hashes. If teammates have already pulled those commits, rewiring shared history breaks their repositories."
-        }
-    ]
+        elif current_part == 7:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 7 / 10 : Undoing Mistakes Safely (The Emergency Guide)    ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Everyone makes mistakes. Git gives you tools to undo them cleanly:\n")
+            print(f"  1. {Color.BOLD}Mess in working directory (unstaged):{Color.RESET}")
+            print(f"     → {Color.GREEN}git restore <file>{Color.RESET} (discards edits, restores to last commit)\n")
+            print(f"  2. {Color.BOLD}Accidentally staged a file:{Color.RESET}")
+            print(f"     → {Color.GREEN}git restore --staged <file>{Color.RESET} (unstages file, keeps code on disk)\n")
+            print(f"  3. {Color.BOLD}Forgot a file or made typo in last commit:{Color.RESET}")
+            print(f"     → {Color.GREEN}git add <file> && git commit --amend --no-edit{Color.RESET}\n")
+            print(f"  4. {Color.BOLD}Need to undo local commit (NOT pushed):{Color.RESET}")
+            print(f"     → {Color.GREEN}git reset --soft HEAD~1{Color.RESET} (undoes commit, keeps changes staged)\n")
+            print(f"  5. {Color.BOLD}Pushed bad commit to shared branch:{Color.RESET}")
+            print(f"     → {Color.GREEN}git revert <commit-id>{Color.RESET} (creates safe inverse commit, never rewrites shared history)\n")
+            print(f"  6. {Color.BOLD}Unfinished code but urgent bug on main:{Color.RESET}")
+            print(f"     → {Color.GREEN}git stash{Color.RESET} (shelves changes) → fix bug → {Color.GREEN}git stash pop{Color.RESET} (restores work)\n")
 
-    shuffled_quiz = list(quiz)
-    random.shuffle(shuffled_quiz)
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part7()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 6
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 8
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
 
-    h_score = 0
-    for idx, item in enumerate(shuffled_quiz, 1):
-        print(f"{Color.CYAN}{Color.BOLD}{idx}. {item['q']}{Color.RESET}")
-        for opt in item["opts"]:
-            print(f"  {opt}")
-        choice = input(f"{Color.BOLD}  Your answer [A/B/C] (or '0' to exit): {Color.RESET}").strip().upper()
-        if choice in ["0", "MENU", "Q", "EXIT"]:
-            print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
-            return
-        if choice == item["ans"]:
-            h_score += 1
-            print(f"{Color.GREEN}  ✅ Correct! {item['explain']}{Color.RESET}\n")
-        else:
-            print(f"{Color.RED}  ❌ Not quite. {item['explain']}{Color.RESET}\n")
-        time.sleep(0.8)
+        elif current_part == 8:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 8 / 10 : Reading Project History & The Reflog             ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Git keeps a complete audit trail of everything that ever happened:\n")
+            print(f"  • {Color.CYAN}git log{Color.RESET}                       — Full commit history (newest first)")
+            print(f"  • {Color.CYAN}git log --oneline{Color.RESET}             — Compact one-line summary per commit")
+            print(f"  • {Color.CYAN}git log --graph --oneline --all{Color.RESET} — Beautiful ASCII visual branch tree")
+            print(f"  • {Color.CYAN}git show <commit-id>{Color.RESET}          — Full diff and metadata of a specific commit\n")
+            print(f"{Color.GREEN}{Color.BOLD}The Flight Recorder: git reflog{Color.RESET}")
+            print("  Even if you run 'git reset --hard' and commits look gone from git log,")
+            print("  Git records every movement of HEAD inside the reflog! Find the SHA and reset back.\n")
 
-    clear_screen()
-    print(f"{Color.BOLD}{Color.MAGENTA}╔════════════════════════════════════════════════════════════════════╗")
-    print(f"║                 GIT FOR HUMANS — COMPLETE                          ║")
-    print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
-    print(f"  Final Quiz Score: {Color.BOLD}{h_score}/10{Color.RESET}\n")
-    if h_score == 10:
-        print(f"  {Color.GREEN}✅ Perfect score (10/10)! You genuinely understand Git from first principles. Jump into the Practice Arena next.{Color.RESET}")
-    elif h_score >= 8:
-        print(f"  {Color.GREEN}👍 Strong result ({h_score}/10). Re-read the parts you missed, then try the Practice Arena.{Color.RESET}")
-    elif h_score >= 5:
-        print(f"  {Color.YELLOW}📖 Getting there ({h_score}/10). Go back through Parts 5–10 and try the quiz again.{Color.RESET}")
-    else:
-        print(f"  {Color.YELLOW}📖 Take your time — re-read from Part 3 onwards, then come back.{Color.RESET}")
-    print(f"\n  {Color.DIM}Next step → Mode 2: Practice Arena (Low difficulty) to type the commands yourself.{Color.RESET}\n")
-    input(f"{Color.DIM}Press Enter to return to the main menu...{Color.RESET}")
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part8()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 7
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 9
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
+
+        elif current_part == 9:
+            print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 9 / 10 : Clean Git Habits & The .gitignore File           ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Habits that separate amateur coders from professional engineers:\n")
+            print(f"  1. {Color.GREEN}Write clear, conventional commit messages:{Color.RESET}")
+            print(f"     ❌ Bad:  git commit -m \"fix\"")
+            print(f"     ✅ Good: git commit -m \"fix: prevent crash when email is empty\"\n")
+            print(f"  2. {Color.GREEN}Always use a .gitignore file:{Color.RESET}")
+            print(f"     Never commit secrets (.env), passwords, or 200MB dependencies (node_modules/, __pycache__/).\n")
+            print(f"  3. {Color.GREEN}Commit small, atomic changes:{Color.RESET}")
+            print(f"     One logical feature or bugfix per commit. Easy to review, easy to revert.\n")
+            print(f"  4. {Color.GREEN}Never force push (git push -f) to shared branches:{Color.RESET}")
+            print(f"     Force-pushing shared branches wipes teammates' work. Use git revert instead.\n")
+            print(f"  5. {Color.GREEN}Always pull before you push:{Color.RESET}")
+            print(f"     Running 'git pull' first avoids unexpected merge bubbles.\n")
+
+            choice = _gfh_nav_bar(current_part)
+            if choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif choice in ["t", "sim", "try"]:
+                _gfh_sim_part9()
+            elif choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 8
+            elif choice in ["n", "next", ""] or choice.startswith("n"):
+                current_part = 10
+            elif choice.isdigit() and 1 <= int(choice) <= total_parts:
+                current_part = int(choice)
+
+        elif current_part == 10:
+            print(f"{Color.MAGENTA}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  🐣 PART 10 / 10 : Comprehension Boss Quiz (10 Questions)          ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print("Ready to prove your Git knowledge? 10 randomized real-world questions.\n")
+            print(f"  {Color.GREEN}[T] / [Enter] Start Quiz Now 🏁{Color.RESET}")
+            print(f"  {Color.YELLOW}[P] Previous Chapter (Back to Part 9) ⏪{Color.RESET}")
+            print(f"  {Color.CYAN}[1-9] Jump to any Chapter to Review{Color.RESET}")
+            print(f"  {Color.DIM}[0] Return to Main Menu{Color.RESET}\n")
+
+            q_choice = input(f"{Color.BOLD}Choose an option: {Color.RESET}").strip().lower()
+            if q_choice in ["0", "menu", "q", "exit", "home"]:
+                return
+            elif q_choice in ["p", "prev", "previous", "b", "back"]:
+                current_part = 9
+                continue
+            elif q_choice.isdigit() and 1 <= int(q_choice) <= 9:
+                current_part = int(q_choice)
+                continue
+
+            # Run the 10-question quiz!
+            clear_screen()
+            print(f"{Color.MAGENTA}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║                 🏁 GIT FOR HUMANS — FINAL QUIZ                     ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+
+            quiz = [
+                {
+                    "q": "You're on a team and your app is working. You want to add a new feature safely.\n   What should you do FIRST?",
+                    "opts": ["A) Start editing files directly on main", "B) Create a new branch for the feature", "C) Fork the entire repository"],
+                    "ans": "B",
+                    "explain": "Always branch before feature work. Main stays safe while you build on the branch."
+                },
+                {
+                    "q": "You edited 4 files. You only want to include 'login.js' in this commit. What do you run?",
+                    "opts": ["A) git add .", "B) git commit login.js", "C) git add login.js"],
+                    "ans": "C",
+                    "explain": "git add <filename> stages just that one file. 'git add .' would stage all 4 files."
+                },
+                {
+                    "q": "You committed a bug and your teammates already pulled it. What is the safe way to undo it?",
+                    "opts": ["A) git reset --hard HEAD~1 then force push", "B) git revert <commit-id>", "C) Delete the repository"],
+                    "ans": "B",
+                    "explain": "git revert creates a new undo commit. It never rewrites history that teammates already have."
+                },
+                {
+                    "q": "You're halfway through writing code when an urgent bug appears on main.\n   You can't commit yet. What do you do?",
+                    "opts": ["A) git stash to temporarily save your work", "B) git commit -m 'WIP' to main", "C) Copy files to Desktop manually"],
+                    "ans": "A",
+                    "explain": "git stash shelves your changes cleanly. Run git stash pop to get them back later."
+                },
+                {
+                    "q": "What is the difference between git fetch and git pull?",
+                    "opts": [
+                        "A) They do the same thing",
+                        "B) git fetch downloads but doesn't merge; git pull downloads AND merges",
+                        "C) git pull is for GitHub only; git fetch works everywhere"
+                    ],
+                    "ans": "B",
+                    "explain": "git fetch is safe — it updates remote tracking without touching your local branch. git pull = fetch + merge."
+                },
+                {
+                    "q": "You ran 'git reset --hard HEAD~3' by accident and your commits look gone.\n   Which command can still find them?",
+                    "opts": ["A) git log", "B) git status", "C) git reflog"],
+                    "ans": "C",
+                    "explain": "git reflog records every HEAD movement including resets. Your commits are still there — find their SHA and reset back to it."
+                },
+                {
+                    "q": "Which file tells Git which files to never track?",
+                    "opts": ["A) .gitconfig", "B) .gitignore", "C) .gitkeep"],
+                    "ans": "B",
+                    "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc."
+                },
+                {
+                    "q": "Under the hood, what is a Git branch?",
+                    "opts": [
+                        "A) A complete copy of every file in the project duplicated in a folder",
+                        "B) A tiny 41-byte text file containing a 40-character commit hash pointer",
+                        "C) A zip archive stored on GitHub cloud servers"
+                    ],
+                    "ans": "B",
+                    "explain": "Branches in Git are lightweight pointers — just 41 bytes on disk containing a commit hash. Creating a branch is virtually instantaneous."
+                },
+                {
+                    "q": "What is the difference between 'git reset --soft' and 'git reset --hard'?",
+                    "opts": [
+                        "A) --soft keeps changes staged in the index; --hard wipes changes from both staging and working directory",
+                        "B) --soft only works on feature branches; --hard only works on main",
+                        "C) There is no difference; they are exact synonyms"
+                    ],
+                    "ans": "A",
+                    "explain": "git reset --soft moves HEAD back while keeping your code staged. --hard resets everything back to that commit, discarding uncommitted work."
+                },
+                {
+                    "q": "What is the golden rule of Git rebasing?",
+                    "opts": [
+                        "A) Only rebase on weekends",
+                        "B) Never rebase commits that have already been pushed to a public, shared branch",
+                        "C) Rebase every time you run git status"
+                    ],
+                    "ans": "B",
+                    "explain": "Rebasing rewrites commit hashes. If teammates have already pulled those commits, rewiring shared history breaks their repositories."
+                }
+            ]
+
+            shuffled_quiz = list(quiz)
+            random.shuffle(shuffled_quiz)
+
+            h_score = 0
+            for idx, item in enumerate(shuffled_quiz, 1):
+                print(f"{Color.CYAN}{Color.BOLD}{idx}. {item['q']}{Color.RESET}")
+                for opt in item["opts"]:
+                    print(f"  {opt}")
+                choice = input(f"{Color.BOLD}  Your answer [A/B/C] (or '0' to exit): {Color.RESET}").strip().upper()
+                if choice in ["0", "MENU", "Q", "EXIT"]:
+                    print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
+                    return
+                if choice == item["ans"]:
+                    h_score += 1
+                    print(f"{Color.GREEN}  ✅ Correct! {item['explain']}{Color.RESET}\n")
+                else:
+                    print(f"{Color.RED}  ❌ Not quite. {item['explain']}{Color.RESET}\n")
+                time.sleep(0.8)
+
+            clear_screen()
+            print(f"{Color.BOLD}{Color.MAGENTA}╔════════════════════════════════════════════════════════════════════╗")
+            print("║                 GIT FOR HUMANS — COMPLETE                          ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            print(f"  Final Quiz Score: {Color.BOLD}{h_score}/10{Color.RESET}\n")
+            if h_score == 10:
+                print(f"  {Color.GREEN}✅ Perfect score (10/10)! You genuinely understand Git from first principles. Jump into the Practice Arena next.{Color.RESET}")
+            elif h_score >= 8:
+                print(f"  {Color.GREEN}👍 Strong result ({h_score}/10). Re-read the parts you missed, then try the Practice Arena.{Color.RESET}")
+            elif h_score >= 5:
+                print(f"  {Color.YELLOW}📖 Getting there ({h_score}/10). Go back through Parts 5–10 and try the quiz again.{Color.RESET}")
+            else:
+                print(f"  {Color.YELLOW}📖 Take your time — re-read from Part 3 onwards, then come back.{Color.RESET}")
+            
+            print(f"\n  {Color.YELLOW}[1-9] Jump to review any Chapter{Color.RESET}")
+            print(f"  {Color.CYAN}[0] Return to Main Menu{Color.RESET}\n")
+            post_choice = input(f"{Color.BOLD}Choose [1-9 or 0]: {Color.RESET}").strip()
+            if post_choice.isdigit() and 1 <= int(post_choice) <= 9:
+                current_part = int(post_choice)
+            else:
+                return
 
 # ----------------- COMMAND CHALLENGES BY DIFFICULTY (30 TOTAL) -----------------
 
