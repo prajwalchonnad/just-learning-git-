@@ -22,6 +22,9 @@
 - [12. Tagging & Versioning](#12-tagging--versioning)
 - [13. Debugging & Investigation (Bisect, Blame, Grep)](#13-debugging--investigation-bisect-blame-grep)
 - [14. Repo Maintenance & Housekeeping](#14-repo-maintenance--housekeeping)
+- [15. Worktrees (Multi-Branch Parallelism)](#15-worktrees-multi-branch-parallelism)
+- [16. Git Internals & Plumbing Commands](#16-git-internals--plumbing-commands)
+- [17. Git Hooks (Pre-commit & Automation)](#17-git-hooks-pre-commit--automation)
 - [🚨 "Oh No, Git!" - Common Real-World Scenarios](#-oh-no-git---common-real-world-scenarios)
 - [⚡ Supercharge Your Workflow: Git Aliases](#-supercharge-your-workflow-git-aliases)
 - [🌟 Git Best Practices Checklist](#-git-best-practices-checklist)
@@ -306,6 +309,51 @@ Create pointers to specific milestones in release history.
 | `git prune -v` | Prune all unreachable objects from database |
 | `git archive --format=zip HEAD -o release.zip` | Export current repo state into a clean zip archive (no `.git` directory) |
 | `git bundle create repo.bundle --all` | Package complete repo into a single standalone portable file |
+
+---
+
+## 15. Worktrees (Multi-Branch Parallelism)
+
+Check out multiple branches at the same time in separate folders without stashing or duplicate cloning:
+
+| Command | Description |
+|---|---|
+| `git worktree list` | List all linked active working trees |
+| `git worktree add <path> <branch>` | Check out `<branch>` into directory `<path>` |
+| `git worktree add -b <new-branch> <path>` | Create and check out a new branch into `<path>` |
+| `git worktree remove <path>` | Remove a linked working tree folder |
+| `git worktree prune` | Prune working tree administrative info for deleted folders |
+
+---
+
+## 16. Git Internals & Plumbing Commands
+
+Inspect and manipulate Git's low-level object database (`.git/objects/`):
+
+| Command | Description |
+|---|---|
+| `git hash-object -w <file>` | Compute SHA hash of a file and write it as a blob object |
+| `git cat-file -t <SHA>` | Show object type (`blob`, `tree`, `commit`, `tag`) |
+| `git cat-file -s <SHA>` | Show object size in bytes |
+| `git cat-file -p <SHA>` | Pretty-print the raw contents of any object |
+| `git ls-tree <tree-SHA>` | List contents of a tree object (mode, type, SHA, filename) |
+| `git rev-parse HEAD` | Output the full 40-character SHA of current HEAD |
+| `git rev-parse --short HEAD` | Output the abbreviated 7-character commit SHA |
+| `git check-ref-format <ref>` | Validate if a branch or reference name is valid syntax |
+
+---
+
+## 17. Git Hooks (Pre-commit & Automation)
+
+Client-side scripts located in `.git/hooks/` triggered automatically before or after Git operations:
+
+| Hook Script | Trigger Time | Common Use Case |
+|---|---|---|
+| `pre-commit` | Before commit is created (`git commit`) | Run linter, prettier, unit tests; abort commit on failure |
+| `prepare-commit-msg` | Before commit message editor opens | Auto-insert Jira issue key or ticket number into commit message |
+| `commit-msg` | After commit message is saved | Validate conventional commits regex (`feat:`, `fix:`) |
+| `post-commit` | Immediately after commit is made | Send notification, log audit event |
+| `pre-push` | Before push is sent (`git push`) | Run end-to-end integration tests to prevent broken pushes |
 
 ---
 

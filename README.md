@@ -28,12 +28,14 @@ python play.py
 *(On Windows, you can also just double-click `play.bat`! It pops open a dedicated retro arcade window automatically).*
 
 ### Features inside:
-- 🐣 **'Git for Humans' Complete Interactive Guide:** 10-part comprehensive curriculum from first principles to collaboration and emergency recovery, plus a 7-question checkpoint quiz.
-- 🎯 **'Type The Command' Practice Arena:** 30 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers with smart hints, live simulated terminal output previews, and why-it-works explanations. Type `0` or `menu` anytime to return home!
-- 🎓 **Survive the Tech Interview & Viva:** 15 challenging developer interview questions with lives, scoring, and examiner feedback.
-- 🚨 **Real-World Git Problem Solver:** 5 critical disaster scenarios (secret leaks, wrong branch commits, merge conflicts, giant files, lost commits).
+- 🐣 **'Git for Humans' Complete Interactive Guide:** 10-part comprehensive curriculum from first principles to collaboration and emergency recovery, plus a 10-question checkpoint quiz.
+- 🎯 **'Type The Command' Practice Arena:** 36 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers (12 per tier) with smart hints, live simulated terminal output previews, and why-it-works explanations. Type `0` or `menu` anytime to return home!
+- 🎓 **Survive the Tech Interview & Viva:** 25 challenging developer interview questions with lives, scoring, and examiner feedback.
+- 🚨 **Real-World Git Problem Solver:** 8 critical production disaster scenarios (secret leaks, wrong branch commits, merge conflicts, giant files, lost commits, pull rejected by local changes, wrong author email, rebase conflicts).
 - 📚 **12-Step Practical Lab Handbook:** Complete hands-on workflow and cheatbook for all common Git operations.
+- 🧬 **Git Internals & Architecture Masterclass:** Deep dive into the `.git` engine, Blobs, Trees, Commits, Tags, DAG graph structure, and plumbing commands (`git cat-file`, `git hash-object`).
 - ⚡ **Aliases Helper:** Inspect configured productivity shortcuts (`git files`, `git lg`, etc.).
+- 🎲 **True Randomization:** Questions and scenarios dynamically shuffle every single playthrough so you never repeat the same predictable pattern!
 
 ---
 

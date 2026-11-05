@@ -541,7 +541,7 @@ LAB_EXPERIMENTS = [
 def mode_viva_gauntlet():
     clear_screen()
     print(f"{Color.CYAN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║        🎓 MODE 1: SURVIVE THE TECH INTERVIEW & VIVA GAUNTLET       ║")
+    print("║        🎓 MODE 3: SURVIVE THE TECH INTERVIEW & VIVA GAUNTLET       ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
     print_slow("A lead interviewer walks into the room with a notepad, a hot cup of coffee, and zero patience.", 0.02, Color.YELLOW)
     print_slow("Answer the questions correctly to earn your developer cred. You have 3 lives (☕ Coffee Cups).\n", 0.02)
@@ -599,7 +599,7 @@ def mode_viva_gauntlet():
 def mode_disaster_recovery():
     clear_screen()
     print(f"{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║           🚨 MODE: REAL-WORLD GIT PROBLEM SOLVER                   ║")
+    print("║           🚨 MODE 4: REAL-WORLD GIT PROBLEM SOLVER                 ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
     print_slow("These are problems that actually happen to developers every day.", 0.015, Color.CYAN)
     print_slow("Read the situation carefully and pick the right Git command to fix it.\n", 0.015)
@@ -611,7 +611,7 @@ def mode_disaster_recovery():
     for i, scenario in enumerate(scenarios, 1):
         clear_screen()
         print(f"{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-        print("║           🚨 MODE: REAL-WORLD GIT PROBLEM SOLVER                   ║")
+        print("║           🚨 MODE 4: REAL-WORLD GIT PROBLEM SOLVER                 ║")
         print(f"╚════════════════════════════════════════════════════════════════════╝\n")
         print(f"{Color.BOLD}{Color.YELLOW}── SCENARIO {i}/{total_scenarios} ──────────────────────────────────────────────────{Color.RESET}")
         print(f"\n{Color.BOLD}{Color.WHITE}{scenario['title']}{Color.RESET}\n")
@@ -661,7 +661,7 @@ def mode_disaster_recovery():
 def mode_vtu_cheatbook():
     clear_screen()
     print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
-    print("║          📚 MODE 3: 12-STEP PRACTICAL LAB & WORKFLOW CHEATBOOK      ║")
+    print("║          📚 MODE 5: 12-STEP PRACTICAL LAB & WORKFLOW CHEATBOOK      ║")
     print("╚════════════════════════════════════════════════════════════════════╝\n")
     print("Select any step to view the exact problem, commands & output:\n")
 
@@ -1652,15 +1652,16 @@ def main():
         clear_screen()
         print(BANNER)
         print(f"{Color.BOLD}Welcome to the interactive Git arcade! Choose your adventure:{Color.RESET}\n")
-        print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Story Mode + Quick Quiz)")
-        print(f"  {Color.GREEN}[2]{Color.RESET} 🎯 'Type The Command' Practice Arena (Low, Medium & High Difficulty)")
-        print(f"  {Color.CYAN}[3]{Color.RESET} 🎓 Survive the Tech Interview & Viva (Boss Battle)")
-        print(f"  {Color.RED}[4]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios")
+        print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Interactive Handbook + 10-Question Quiz)")
+        print(f"  {Color.GREEN}[2]{Color.RESET} 🎯 'Type The Command' Practice Arena (36 Challenges: Low, Med, High)")
+        print(f"  {Color.CYAN}[3]{Color.RESET} 🎓 Survive the Tech Interview & Viva (25 Boss Questions)")
+        print(f"  {Color.RED}[4]{Color.RESET} 🚨 'Oh No, Git!' Disaster Scenarios (8 Production Emergencies)")
         print(f"  {Color.BLUE}[5]{Color.RESET} 📚 12-Step Practical Lab & Workflow Cheatbook")
-        print(f"  {Color.MAGENTA}[6]{Color.RESET} ⚡ Show My Configured Git Aliases")
-        print(f"  {Color.WHITE}[7]{Color.RESET} 🏃 Exit to Terminal")
+        print(f"  {Color.MAGENTA}[6]{Color.RESET} 🧬 Git Internals & Architecture Masterclass (Blobs, Trees & DAG)")
+        print(f"  {Color.WHITE}[7]{Color.RESET} ⚡ Show My Configured Git Aliases")
+        print(f"  {Color.DIM}[8]{Color.RESET} 🏃 Exit to Terminal")
         
-        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 7]: {Color.RESET}").strip()
+        choice = input(f"\n{Color.BOLD}Enter your choice [1 - 8]: {Color.RESET}").strip()
 
         if choice == "1":
             mode_git_for_humans()
@@ -1673,6 +1674,8 @@ def main():
         elif choice == "5":
             mode_vtu_cheatbook()
         elif choice == "6":
+            mode_git_internals()
+        elif choice == "7":
             clear_screen()
             print(f"\n{Color.YELLOW}{Color.BOLD}⚡ YOUR SUPERCHARGED GIT ALIASES:{Color.RESET}\n")
             print(f"  {Color.CYAN}git st{Color.RESET}    -> Instant status check")
@@ -1680,7 +1683,7 @@ def main():
             print(f"  {Color.CYAN}git files{Color.RESET} -> View commits with file names and stats")
             print(f"  {Color.CYAN}git last{Color.RESET}  -> Deep inspection of the latest commit\n")
             input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
-        elif choice in ["7", "q", "exit"]:
+        elif choice in ["8", "q", "exit"]:
             print(f"\n{Color.GREEN}Keep committing like a ninja! Bye Prajwal! 🚀{Color.RESET}\n")
             time.sleep(0.8)
             break
