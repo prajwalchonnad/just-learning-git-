@@ -685,6 +685,180 @@ def mode_vtu_cheatbook():
         except ValueError:
             pass
 
+def mode_git_internals():
+    while True:
+        clear_screen()
+        print(f"{Color.MAGENTA}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+        print("║      🧬 MODE 6: GIT INTERNALS & ARCHITECTURE MASTERCLASS           ║")
+        print("╚════════════════════════════════════════════════════════════════════╝\n")
+        print_slow("Want to truly understand Git like a core engineer? Look inside the .git engine.\n", 0.012, Color.CYAN)
+        print(f"{Color.BOLD}EXPLORE THE GIT ENGINE:{Color.RESET}\n")
+        print(f"  {Color.YELLOW}[1] 📁 Anatomy of the .git Directory (What lives inside?){Color.RESET}")
+        print(f"  {Color.GREEN}[2] 📦 The 4 Core Objects (Blobs, Trees, Commits, Tags){Color.RESET}")
+        print(f"  {Color.CYAN}[3] 🌿 The Truth About Branches (Why they are only 41 bytes!){Color.RESET}")
+        print(f"  {Color.RED}[4] 🕸️ Directed Acyclic Graph (DAG) & Content-Addressable Hashing{Color.RESET}")
+        print(f"  {Color.BLUE}[5] 🛠️ Plumbing vs Porcelain Commands (git cat-file & hash-object){Color.RESET}")
+        print(f"  {Color.MAGENTA}[6] 🎯 Quick Knowledge Check (3 Internals Questions){Color.RESET}")
+        print(f"  {Color.WHITE}[0] 🏠 Return to Main Menu{Color.RESET}\n")
+
+        choice = input(f"{Color.BOLD}Select a topic [1 - 6] or 0: {Color.RESET}").strip()
+        if choice in ["0", "menu", "home", "exit", "q"]:
+            return
+
+        if choice == "1":
+            clear_screen()
+            print(f"{Color.YELLOW}{Color.BOLD}── 1. Anatomy of the hidden .git Directory ──────────────────────────{Color.RESET}\n")
+            print("""When you run 'git init', Git creates a hidden '.git' folder. Here is what's inside:
+
+  .git/
+  ├── HEAD            -> Points to the current branch ref (e.g., ref: refs/heads/main)
+  ├── config          -> Repository-specific configuration (remotes, user overrides)
+  ├── description     -> Used mainly by GitWeb
+  ├── hooks/          -> Client-side and server-side executable hook scripts
+  ├── info/           -> Global excludes file (info/exclude acts like private .gitignore)
+  ├── objects/        -> THE CONTENT DATABASE: all compressed blobs, trees, commits
+  ├── refs/
+  │   ├── heads/      -> Pointers to local branches (each file holds 1 commit hash!)
+  │   ├── remotes/    -> Pointers to remote tracking branches (origin/main)
+  │   └── tags/       -> Pointers to release tags
+  └── index           -> The binary Staging Area (cache of what will go into next commit)
+
+Every single branch, commit, and file in your repository lives inside this folder!""")
+            input(f"\n{Color.DIM}Press Enter to return...{Color.RESET}")
+
+        elif choice == "2":
+            clear_screen()
+            print(f"{Color.GREEN}{Color.BOLD}── 2. The 4 Core Object Types ────────────────────────────────────────{Color.RESET}\n")
+            print("""Git stores all data using 4 fundamental object types inside .git/objects/:
+
+  1. 📄 BLOB (Binary Large Object):
+     - Stores only the raw file contents (compressed with zlib).
+     - Does NOT store the filename, timestamp, or directory location.
+     - Two identical files with different names share the EXACT SAME blob SHA!
+
+  2. 🌳 TREE (Directory Listing):
+     - Represents a folder.
+     - Maps filenames and file permissions (100644 for regular, 100755 for executable)
+       to their corresponding Blob or sub-Tree hashes.
+
+  3. 📦 COMMIT (Snapshot & Metadata):
+     - Points to a single root Tree (the entire project snapshot).
+     - Points to parent Commit SHA(s) (forming history).
+     - Records author name, email, timestamp, and commit message.
+
+  4. 🏷️ ANNOTATED TAG:
+     - A permanent pointer to a commit object containing tagger metadata, date,
+       and optional cryptographic GPG signature.""")
+            input(f"\n{Color.DIM}Press Enter to return...{Color.RESET}")
+
+        elif choice == "3":
+            clear_screen()
+            print(f"{Color.CYAN}{Color.BOLD}── 3. The Truth About Branches ──────────────────────────────────────{Color.RESET}\n")
+            print("""Most developers think creating a branch copies the entire project. IT DOES NOT!
+
+In Git, a branch is literally just a 41-byte text file on your hard drive!
+Take a look inside:
+
+  $ cat .git/refs/heads/main
+  4a8b1c9e8d2f10b7a6c5d4e3f2a1b0c9d8e7f6a5
+
+That's it! 40 hexadecimal characters representing the commit hash, plus a newline character.
+When you run 'git checkout -b new-feature':
+  - Git creates a new 41-byte file '.git/refs/heads/new-feature' with that same SHA.
+  - Git updates '.git/HEAD' to say: 'ref: refs/heads/new-feature'.
+  - Time taken: less than 1 millisecond. Zero extra disk space used for files!""")
+            input(f"\n{Color.DIM}Press Enter to return...{Color.RESET}")
+
+        elif choice == "4":
+            clear_screen()
+            print(f"{Color.RED}{Color.BOLD}── 4. The Directed Acyclic Graph (DAG) ──────────────────────────────{Color.RESET}\n")
+            print("""Git commits form a Directed Acyclic Graph (DAG):
+  - Directed: Each commit points strictly in one direction: BACKWARDS to its parent!
+  - Acyclic: History cannot loop back on itself.
+  - Graph: Nodes (commits) connected by edges (parent references).
+
+Visualizing the DAG:
+
+  Commit C1 (Initial)  <--  Commit C2 (Feature A)  <--  Commit C3 (HEAD -> main)
+      ▲
+      │
+      └───────────────────── Commit C4 (Feature B)  <--  Commit C5 (HEAD -> dev)
+
+When you merge 'dev' into 'main', Git creates a Merge Commit (C6) with TWO parents:
+  C6 points to both C3 AND C5!
+
+Because every commit SHA is a SHA-1/SHA-256 hash of its content AND its parent SHA,
+you cannot change past history without breaking every single subsequent commit hash!""")
+            input(f"\n{Color.DIM}Press Enter to return...{Color.RESET}")
+
+        elif choice == "5":
+            clear_screen()
+            print(f"{Color.BLUE}{Color.BOLD}── 5. Plumbing vs Porcelain Commands ─────────────────────────────────{Color.RESET}\n")
+            print("""Git commands are divided into two categories:
+
+  🎩 PORCELAIN (User-friendly high-level commands):
+     git add, git commit, git status, git pull, git branch, git checkout.
+     Designed for everyday developer productivity.
+
+  🔧 PLUMBING (Low-level engine tools):
+     Designed for internal Git scripts and deep inspection:
+
+     • git hash-object -w <file>
+       Hashes a file and writes a raw blob directly into .git/objects/
+
+     • git cat-file -t <SHA>
+       Prints the object type: 'blob', 'tree', 'commit', or 'tag'
+
+     • git cat-file -p <SHA>
+       Pretty-prints the exact contents of any Git object
+
+     • git ls-tree <tree-SHA>
+       Lists all files and subtrees in a directory object
+
+Try running 'git cat-file -p HEAD' in any Git repo — you will see the exact tree hash,
+parent hash, author, and commit message directly from the raw database!""")
+            input(f"\n{Color.DIM}Press Enter to return...{Color.RESET}")
+
+        elif choice == "6":
+            clear_screen()
+            print(f"{Color.MAGENTA}{Color.BOLD}── 6. Git Internals Knowledge Check ─────────────────────────────────{Color.RESET}\n")
+            iqs = [
+                {
+                    "q": "What information does a Git 'blob' object store?",
+                    "opts": ["A) The filename and permissions", "B) Only the raw compressed file content", "C) The commit author and date"],
+                    "ans": "B",
+                    "exp": "Blobs store ONLY the file content. Filenames and modes are stored in Trees."
+                },
+                {
+                    "q": "What is physically stored inside a local branch file (e.g. .git/refs/heads/main)?",
+                    "opts": ["A) A copy of all files", "B) A list of all commit messages", "C) A single 40-character commit hash"],
+                    "ans": "C",
+                    "exp": "A branch file is just 41 bytes containing the 40-char commit SHA of the branch tip."
+                },
+                {
+                    "q": "Which plumbing command pretty-prints the raw contents of any Git object by its hash?",
+                    "opts": ["A) git cat-file -p <hash>", "B) git print-object <hash>", "C) git log --raw <hash>"],
+                    "ans": "A",
+                    "exp": "git cat-file -p pretty-prints blobs, trees, commits, and tags."
+                }
+            ]
+            shuffled_iqs = list(iqs)
+            random.shuffle(shuffled_iqs)
+            i_score = 0
+            for i, item in enumerate(shuffled_iqs, 1):
+                print(f"{Color.CYAN}{Color.BOLD}Q{i}: {item['q']}{Color.RESET}")
+                for opt in item["opts"]:
+                    print(f"  {opt}")
+                ans = input(f"{Color.BOLD}Your answer [A/B/C]: {Color.RESET}").strip().upper()
+                if ans == item["ans"]:
+                    i_score += 1
+                    print(f"{Color.GREEN}✅ Correct! {item['exp']}{Color.RESET}\n")
+                else:
+                    print(f"{Color.RED}❌ Wrong. {item['exp']}{Color.RESET}\n")
+                time.sleep(0.8)
+            print(f"{Color.YELLOW}{Color.BOLD}Internals Score: {i_score}/3{Color.RESET}\n")
+            input(f"{Color.DIM}Press Enter to return...{Color.RESET}")
+
 def _gfh_pause(label="Continue"):
     """Helper: press Enter to proceed, or type 0 to go back to menu."""
     s = input(f"\n{Color.DIM}[ Press Enter to {label}, or type '0' to return to Menu ]{Color.RESET} ").strip().lower()
