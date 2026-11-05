@@ -869,6 +869,54 @@ def _gfh_nav_bar(current_part, total_parts=10):
     choice = input(f"{Color.BOLD}Your choice [Enter=Next, P=Prev, T=Sim, 1-{total_parts}, 0=Menu]: {Color.RESET}").strip().lower()
     return choice
 
+def _ask_checkpoint_q(item):
+    """
+    2-attempt checkpoint quiz engine.
+    item keys: q, opts (list of strings like 'A) ...'), ans (letter), explain,
+               wrong_a, wrong_b, wrong_c  (explanation of why each wrong choice is wrong;
+               set the correct one's key to None).
+    Returns: True  = answered correctly on attempt 1 or 2
+             False = answered wrong twice (correct answer revealed)
+             'exit' = user wants to go back to menu
+    """
+    EXIT_CMDS = {"0", "MENU", "Q", "EXIT", "HOME"}
+    wrong_hints = {"A": item.get("wrong_a"), "B": item.get("wrong_b"), "C": item.get("wrong_c")}
+
+    print(f"\n{Color.MAGENTA}{Color.BOLD}{'─'*72}")
+    print(f"  🧠 CHECKPOINT QUESTION")
+    print(f"{'─'*72}{Color.RESET}\n")
+
+    for attempt in range(1, 3):
+        print(f"{Color.BOLD}{item['q']}{Color.RESET}")
+        for opt in item["opts"]:
+            print(f"  {opt}")
+
+        raw = input(f"\n{Color.BOLD}  Your answer [A/B/C] (0=Menu): {Color.RESET}").strip().upper()
+
+        if raw in EXIT_CMDS:
+            return "exit"
+
+        if raw == item["ans"]:
+            print(f"\n{Color.GREEN}{Color.BOLD}  ✅ Correct! {item['explain']}{Color.RESET}")
+            input(f"\n{Color.DIM}  Press Enter to continue...{Color.RESET}")
+            return True
+        else:
+            if attempt == 1:
+                hint = wrong_hints.get(raw) or "That's not quite right — think carefully about what the concept means."
+                print(f"\n{Color.RED}  ❌ Not right.{Color.RESET} {hint}")
+                print(f"\n{Color.YELLOW}  💡 Take another look at the question and try again!{Color.RESET}")
+                input(f"\n{Color.DIM}  Press Enter to retry...{Color.RESET}")
+                print()  # blank line before re-printing question
+            else:
+                # Second attempt failed — now reveal the answer
+                ans_line = next((o for o in item["opts"] if o.strip().upper().startswith(item["ans"] + ")")), item["ans"])
+                hint = wrong_hints.get(raw) or "That choice wasn't correct."
+                print(f"\n{Color.RED}  ❌ {hint}{Color.RESET}")
+                print(f"\n{Color.GREEN}{Color.BOLD}  💡 Correct answer: {ans_line}{Color.RESET}")
+                print(f"  {Color.CYAN}Why: {item['explain']}{Color.RESET}")
+                input(f"\n{Color.DIM}  Press Enter to continue...{Color.RESET}")
+                return False
+
 def _gfh_sim_part1():
     clear_screen()
     print(f"{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
@@ -1076,6 +1124,25 @@ def mode_git_for_humans():
             print("  Your project lives in ONE clean folder. Git runs quietly inside a hidden")
             print("  '.git' folder, recording a cryptographic timeline of snapshots called 'commits'.\n")
 
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq1 = {
+                "q": "What is Git's main advantage over manually copying files (like report_v2.docx, report_FINAL.docx)?",
+                "opts": [
+                    "A) Git automatically sends your files to your teammates",
+                    "B) Git records a cryptographic timeline of snapshots so you always know what changed, when, and who changed it",
+                    "C) Git compresses all your files into a zip archive"
+                ],
+                "ans": "B",
+                "explain": "Git's core value is its snapshot timeline — every commit is a dated, labelled snapshot of the entire project. You can compare any two points in history, see who changed what, and restore any state instantly.",
+                "wrong_a": "Git doesn't automatically send files — you explicitly push commits to a remote like GitHub. That's a separate step.",
+                "wrong_b": None,
+                "wrong_c": "Git doesn't compress your files into a zip. It stores efficient object snapshots inside the hidden .git folder."
+            }
+            _cq_result = _ask_checkpoint_q(_cq1)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
+
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
                 return
@@ -1104,6 +1171,25 @@ def mode_git_for_humans():
             print(f"  3. {Color.BOLD}Commit History (Local Repo):{Color.RESET} Permanent snapshots stored in .git with author, date, and message.\n")
             print(f"{Color.CYAN}💡 Git vs GitHub:{Color.RESET} Git is the local version control tool. GitHub is the cloud host.")
 
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq2 = {
+                "q": "You edited a file and want it in the next commit. What is the correct ORDER of steps?",
+                "opts": [
+                    "A) git commit → git add → git push",
+                    "B) Edit file → git add → git commit",
+                    "C) git push → git commit → git add"
+                ],
+                "ans": "B",
+                "explain": "Files flow: Working Directory (edit) → Staging Area (git add) → Commit History (git commit). You must stage before you can commit.",
+                "wrong_a": "You can't commit before staging. git commit only packages files that are already in the Staging Area.",
+                "wrong_b": None,
+                "wrong_c": "git push uploads commits to a remote — it comes AFTER committing, not before."
+            }
+            _cq_result = _ask_checkpoint_q(_cq2)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
+
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
                 return
@@ -1129,6 +1215,25 @@ def mode_git_for_humans():
             print(f"{Color.BOLD}The Daily Loop:{Color.RESET}")
             print(f"  Morning: {Color.GREEN}git pull{Color.RESET} → Code → {Color.GREEN}git add .{Color.RESET} → {Color.GREEN}git commit -m \"...\"{Color.RESET} → Evening: {Color.GREEN}git push{Color.RESET}\n")
 
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq3 = {
+                "q": "What is the FIRST thing you should do every morning before writing any code on a team project?",
+                "opts": [
+                    "A) git push — upload yesterday's work",
+                    "B) git pull — download teammates' latest commits",
+                    "C) git init — reinitialize the repository"
+                ],
+                "ans": "B",
+                "explain": "Always pull before you code! git pull ensures your local branch has all teammates' latest commits, preventing conflicts and wasted merge effort at the end of the day.",
+                "wrong_a": "git push uploads YOUR commits. If you haven't coded yet, there's nothing new to push — and pushing before pulling can cause conflicts.",
+                "wrong_b": None,
+                "wrong_c": "git init is a one-time setup command that creates a new .git folder. Running it on an existing project would not download team changes."
+            }
+            _cq_result = _ask_checkpoint_q(_cq3)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
+
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
                 return
@@ -1152,6 +1257,25 @@ def mode_git_for_humans():
             print(f"  • {Color.CYAN}git diff{Color.RESET}           — Line-by-line diff of unstaged changes (+ green, - red).")
             print(f"  • {Color.CYAN}git diff --staged{Color.RESET}  — Line-by-line diff of files that ARE already staged.\n")
             print(f"{Color.GREEN}{Color.BOLD}Pro Habit:{Color.RESET} Always run 'git status' and 'git diff' before committing!")
+
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq4 = {
+                "q": "You staged 'login.py' and want to review exactly what lines you are about to commit. Which command do you run?",
+                "opts": [
+                    "A) git diff",
+                    "B) git diff --staged",
+                    "C) git status"
+                ],
+                "ans": "B",
+                "explain": "git diff --staged (or --cached) shows the line-by-line diff of files that are already in the Staging Area, which is exactly what will go into the next commit.",
+                "wrong_a": "git diff (without --staged) shows changes in the Working Directory that have NOT been staged yet — it won't show staged files.",
+                "wrong_b": None,
+                "wrong_c": "git status shows WHICH files are changed/staged, but not the line-by-line content of those changes."
+            }
+            _cq_result = _ask_checkpoint_q(_cq4)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
 
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
@@ -1182,6 +1306,25 @@ def mode_git_for_humans():
             print(f"  4. {Color.CYAN}git merge feature{Color.RESET}         ← Combine tested code into main")
             print(f"  5. {Color.CYAN}git branch -d feature{Color.RESET}     ← Safely delete the merged branch\n")
 
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq5 = {
+                "q": "You want to build a new feature but keep production 'main' branch untouched. What is the safest approach?",
+                "opts": [
+                    "A) Code directly on main and undo with git reset if anything breaks",
+                    "B) Create a new branch with git checkout -b feature, build there, then merge when done",
+                    "C) Fork the repository to your personal GitHub account"
+                ],
+                "ans": "B",
+                "explain": "Branches let you develop in total isolation. Main stays clean and production-ready while you freely commit and experiment on the feature branch.",
+                "wrong_a": "Coding on main is risky — a bug in progress could break production for the whole team. And git reset can be destructive if used incorrectly.",
+                "wrong_b": None,
+                "wrong_c": "Forking creates an entirely separate repository copy on GitHub. It's used for open-source contributions, not for everyday feature development on your own repo."
+            }
+            _cq_result = _ask_checkpoint_q(_cq5)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
+
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
                 return
@@ -1206,6 +1349,25 @@ def mode_git_for_humans():
             print(f"{Color.BOLD}The Standard PR Workflow:{Color.RESET}")
             print("  1. git pull  →  2. git checkout -b feature  →  3. Commit  →  4. git push origin feature")
             print("  5. Open Pull Request on GitHub  →  6. Code Review & Merge into main!\n")
+
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq6 = {
+                "q": "Your teammate pushed new commits to GitHub. You want to see what changed WITHOUT affecting your local working files at all. Which command do you use?",
+                "opts": [
+                    "A) git pull origin main",
+                    "B) git clone <url>",
+                    "C) git fetch origin"
+                ],
+                "ans": "C",
+                "explain": "git fetch downloads remote commits into remote-tracking branches (like origin/main) but does NOT touch your local branch or working directory. It is 100% safe to inspect.",
+                "wrong_a": "git pull = git fetch + merge. It downloads AND immediately merges remote changes into your current branch, which DOES modify your working files.",
+                "wrong_b": None,
+                "wrong_c": "git clone downloads an entire repository for the first time. You wouldn't re-clone an existing local repo just to check for updates."
+            }
+            _cq_result = _ask_checkpoint_q(_cq6)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
 
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
@@ -1237,6 +1399,25 @@ def mode_git_for_humans():
             print(f"  6. {Color.BOLD}Unfinished code but urgent bug on main:{Color.RESET}")
             print(f"     → {Color.GREEN}git stash{Color.RESET} (shelves changes) → fix bug → {Color.GREEN}git stash pop{Color.RESET} (restores work)\n")
 
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq7 = {
+                "q": "You pushed a commit to main that broke the app. Your teammates already pulled it. What is the SAFE way to undo it?",
+                "opts": [
+                    "A) git reset --hard HEAD~1 then git push --force",
+                    "B) git revert <commit-id>",
+                    "C) git checkout HEAD~1 and re-commit"
+                ],
+                "ans": "B",
+                "explain": "git revert creates a NEW commit that undoes the bad one — it never rewrites history. Teammates won't have conflicts because the shared commit timeline is preserved.",
+                "wrong_a": "git reset --hard + force push REWRITES history that teammates already have. This breaks their local repos and forces everyone to fix their history manually.",
+                "wrong_b": None,
+                "wrong_c": "Checking out an old commit puts you in 'detached HEAD' state. Re-committing from there doesn't cleanly undo the bad commit on the shared branch."
+            }
+            _cq_result = _ask_checkpoint_q(_cq7)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
+
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
                 return
@@ -1261,6 +1442,25 @@ def mode_git_for_humans():
             print(f"{Color.GREEN}{Color.BOLD}The Flight Recorder: git reflog{Color.RESET}")
             print("  Even if you run 'git reset --hard' and commits look gone from git log,")
             print("  Git records every movement of HEAD inside the reflog! Find the SHA and reset back.\n")
+
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq8 = {
+                "q": "A developer ran 'git reset --hard HEAD~5' by accident. The commits appear gone from git log. What is the recovery path?",
+                "opts": [
+                    "A) They are permanently deleted — restore from an old zip backup",
+                    "B) Run git reflog to find the lost commit SHA, then git reset --hard <SHA>",
+                    "C) Run git log --all to retrieve the commits"
+                ],
+                "ans": "B",
+                "explain": "git reflog is Git's internal flight recorder — it logs every movement of HEAD including resets. The 'lost' commits still exist as objects in .git until garbage collection. Find the SHA in reflog and reset back to it.",
+                "wrong_a": "Git objects are not deleted immediately after a reset — they remain in the .git object store until garbage collection. git reflog can find them.",
+                "wrong_b": None,
+                "wrong_c": "git log --all shows commits reachable from any branch reference. After a hard reset, the branch pointer moved back, so those commits are no longer reachable from any branch — reflog is the only way to find them."
+            }
+            _cq_result = _ask_checkpoint_q(_cq8)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
 
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
@@ -1290,6 +1490,25 @@ def mode_git_for_humans():
             print(f"     Force-pushing shared branches wipes teammates' work. Use git revert instead.\n")
             print(f"  5. {Color.GREEN}Always pull before you push:{Color.RESET}")
             print(f"     Running 'git pull' first avoids unexpected merge bubbles.\n")
+
+            # ── CHECKPOINT QUESTION ──────────────────────────────────────────
+            _cq9 = {
+                "q": "Which of these should NEVER be committed to Git and must be listed in .gitignore?",
+                "opts": [
+                    "A) README.md and app.py — project documentation and source code",
+                    "B) .env (passwords) and node_modules/ (auto-generated dependencies)",
+                    "C) git commit messages and branch names"
+                ],
+                "ans": "B",
+                "explain": ".gitignore must exclude secrets (.env with passwords/API keys) and auto-generated build artifacts (node_modules/, __pycache__/). These should never enter version history.",
+                "wrong_a": "README.md and app.py are exactly what Git is designed to track — documentation and source code belong in the repository.",
+                "wrong_b": None,
+                "wrong_c": "Commit messages and branch names are stored internally by Git itself, not as files in your project. They don't need .gitignore entries."
+            }
+            _cq_result = _ask_checkpoint_q(_cq9)
+            if _cq_result == "exit":
+                return
+            # ─────────────────────────────────────────────────────────────────
 
             choice = _gfh_nav_bar(current_part)
             if choice in ["0", "menu", "q", "exit", "home"]:
@@ -1334,25 +1553,37 @@ def mode_git_for_humans():
                     "q": "You're on a team and your app is working. You want to add a new feature safely.\n   What should you do FIRST?",
                     "opts": ["A) Start editing files directly on main", "B) Create a new branch for the feature", "C) Fork the entire repository"],
                     "ans": "B",
-                    "explain": "Always branch before feature work. Main stays safe while you build on the branch."
+                    "explain": "Always branch before feature work. Main stays safe while you build on the branch.",
+                    "wrong_a": "Editing directly on main is risky — a bug in progress could break production for the entire team. Branching protects main.",
+                    "wrong_b": None,
+                    "wrong_c": "Forking creates a separate repository copy on GitHub. It's for open-source contributions, not everyday feature work on your own team repo."
                 },
                 {
                     "q": "You edited 4 files. You only want to include 'login.js' in this commit. What do you run?",
                     "opts": ["A) git add .", "B) git commit login.js", "C) git add login.js"],
                     "ans": "C",
-                    "explain": "git add <filename> stages just that one file. 'git add .' would stage all 4 files."
+                    "explain": "git add <filename> stages just that one file. 'git add .' would stage all 4 files.",
+                    "wrong_a": "git add . stages ALL changed files in the working directory — that would include the other 3 files you don't want in this commit.",
+                    "wrong_b": "git commit doesn't take a filename directly. You must first stage the file with git add, then commit.",
+                    "wrong_c": None
                 },
                 {
                     "q": "You committed a bug and your teammates already pulled it. What is the safe way to undo it?",
                     "opts": ["A) git reset --hard HEAD~1 then force push", "B) git revert <commit-id>", "C) Delete the repository"],
                     "ans": "B",
-                    "explain": "git revert creates a new undo commit. It never rewrites history that teammates already have."
+                    "explain": "git revert creates a new undo commit. It never rewrites history that teammates already have.",
+                    "wrong_a": "git reset --hard + force push REWRITES the shared history your teammates already pulled. This breaks their local repos and forces everyone to fix their history manually.",
+                    "wrong_b": None,
+                    "wrong_c": "Deleting the repository destroys all project history. Never do this — git revert is the safe, non-destructive solution."
                 },
                 {
                     "q": "You're halfway through writing code when an urgent bug appears on main.\n   You can't commit yet. What do you do?",
                     "opts": ["A) git stash to temporarily save your work", "B) git commit -m 'WIP' to main", "C) Copy files to Desktop manually"],
                     "ans": "A",
-                    "explain": "git stash shelves your changes cleanly. Run git stash pop to get them back later."
+                    "explain": "git stash shelves your changes cleanly. Run git stash pop to get them back later.",
+                    "wrong_a": None,
+                    "wrong_b": "Committing a WIP (work-in-progress) to main pollutes shared history with broken, half-done code that teammates will pull.",
+                    "wrong_c": "Manually copying to Desktop is exactly the kind of manual backup nightmare Git replaces. It's error-prone and doesn't integrate with version control."
                 },
                 {
                     "q": "What is the difference between git fetch and git pull?",
@@ -1362,19 +1593,28 @@ def mode_git_for_humans():
                         "C) git pull is for GitHub only; git fetch works everywhere"
                     ],
                     "ans": "B",
-                    "explain": "git fetch is safe — it updates remote tracking without touching your local branch. git pull = fetch + merge."
+                    "explain": "git fetch is safe — it updates remote tracking without touching your local branch. git pull = fetch + merge.",
+                    "wrong_a": "They are NOT the same. git fetch is a read-only inspection; git pull also merges into your current branch.",
+                    "wrong_b": None,
+                    "wrong_c": "Both git fetch and git pull work with any Git remote — GitHub, GitLab, Bitbucket, or even a local path. Neither is restricted to GitHub."
                 },
                 {
                     "q": "You ran 'git reset --hard HEAD~3' by accident and your commits look gone.\n   Which command can still find them?",
                     "opts": ["A) git log", "B) git status", "C) git reflog"],
                     "ans": "C",
-                    "explain": "git reflog records every HEAD movement including resets. Your commits are still there — find their SHA and reset back to it."
+                    "explain": "git reflog records every HEAD movement including resets. Your commits are still there — find their SHA and reset back to it.",
+                    "wrong_a": "git log shows commits reachable from the current branch pointer. After a hard reset, the branch pointer moved back, so those commits no longer appear in git log.",
+                    "wrong_b": "git status only shows the state of your working directory and staging area — it has no knowledge of lost commits.",
+                    "wrong_c": None
                 },
                 {
                     "q": "Which file tells Git which files to never track?",
                     "opts": ["A) .gitconfig", "B) .gitignore", "C) .gitkeep"],
                     "ans": "B",
-                    "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc."
+                    "explain": ".gitignore lists patterns of files Git should skip — like .env, node_modules, __pycache__, etc.",
+                    "wrong_a": ".gitconfig is the user-level Git configuration file (name, email, editor settings). It doesn't control which files are tracked.",
+                    "wrong_b": None,
+                    "wrong_c": ".gitkeep is a convention (an empty placeholder file) used to track otherwise empty directories. It has no special meaning to Git itself."
                 },
                 {
                     "q": "Under the hood, what is a Git branch?",
@@ -1384,7 +1624,10 @@ def mode_git_for_humans():
                         "C) A zip archive stored on GitHub cloud servers"
                     ],
                     "ans": "B",
-                    "explain": "Branches in Git are lightweight pointers — just 41 bytes on disk containing a commit hash. Creating a branch is virtually instantaneous."
+                    "explain": "Branches in Git are lightweight pointers — just 41 bytes on disk containing a commit hash. Creating a branch is virtually instantaneous.",
+                    "wrong_a": "If branches duplicated every file, creating one on a large project would take gigabytes of storage and minutes of time. Git's branches are instant and tiny.",
+                    "wrong_b": None,
+                    "wrong_c": "Branches are local pointers stored in your .git/refs/heads/ directory — they're not stored on GitHub until you push them."
                 },
                 {
                     "q": "What is the difference between 'git reset --soft' and 'git reset --hard'?",
@@ -1394,7 +1637,10 @@ def mode_git_for_humans():
                         "C) There is no difference; they are exact synonyms"
                     ],
                     "ans": "A",
-                    "explain": "git reset --soft moves HEAD back while keeping your code staged. --hard resets everything back to that commit, discarding uncommitted work."
+                    "explain": "git reset --soft moves HEAD back while keeping your code staged. --hard resets everything back to that commit, discarding uncommitted work.",
+                    "wrong_a": None,
+                    "wrong_b": "Both --soft and --hard work on any branch. The difference is in how they handle your staged and working directory changes, not which branch you're on.",
+                    "wrong_c": "They are very different and have different data-loss implications. --hard can permanently discard uncommitted work; --soft is much safer."
                 },
                 {
                     "q": "What is the golden rule of Git rebasing?",
@@ -1404,7 +1650,10 @@ def mode_git_for_humans():
                         "C) Rebase every time you run git status"
                     ],
                     "ans": "B",
-                    "explain": "Rebasing rewrites commit hashes. If teammates have already pulled those commits, rewiring shared history breaks their repositories."
+                    "explain": "Rebasing rewrites commit hashes. If teammates have already pulled those commits, rewiring shared history breaks their repositories.",
+                    "wrong_a": "The day of the week has nothing to do with rebasing safety. The rule is about whether the commits are shared with others.",
+                    "wrong_b": None,
+                    "wrong_c": "git status shows the state of your working directory and has nothing to do with rebasing. Rebasing every time you run it would be chaotic and destructive."
                 }
             ]
 
@@ -1413,19 +1662,14 @@ def mode_git_for_humans():
 
             h_score = 0
             for idx, item in enumerate(shuffled_quiz, 1):
-                print(f"{Color.CYAN}{Color.BOLD}{idx}. {item['q']}{Color.RESET}")
-                for opt in item["opts"]:
-                    print(f"  {opt}")
-                choice = input(f"{Color.BOLD}  Your answer [A/B/C] (or '0' to exit): {Color.RESET}").strip().upper()
-                if choice in ["0", "MENU", "Q", "EXIT"]:
+                print(f"{Color.CYAN}{Color.BOLD}Question {idx}/10{Color.RESET}")
+                result = _ask_checkpoint_q(item)
+                if result == "exit":
                     print(f"\n{Color.YELLOW}🏠 Returning to Main Menu...{Color.RESET}\n")
                     return
-                if choice == item["ans"]:
+                if result is True:
                     h_score += 1
-                    print(f"{Color.GREEN}  ✅ Correct! {item['explain']}{Color.RESET}\n")
-                else:
-                    print(f"{Color.RED}  ❌ Not quite. {item['explain']}{Color.RESET}\n")
-                time.sleep(0.8)
+                print()
 
             clear_screen()
             print(f"{Color.BOLD}{Color.MAGENTA}╔════════════════════════════════════════════════════════════════════╗")
