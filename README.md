@@ -28,7 +28,8 @@ python play.py
 *(On Windows, you can also just double-click `play.bat`! It pops open a dedicated retro arcade window automatically).*
 
 ### Features inside:
-- 🐣 **'Git for Humans' Complete Interactive Guide:** 10-part comprehensive curriculum from first principles to collaboration and emergency recovery, plus a 10-question checkpoint quiz.
+- 🐣 **'Git for Humans' Interactive Story Mode:** 10-part curriculum with bi-directional chapter navigation (`[N]ext`, `[P]revious`, Jump `[1-10]`), **9 hands-on terminal mini-simulations**, and **2-attempt checkpoint questions embedded in every chapter**. Wrong answers on Attempt 1 provide targeted clues with the answer kept secret; Attempt 2 reveals the correct answer with complete justification!
+- 🎬 **Rich Terminal CLI Animations:** Retro arcade boot progress bars, animated Git command execution spinners (`git init`, `git pull`, `git add`, `git commit`, `git checkout -b`, etc.), smooth hacker-style typewriter text streaming, and animated feedback banners.
 - 🎯 **'Type The Command' Practice Arena:** 36 real-world typing challenges across Low (Beginner), Medium (Apprentice), and High (Ninja) difficulty tiers (12 per tier) with smart hints, live simulated terminal output previews, and why-it-works explanations. Type `0` or `menu` anytime to return home!
 - 🎓 **Survive the Tech Interview & Viva:** 25 challenging developer interview questions with lives, scoring, and examiner feedback.
 - 🚨 **Real-World Git Problem Solver:** 8 critical production disaster scenarios (secret leaks, wrong branch commits, merge conflicts, giant files, lost commits, pull rejected by local changes, wrong author email, rebase conflicts).
