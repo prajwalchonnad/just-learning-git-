@@ -61,12 +61,83 @@ class Color:
     CYAN = "\033[96m"
     WHITE = "\033[97m"
 
-def print_slow(text, delay=0.012, color=""):
+def print_slow(text, delay=0.010, color=""):
     """Prints text with a subtle typing effect."""
+    if color:
+        sys.stdout.write(color)
+        sys.stdout.flush()
     for char in text:
-        sys.stdout.write(f"{color}{char}{Color.RESET}")
+        sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(delay)
+    if color:
+        sys.stdout.write(Color.RESET)
+    print()
+
+def typewrite(text, delay=0.010, color="", newline=True):
+    """Smooth typewriter effect — good for story/narrative lines."""
+    if color:
+        sys.stdout.write(color)
+        sys.stdout.flush()
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    if color:
+        sys.stdout.write(Color.RESET)
+    if newline:
+        print()
+
+def spinner(label="Running", duration=1.4, color=None):
+    """Animated CLI spinner — looks like a real terminal command executing."""
+    _c = color or Color.CYAN
+    frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    end_time = time.time() + duration
+    i = 0
+    while time.time() < end_time:
+        sys.stdout.write(f"\r  {_c}{frames[i % len(frames)]}{Color.RESET}  {label}...")
+        sys.stdout.flush()
+        time.sleep(0.08)
+        i += 1
+    sys.stdout.write(f"\r  {Color.GREEN}✔{Color.RESET}  {label}... done!      \n")
+    sys.stdout.flush()
+
+def progress_bar(label="Loading", total=20, delay=0.045, color=None):
+    """Animated progress bar — great for chapter transitions and quiz warmup."""
+    _c = color or Color.GREEN
+    for i in range(total + 1):
+        filled = "█" * i
+        empty  = "░" * (total - i)
+        pct = int(i / total * 100)
+        sys.stdout.write(f"\r  {_c}[{filled}{empty}]{Color.RESET} {pct}%  {label}")
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+def anim_correct():
+    """Flash a bright ✅ correct banner."""
+    frames = [
+        f"{Color.GREEN}{Color.BOLD}  ✅  CORRECT!  ✅{Color.RESET}",
+        f"{Color.WHITE}{Color.BOLD}  ✅  CORRECT!  ✅{Color.RESET}",
+        f"{Color.GREEN}{Color.BOLD}  ✅  CORRECT!  ✅{Color.RESET}",
+    ]
+    for f in frames:
+        sys.stdout.write(f"\r{f}")
+        sys.stdout.flush()
+        time.sleep(0.18)
+    print()
+
+def anim_wrong():
+    """Flash a red ❌ wrong banner."""
+    frames = [
+        f"{Color.RED}{Color.BOLD}  ❌  WRONG!  ❌{Color.RESET}",
+        f"{Color.WHITE}{Color.BOLD}  ❌  WRONG!  ❌{Color.RESET}",
+        f"{Color.RED}{Color.BOLD}  ❌  WRONG!  ❌{Color.RESET}",
+    ]
+    for f in frames:
+        sys.stdout.write(f"\r{f}")
+        sys.stdout.flush()
+        time.sleep(0.18)
     print()
 
 def clear_screen():
@@ -569,11 +640,15 @@ def mode_viva_gauntlet():
                 break
             print(f"{Color.RED}Please type A, B, C, or D (or '0' for Menu)!{Color.RESET}")
 
+        spinner("Interview panel evaluating your response", duration=0.6, color=Color.YELLOW)
+
         if choice == item["ans"]:
+            anim_correct()
             score += 100
             print(f"\n{Color.GREEN}{Color.BOLD}🎉 CORRECT! (+100 pts){Color.RESET}")
             print(f"{Color.GREEN}{item['praise']}{Color.RESET}")
         else:
+            anim_wrong()
             lives -= 1
             print(f"\n{Color.RED}{Color.BOLD}❌ WRONG! Correct Answer was ({item['ans']}){Color.RESET}")
             print(f"{Color.RED}{item['roast']}{Color.RESET}")
@@ -635,11 +710,15 @@ def mode_disaster_recovery():
                 pass
             print(f"{Color.RED}Enter a number from 1 to {len(scenario['choices'])} (or '0' for Menu).{Color.RESET}")
 
+        spinner("Simulating emergency command execution in production", duration=0.6, color=Color.RED)
+
         if pick == scenario["ans_idx"]:
+            anim_correct()
             score += 150
             print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (+150 pts){Color.RESET}")
             print(f"{Color.GREEN}{scenario['reaction']}{Color.RESET}\n")
         else:
+            anim_wrong()
             correct_choice = scenario["choices"][scenario["ans_idx"] - 1]
             print(f"\n{Color.RED}{Color.BOLD}❌ Not quite. The right answer was [{scenario['ans_idx']}]:{Color.RESET}")
             print(f"   {Color.WHITE}{correct_choice}{Color.RESET}")
@@ -871,50 +950,85 @@ def _gfh_nav_bar(current_part, total_parts=10):
 
 def _ask_checkpoint_q(item):
     """
-    2-attempt checkpoint quiz engine.
-    item keys: q, opts (list of strings like 'A) ...'), ans (letter), explain,
-               wrong_a, wrong_b, wrong_c  (explanation of why each wrong choice is wrong;
-               set the correct one's key to None).
-    Returns: True  = answered correctly on attempt 1 or 2
-             False = answered wrong twice (correct answer revealed)
-             'exit' = user wants to go back to menu
+    2-attempt interactive checkpoint quiz engine.
+    - Attempt 1: If wrong, explains WHY chosen answer is wrong WITHOUT disclosing correct answer.
+                 Allows user to retry on Attempt 2.
+    - Attempt 2: If wrong again, reveals the CORRECT ANSWER with FULL JUSTIFICATION!
+    - Full CLI animations (spinners, banners, typewriter feedback).
+    Returns: True  = correct on attempt 1 or 2
+             False = incorrect on both attempts (answer revealed)
+             'exit' = user quit to menu
     """
     EXIT_CMDS = {"0", "MENU", "Q", "EXIT", "HOME"}
-    wrong_hints = {"A": item.get("wrong_a"), "B": item.get("wrong_b"), "C": item.get("wrong_c")}
+    wrong_hints = {
+        "A": item.get("wrong_a"),
+        "B": item.get("wrong_b"),
+        "C": item.get("wrong_c"),
+        "D": item.get("wrong_d")
+    }
 
-    print(f"\n{Color.MAGENTA}{Color.BOLD}{'─'*72}")
-    print(f"  🧠 CHECKPOINT QUESTION")
-    print(f"{'─'*72}{Color.RESET}\n")
+    print(f"\n{Color.MAGENTA}{Color.BOLD}{'═'*72}")
+    print(f"  🧠 CHECKPOINT CHALLENGE (Attempt 1 of 2)")
+    print(f"{'═'*72}{Color.RESET}\n")
 
     for attempt in range(1, 3):
-        print(f"{Color.BOLD}{item['q']}{Color.RESET}")
-        for opt in item["opts"]:
-            print(f"  {opt}")
+        if attempt == 2:
+            print(f"\n{Color.YELLOW}{Color.BOLD}{'═'*72}")
+            print(f"  🔄 2ND CHANCE (FINAL ATTEMPT) — Review the clues and try again!")
+            print(f"{'═'*72}{Color.RESET}\n")
 
-        raw = input(f"\n{Color.BOLD}  Your answer [A/B/C] (0=Menu): {Color.RESET}").strip().upper()
+        while True:
+            print(f"{Color.BOLD}{Color.WHITE}{item['q']}{Color.RESET}\n")
+            for opt in item["opts"]:
+                print(f"  {Color.CYAN}{opt}{Color.RESET}")
 
-        if raw in EXIT_CMDS:
-            return "exit"
+            raw = input(f"\n{Color.BOLD}  Your answer [A/B/C] (0=Menu): {Color.RESET}").strip().upper()
+
+            if raw in EXIT_CMDS:
+                return "exit"
+
+            # Normalize common alternative inputs like '1', '2', '3' or 'A)'
+            norm_map = {"1": "A", "2": "B", "3": "C", "A)": "A", "B)": "B", "C)": "C"}
+            raw = norm_map.get(raw, raw)
+
+            if raw in ["A", "B", "C"]:
+                break
+            print(f"\n  {Color.YELLOW}⚠️ Please type A, B, or C (or '0' for Menu).{Color.RESET}\n")
+
+        spinner("Analyzing your answer against Git mechanics", duration=0.6, color=Color.CYAN)
 
         if raw == item["ans"]:
-            print(f"\n{Color.GREEN}{Color.BOLD}  ✅ Correct! {item['explain']}{Color.RESET}")
-            input(f"\n{Color.DIM}  Press Enter to continue...{Color.RESET}")
+            anim_correct()
+            print(f"\n{Color.GREEN}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+            print("║  ✅ 100% CORRECT! WELL DONE!                                       ║")
+            print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+            typewrite(f"  💡 {item['explain']}", delay=0.012, color=Color.GREEN)
+            input(f"\n{Color.DIM}  👉 Press Enter to continue...{Color.RESET}")
             return True
         else:
+            anim_wrong()
+            hint = wrong_hints.get(raw) or "That answer does not match the actual Git behavior for this command."
             if attempt == 1:
-                hint = wrong_hints.get(raw) or "That's not quite right — think carefully about what the concept means."
-                print(f"\n{Color.RED}  ❌ Not right.{Color.RESET} {hint}")
-                print(f"\n{Color.YELLOW}  💡 Take another look at the question and try again!{Color.RESET}")
-                input(f"\n{Color.DIM}  Press Enter to retry...{Color.RESET}")
-                print()  # blank line before re-printing question
+                print(f"\n{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+                print("║  ❌ NOT QUITE! (Attempt 1 of 2)                                    ║")
+                print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+                typewrite(f"  ❌ Why choice ({raw}) is incorrect:\n     {hint}", delay=0.012, color=Color.RED)
+                print(f"\n{Color.YELLOW}{Color.BOLD}  🔒 The correct answer is NOT revealed yet! You have 1 attempt remaining.{Color.RESET}")
+                print(f"{Color.YELLOW}  💡 Think about what the chapter explained and give it another shot!{Color.RESET}")
+                input(f"\n{Color.DIM}  👉 Press Enter to take your 2nd Chance...{Color.RESET}")
+                print()
             else:
-                # Second attempt failed — now reveal the answer
+                # ── 2ND ATTEMPT FAILED: REVEAL CORRECT ANSWER & FULL JUSTIFICATION ──
                 ans_line = next((o for o in item["opts"] if o.strip().upper().startswith(item["ans"] + ")")), item["ans"])
-                hint = wrong_hints.get(raw) or "That choice wasn't correct."
-                print(f"\n{Color.RED}  ❌ {hint}{Color.RESET}")
-                print(f"\n{Color.GREEN}{Color.BOLD}  💡 Correct answer: {ans_line}{Color.RESET}")
-                print(f"  {Color.CYAN}Why: {item['explain']}{Color.RESET}")
-                input(f"\n{Color.DIM}  Press Enter to continue...{Color.RESET}")
+                print(f"\n{Color.RED}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
+                print("║  ❌ 2ND ATTEMPT INCORRECT — ANSWER REVEALED                        ║")
+                print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
+                typewrite(f"  ❌ Why choice ({raw}) was incorrect:\n     {hint}", delay=0.012, color=Color.RED)
+                print(f"\n{Color.GREEN}{Color.BOLD}  ════════════════════════════════════════════════════════════════════")
+                print(f"  💡 THE CORRECT ANSWER IS: {ans_line}")
+                print(f"  ════════════════════════════════════════════════════════════════════{Color.RESET}\n")
+                typewrite(f"  📖 FULL JUSTIFICATION:\n     {item['explain']}", delay=0.012, color=Color.CYAN)
+                input(f"\n{Color.DIM}  👉 Press Enter to continue to the next section...{Color.RESET}")
                 return False
 
 def _gfh_sim_part1():
@@ -931,6 +1045,8 @@ def _gfh_sim_part1():
     print("Let's replace manual confusion with Git version control.")
     cmd = input(f"{Color.BOLD}Type the command to initialize Git tracking in this folder: {Color.RESET}").strip()
     if cmd in ["git init", "git init ."]:
+        spinner("Initializing empty Git repository in .git/", duration=0.8, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ Initialized!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("Initialized empty Git repository in /my-project/.git/")
@@ -939,6 +1055,7 @@ def _gfh_sim_part1():
         print(f"     ├── {Color.GREEN}report.docx{Color.RESET}   (ONE clean file!)")
         print(f"     └── {Color.MAGENTA}.git/{Color.RESET}         (Hidden engine recording all historical snapshots)")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git init{Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 1...{Color.RESET}")
 
@@ -952,17 +1069,23 @@ def _gfh_sim_part2():
     print("Stage 3: Commit History (permanent database)\n")
     cmd1 = input(f"{Color.BOLD}Step 1: Type the command to stage 'app.py' into the staging area: {Color.RESET}").strip()
     if cmd1 in ["git add app.py", "git add .", "git add -A"]:
+        spinner("Staging 'app.py' into index buffer", duration=0.7, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}✅ Staged! 'git status' now shows 'app.py' in green ready for commit.{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 Hint: 'git add app.py' stages the file.{Color.RESET}")
 
     cmd2 = input(f"\n{Color.BOLD}Step 2: Commit staged changes with message 'setup app': {Color.RESET}").strip()
     if cmd2 in ['git commit -m "setup app"', "git commit -m 'setup app'", 'git commit -m"setup app"', "git commit -m'setup app'"]:
+        spinner("Writing commit object [hash, tree, author, message]", duration=0.9, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}🎉 Snapshot Sealed!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("[main (root-commit) 4a8b1c9] setup app\n 1 file changed, 18 insertions(+)")
         print(f"\n{Color.YELLOW}Commit 4a8b1c9 is now permanently recorded in .git!{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git commit -m \"setup app\"{Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 2...{Color.RESET}")
 
@@ -975,11 +1098,14 @@ def _gfh_sim_part3():
     print("Before you touch a single line of code, what should you do first?\n")
     cmd = input(f"{Color.BOLD}Type the command to download teammate commits from GitHub: {Color.RESET}").strip()
     if cmd in ["git pull", "git pull origin main", "git pull origin"]:
+        spinner("Connecting to remote origin -> fetching commits -> fast-forwarding", duration=1.0, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ Perfect morning habit!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("Updating e2f7b10..4a8b1c9\nFast-forward\n server.py | 12 ++++++++++++\n 1 file changed, 12 insertions(+)")
         print(f"\n{Color.YELLOW}Your local files are now 100% up-to-date with your team. Zero surprise conflicts!{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git pull (always pull before you code!){Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 3...{Color.RESET}")
 
@@ -1000,10 +1126,13 @@ def _gfh_sim_part4():
     print(f"{Color.WHITE}     return False{Color.RESET}\n")
     ans = input(f"{Color.BOLD}Question: How many lines were ADDED (+) in this diff? [Type a number]: {Color.RESET}").strip()
     if ans == "2":
+        spinner("Diff engine scanning +/- line deltas", duration=0.7, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (2 lines added, 1 line deleted){Color.RESET}")
         print("Green lines with '+' are additions; red lines with '-' are deletions.")
         print("Always run 'git diff' before committing so you never save unintended edits!")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 Count the lines starting with '+': there are 2 lines added.{Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 4...{Color.RESET}")
 
@@ -1016,6 +1145,8 @@ def _gfh_sim_part5():
     print("You want to build an experimental feature called 'ai-chat' in complete isolation.\n")
     cmd = input(f"{Color.BOLD}Create and switch to new branch 'ai-chat' in one command: {Color.RESET}").strip()
     if cmd in ["git checkout -b ai-chat", "git switch -c ai-chat"]:
+        spinner("Creating branch pointer .git/refs/heads/ai-chat & updating HEAD", duration=0.8, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ Parallel Universe Created!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("Switched to a new branch 'ai-chat'")
@@ -1023,6 +1154,7 @@ def _gfh_sim_part5():
         print("  main:     4a8b1c9 (Production safe — untouched!)")
         print("  ai-chat:  4a8b1c9 (* HEAD is here! Code freely without fear)")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git checkout -b ai-chat (or git switch -c ai-chat){Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 5...{Color.RESET}")
 
@@ -1035,11 +1167,14 @@ def _gfh_sim_part6():
     print("You want to see her new commits WITHOUT modifying or merging anything into your local files yet.\n")
     cmd = input(f"{Color.BOLD}What command fetches remote commits without merging? {Color.RESET}").strip()
     if cmd in ["git fetch", "git fetch origin"]:
+        spinner("Downloading remote tracking refs without touching working directory", duration=0.9, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ Safe Inspection!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("From https://github.com/example/repo\n * [new branch]      sarah-feature -> origin/sarah-feature")
         print(f"\n{Color.YELLOW}Your working directory was NOT touched at all. git fetch is 100% safe!{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git fetch (downloads remote refs without merging){Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 6...{Color.RESET}")
 
@@ -1053,11 +1188,14 @@ def _gfh_sim_part7():
     print("You have NOT committed yet. You must unstage '.env' immediately without deleting the file!\n")
     cmd = input(f"{Color.BOLD}Type the command to unstage '.env' safely: {Color.RESET}").strip()
     if cmd in ["git restore --staged .env", "git reset HEAD .env", "git reset .env"]:
+        spinner("Restoring staging index — removing .env from cache", duration=0.8, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}🛡️ SECRET SAVED!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("(Unstaged changes in '.env' — file kept safely on disk)")
         print(f"\n{Color.YELLOW}'.env' is out of the staging index! Next step: add '.env' to your .gitignore!{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git restore --staged .env (or git reset HEAD .env){Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 7...{Color.RESET}")
 
@@ -1071,11 +1209,14 @@ def _gfh_sim_part8():
     print("What 6-letter command opens Git's internal flight recorder to find the lost commit hash?\n")
     cmd = input(f"{Color.BOLD}Type the command: {Color.RESET}").strip()
     if cmd in ["git reflog", "git reflog show"]:
+        spinner("Parsing .git/logs/HEAD flight recorder journal", duration=0.8, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✨ FLIGHT RECORDER OPENED!{Color.RESET}")
         print(f"{Color.CYAN}🖥️ Terminal Output:{Color.RESET}")
         print("4a8b1c9 HEAD@{0}: reset: moving to HEAD~3\n9b3d1f0 HEAD@{1}: commit: add user profile picture\n8c2a10d HEAD@{2}: commit: implement stripe checkout")
         print(f"\n{Color.YELLOW}The lost commit '9b3d1f0' is found! Running 'git reset --hard 9b3d1f0' restores it completely.{Color.RESET}")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The command was: git reflog (Git's black box recorder!){Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 8...{Color.RESET}")
 
@@ -1093,24 +1234,35 @@ def _gfh_sim_part9():
     ans = input(f"{Color.BOLD}Type the numbers that belong in .gitignore (e.g. '2 3'): {Color.RESET}").strip().replace(",", " ")
     parts = set(ans.split())
     if parts == {"2", "3"} or ans in ["23", "32"]:
+        spinner("Applying .gitignore rule matching patterns", duration=0.7, color=Color.GREEN)
+        anim_correct()
         print(f"\n{Color.GREEN}{Color.BOLD}✅ 100% Correct!{Color.RESET}")
         print("Never commit secrets (.env) or generated dependencies (node_modules, __pycache__).")
         print("Tracked code (main.py) and documentation (README.md) should ALWAYS be committed.")
     else:
+        anim_wrong()
         print(f"\n{Color.YELLOW}💡 The correct files were [2] and [3]! Secrets and generated folders never belong in Git.{Color.RESET}")
     input(f"\n{Color.DIM}Press Enter to return to Part 9...{Color.RESET}")
 
 def mode_git_for_humans():
+    clear_screen()
+    progress_bar("Entering Git for Humans (Interactive Handbook)", total=16, delay=0.015, color=Color.CYAN)
     current_part = 1
     total_parts = 10
+    last_part = None
 
     while True:
         clear_screen()
+        if last_part is not None and last_part != current_part:
+            progress_bar(f"Loading Chapter {current_part} / {total_parts}", total=14, delay=0.012, color=Color.YELLOW)
+            clear_screen()
+        last_part = current_part
         if current_part == 1:
             print(f"{Color.YELLOW}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
             print("║  🐣 PART 1 / 10 : Why Does Git Exist? (The Problem We All Face)    ║")
             print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
-            print("Everyone has done this manual file nightmare at some point:\n")
+            typewrite("Everyone has done this manual file nightmare at some point:", delay=0.018, color=Color.WHITE)
+            print()
             print(f"  📄 {Color.RED}report.docx{Color.RESET}")
             print(f"  📄 {Color.RED}report_v2.docx{Color.RESET}")
             print(f"  📄 {Color.RED}report_FINAL.docx{Color.RESET}")
@@ -1121,8 +1273,9 @@ def mode_git_for_humans():
             print("  • How do you undo one bad line from 3 days ago without losing today's work?")
             print("  • How can two developers work on the same file without overwriting each other?\n")
             print(f"{Color.GREEN}{Color.BOLD}Git's Solution:{Color.RESET}")
-            print("  Your project lives in ONE clean folder. Git runs quietly inside a hidden")
-            print("  '.git' folder, recording a cryptographic timeline of snapshots called 'commits'.\n")
+            typewrite("  Your project lives in ONE clean folder. Git runs quietly inside a hidden", delay=0.014, color=Color.GREEN)
+            typewrite("  '.git' folder, recording a cryptographic timeline of snapshots called 'commits'.", delay=0.014, color=Color.GREEN)
+            print()
 
             # ── CHECKPOINT QUESTION ──────────────────────────────────────────
             _cq1 = {
@@ -1544,6 +1697,8 @@ def mode_git_for_humans():
 
             # Run the 10-question quiz!
             clear_screen()
+            progress_bar("Generating 10-Question Randomized Final Quiz", total=16, delay=0.015, color=Color.MAGENTA)
+            clear_screen()
             print(f"{Color.MAGENTA}{Color.BOLD}╔════════════════════════════════════════════════════════════════════╗")
             print("║                 🏁 GIT FOR HUMANS — FINAL QUIZ                     ║")
             print(f"╚════════════════════════════════════════════════════════════════════╝{Color.RESET}\n")
@@ -1671,6 +1826,7 @@ def mode_git_for_humans():
                     h_score += 1
                 print()
 
+            spinner("Tallying responses & computing Git Mastery score", duration=0.8, color=Color.MAGENTA)
             clear_screen()
             print(f"{Color.BOLD}{Color.MAGENTA}╔════════════════════════════════════════════════════════════════════╗")
             print("║                 GIT FOR HUMANS — COMPLETE                          ║")
@@ -2088,6 +2244,8 @@ def run_arena_level(level_name, challenges, level_color):
             is_valid = normalized in ch["valid"] or alt_normalized in alt_valid
 
             if is_valid:
+                spinner(f"Simulating '$ {user_cmd}'", duration=0.6, color=Color.GREEN)
+                anim_correct()
                 points = 100 if attempts == 0 else 50
                 score += points
                 print(f"\n{Color.GREEN}{Color.BOLD}✅ Correct! (+{points} pts){Color.RESET}\n")
@@ -2100,11 +2258,12 @@ def run_arena_level(level_name, challenges, level_color):
                 break
             else:
                 attempts += 1
+                anim_wrong()
                 if attempts < max_attempts:
-                    print(f"\n{Color.RED}❌ Not quite.{Color.RESET}  💡 Clue: {ch['hint']}")
+                    print(f"\n{Color.RED}❌ Not quite (Attempt 1 of 2).{Color.RESET}  💡 Clue: {ch['hint']}")
                 else:
                     expected_answer = ch["valid"][0]
-                    print(f"\n{Color.RED}❌ Out of attempts. The command was:{Color.RESET} {Color.BOLD}{expected_answer}{Color.RESET}\n")
+                    print(f"\n{Color.RED}{Color.BOLD}❌ Out of attempts (2/2 failed). The command was:{Color.RESET} {Color.GREEN}{Color.BOLD}{expected_answer}{Color.RESET}\n")
                     if "output" in ch:
                         print(f"{Color.CYAN}{Color.BOLD}🖥️ What this command outputs:{Color.RESET}")
                         print(f"{Color.WHITE}─────────────────────────────────────────────────────────────{Color.RESET}")
@@ -2184,8 +2343,15 @@ def mode_command_arena():
             return
 
 def main():
+    first_boot = True
     while True:
         clear_screen()
+        if first_boot:
+            print(BANNER)
+            progress_bar("Booting Git Arcade", total=16, delay=0.02, color=Color.CYAN)
+            first_boot = False
+            time.sleep(0.15)
+            clear_screen()
         print(BANNER)
         print(f"{Color.BOLD}Welcome to the interactive Git arcade! Choose your adventure:{Color.RESET}\n")
         print(f"  {Color.YELLOW}[1]{Color.RESET} 🐣 'Git for Humans' (Interactive Handbook + 10-Question Quiz)")
